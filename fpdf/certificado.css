@@ -1,0 +1,452 @@
+/* Estilos generales */
+body {
+    background: url('images/fondo.png') no-repeat center center/cover;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    
+}
+.logo {
+    margin-right: 0%; /* Mueve el logo hacia la izquierda */
+}
+.search-panel {
+    margin-right: 105px; /* Mueve el panel hacia la izquierda */
+     width: 300px;
+      }
+    /* Estilo para cambiar el cursor a pointer en el botón de limpiar */
+    .search-panel .clear-button {
+    cursor: pointer;
+    margin-right: 15px; /* Reducido de 105px */
+    font-size: 20px; /* Ajusta el tamaño de la fuente */
+    padding: 5px; /* Ajusta el padding para hacer más grande la X */
+  }
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.container {
+    padding: 20px; /* Espaciado interior del contenedor */
+}
+
+.form-section {
+    margin-top: 60px; /* Ajusta este valor para mover el formulario más abajo */
+    /* Otros estilos que desees aplicar */
+}
+
+.form-content {
+    margin-bottom: 20px; /* Espaciado entre elementos dentro del formulario */
+}
+
+label {
+    display: block; /* Para que el label ocupe toda la línea */
+    margin-bottom: 5px; /* Espacio entre el label y el input */
+}
+
+input {
+    width: 70%; /* Ancho completo para el input */
+    padding: 10px; /* Espaciado interior del input */
+    border: 1px solid #ccc; /* Borde del input */
+    border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Estilos para el encabezado */
+header {
+    background-color: #C7E2E5;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* Estilos para el panel superior */
+.top-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    justify-content: center; /* Centra el logo horizontalmente */
+    align-items: center; /* Centra el logo verticalmente */
+    margin-right: 0%; 
+}
+
+.logo img {
+    height: 60px;
+}
+
+.search-panel {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.search-panel input[type="text"] {
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.search-panel button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ingresar-button .btn-ingresar {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ingresar-button .btn-ingresar:hover {
+    background-color: #333;
+}
+
+/* Estilos para la navegación */
+.nav-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start; /* Mueve los botones hacia la izquierda */
+}
+
+.nav-btn {
+    background-color: #007bff;
+    color: #fff;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    flex-grow: 1;
+    margin: 5px;
+}
+
+.nav-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilos para la sección principal */
+.hero {
+    background: url('images/fondo.png') no-repeat center center;
+    background-size: cover;
+    padding: 50px 0;
+    max-width: 100%; /* Establece el ancho máximo al 100% del contenedor */
+    height: auto; /* Asegura que la altura se ajuste proporcionalmente */
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+    padding: 20px;
+    border-radius: 8px;
+   
+}
+.hero-content img {
+    width: 80%; /* Ocupa el 100% del ancho disponible */
+    height: auto; /* Mantiene la proporción original */
+    display: block; /* Evita el espacio extra por alinear en línea */
+    border-radius: 10px; /* Borde redondeado opcional */
+    margin-right: 30px;
+}
+
+.text-content {
+    max-width: 50%;
+    margin-right: 20px;
+}
+
+.text-content h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: "Times New Roman", serif;
+    font-weight: bold;
+}
+
+.text-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.text-content ul li {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+.form-section {
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.form-content {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form-group {
+    flex-grow: 1;
+}
+
+.form-group label,
+.form-group input {
+    display: block;
+    margin-bottom: 10px;
+}
+
+button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF; /* Ajusta según tu diseño */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Ajusta según tu diseño */
+}
+
+/* Ajustes adicionales para el formulario */
+input[type="text"] {
+    width: calc(100% - 120px); /* Ajusta el espacio según el botón */
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #0d0d0d;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 110px; /* Ajusta este valor para mover el footer más abajo */
+}
+
+.footer-img {
+    max-width: 100%;
+    height: auto;
+    text-align: center;
+}
+
+/* Ajustar el contenido principal para que no quede oculto detrás del encabezado */
+main {
+    padding-top: 50px;
+}
+
+/* Estilos para el botón flotante */
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px; /* Ajusta la distancia desde abajo según sea necesario */
+    right: 20px; /* Distancia desde la derecha */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background: linear-gradient(135deg, #a2f78d,#15b68b,  #0bb214); /* Degradado de verde claro a verde oscuro */
+    padding: 4px; /* Reducir el padding para hacer el botón más pequeño */
+    border-radius: 30px; /* Forma redondeada del botón */
+    box-shadow: 0 4px 8px rgba(4, 4, 4, 0.782);  /* Sombra suave */
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* Quitamos el subrayado del enlace */
+   
+}
+
+.whatsapp-float img {
+    width: 20px; /* Reducir el tamaño del ícono de WhatsApp */
+    height: auto;
+    margin-right: 5px; /* Reducir el espacio entre el ícono y el texto */
+}
+
+.whatsapp-float span {
+    color: #000000; /* Color del texto */
+    font-weight: bold;
+    font-size: 15px; /* Reducir el tamaño del texto */
+}
+.whatsapp-float img {
+    width: 45px;
+    margin-top: 5px;
+}
+
+/* Estilos para las imágenes laterales */
+.imagenes-laterales {
+    display: flex;
+    justify-content: flex-end; /* Asegura que las imágenes ocupen todo el espacio */
+    align-items: center;
+    gap: 10px; /* Espacio entre las imágenes */
+    margin-left: 10px; /* Mueve las imágenes un poco hacia la derecha */
+}
+
+.imagenes-laterales img {
+    width: 65px;
+    height: auto;
+}
+
+.respaldo {
+    font-weight: bold;
+    font-family: Arial, sans-serif;
+    color: #ffffff;
+    background-color: #66ccff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+.columns-container {
+    display: flex;
+    justify-content: space-around; /* Distribuir las columnas equitativamente */
+    gap: 20px; /* Espacio entre las columnas */
+    flex-wrap: wrap; /* Permitir envolver a una nueva línea si no hay suficiente espacio */
+}
+
+.column {
+    flex: 1; /* Las columnas se expanden para llenar el espacio disponible */
+    max-width: calc(25% - 20px); /* Ancho máximo de cada columna */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 20px; /* Espacio inferior entre columnas */
+}
+
+.column img {
+    width: 80%;
+    height: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.boton-flotante-arriba:hover {
+    background-color: #0056b3; /* Cambia el color de fondo al pasar el mouse */
+}
+
+.boton-flotante {
+    position: fixed;
+    bottom: 90px; /* Ajusta la distancia desde abajo según sea necesario */
+    right: 20px; /* Distancia desde la derecha */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background: linear-gradient(135deg, #67b3c4,#07f5f5, #1981e6); /* Degradado de color celeste */
+    padding: 10px 20px;
+    border-radius: 50px; /* Forma redondeada del botón */
+    box-shadow: 0 4px 8px rgba(25, 13, 90, 0.873); /* Sombra suave */
+    display: flex; /* Usa flexbox para alinear el contenido */
+    align-items: center; /* Alinea verticalmente el contenido */
+    align-items: center; /* Alinea verticalmente el contenido */
+    gap: 10px; /* Espacio entre el texto y la imagen */
+}
+.boton-flotante img {
+    width: 35px !important; /* Ajusta el ancho de la imagen según necesites */
+    height: auto; /* Mantiene la proporción de la imagen */
+    
+}
+.boton-flotante span {
+    font-size: 14px; /* Ajusta el tamaño del texto según necesites */
+    color: #121212; /* Ajusta el color del texto según necesites */
+}
+.boton-inscripcion {
+    text-decoration: none;
+    color: #040404; /* Color del texto */
+    font-weight: bold;
+    font-size: 14px; /* Ajusta el tamaño del texto según necesites */
+    
+}
+.social-icons {
+    display: flex; /* Mostrar los íconos en una fila */
+    justify-content: center; /* Centrar horizontalmente */
+}
+
+.social-icon {
+    display: flex; /* Mostrar ícono y nombre en una columna */
+    flex-direction: column;
+    align-items: center; /* Centrar verticalmente */
+    margin-right: 20px; /* Espacio entre los íconos */
+}
+
+.social-icon:nth-child(1) a {
+background: linear-gradient(to right, #ffffff, #ffffff, #ffffff); /* Degradado morado a naranja para Instagram */
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+font-size: 24px; /* Tamaño del icono */
+}
+
+.social-icon:nth-child(2) a {
+    color: #ffffff; /* Color verde para WhatsApp */
+    font-size: 24px; /* Tamaño del icono */
+}
+
+.social-icon span {
+    margin-top: 3px; /* Espacio entre el ícono y el nombre */
+    font-size: 12px; /* Tamaño de la fuente del nombre */
+}
+
+.social-icon a {
+    color: #ffffff; /* Color blanco */
+    font-size: 23px; /* Tamaño del ícono */
+}
+/* Estilos generales para pantallas grandes */
+body {
+    font-size: 16px; /* Tamaño de fuente para pantallas grandes */
+}
+
+/* Estilos para pantallas pequeñas (por ejemplo, móviles) */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px; /* Tamaño de fuente más pequeño para móviles */
+    }
+
+    .container {
+        padding: 10px; /* Ajustar el padding en móviles */
+    }
+
+    .boton-flotante-arriba {
+        right: 10px; /* Ajustar la posición del botón en móviles */
+    }
+
+    /* Otros estilos específicos para móviles */
+}
+.resultados-con-fondo {
+    background-image: url('images/plantilla.png'); /* Reemplaza 'ruta/a/tu-imagen.jpg' con la ruta a tu imagen */
+    background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+    background-position: center; /* Centra la imagen de fondo */
+    padding: 20px; /* Ajusta el padding según sea necesario */
+    color: white; /* Cambia el color del texto para que contraste con la imagen de fondo */
+    border-radius: 10px; /* Opcional: agrega esquinas redondeadas */
+    max-width: 500px; /* Opcional: limita el ancho del contenedor */
+    margin: 0 auto; /* Centra el contenedor */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra para dar profundidad */
+}

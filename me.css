@@ -1,0 +1,151 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 60px;
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #066dd53e;
+    border-radius: 4px;
+}
+
+.sidebar ul li a.selected {
+    background-color: #066ed5;
+    border-radius: 4px;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+/* Estilos para el contenedor de la imagen */
+.image-container {
+    flex-grow: 1; /* Ocupa todo el espacio restante */
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    background-color: #ecf0f1; /* Color de fondo opcional */
+    width: 1350px; 
+    height: 270px;
+    position: relative; /* Necesario para posicionar el overlay */
+}
+
+/* Estilos para la imagen dentro del contenedor */
+.image-container img {
+    width: 100%; /* La imagen ocupa todo el ancho del contenedor */
+    height: 100%; /* La imagen también ocupará todo el alto del contenedor */
+    object-fit: cover; /* Recorta la imagen para que cubra todo el área del contenedor */
+}
+
+/* Estilos para el overlay de texto */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+}
+
+.overlay h2 {
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+}
+/* Estilos para el contenedor de la tabla */
+.table-container {
+    margin-top: 20px; /* Espacio entre la imagen y la tabla */
+    padding: 10px;
+    background-color: #ffffff00; /* Color de fondo opcional */
+}
+/* Estilos para la tabla */
+table {
+    width: 100%; /* Ancho completo del contenedor */
+    border-collapse: collapse; /* Elimina el espacio entre bordes */
+}
+
+/* Estilos para el título con espaciado */
+.table-title td {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    background-color:  #0a507e;  /* Color de fondo para diferenciar */
+    color: #ffffff; /* Color del texto */
+    padding: 20px 40px; /* Relleno (espaciado interno) superior/inferior: 20px, izquierda/derecha: 40px */
+}
+
+/* Estilos para la fila del enlace con espaciado */
+.table-link td {
+    text-align: left;
+    padding: 20px 150px; /* Relleno (espaciado interno) superior/inferior: 20px, izquierda/derecha: 40px */
+    font-size: 16px;
+    background-color: #ffffff; /* Fondo de la celda */
+    color: #333;
+}
+
+/* Ícono del PDF */
+.table-link i {
+    margin-right: 10px; /* Espacio entre el ícono y el texto */
+    color: #e74c3c; /* Color del ícono (rojo) */
+}
+
+/* Estilos para los enlaces dentro de la tabla */
+.table-link a {
+    text-decoration: none;
+    color: #3498db; /* Color del texto del enlace */
+    font-weight: bold;
+}
+
+.table-link a:hover {
+    color: #2980b9; /* Color del texto del enlace al pasar el ratón */
+    text-decoration: underline;
+}

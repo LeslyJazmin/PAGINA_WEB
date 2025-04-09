@@ -1,0 +1,101 @@
+body { 
+    background: url('images/principal.jpeg') no-repeat center center;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 120vh;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.7); /* Fondo blanco con semitransparencia */
+    border: 2px solid #6ca0dc;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    width: 400%;
+    max-width: 350px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+    color: #6ca0dc;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.form-row {
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #6ca0dc;
+}
+
+input[type="text"], input[type="password"], input[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 20px;
+    border: 2px solid #6ca0dc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #6ca0dc;
+    box-shadow: 0 0 8px rgba(108, 160, 220, 0.5);
+}
+
+input[type="submit"] {
+    background-color: #a7c7e7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="submit"]:hover {
+    background-color: #6ca0dc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mensaje-error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 16px;
+}
+
+.form-row a {
+    display: block;
+    text-align: center;
+    color: #6ca0dc;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+.form-row a:hover {
+    color: #3b5998;
+    text-decoration: underline;
+}

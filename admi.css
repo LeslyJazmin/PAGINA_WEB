@@ -1,0 +1,258 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 111vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 230px;
+    background-color: #0a507e;
+    color: white;
+    padding: 15px;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 17px;
+    display: block;
+    padding: 6px;
+    transition: background 0.3s ease;
+}
+.sidebar ul li a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar ul li a:hover {
+    background-color: #00000070;
+}
+.sidebar ul li a.selected {
+    background-color: #000000;
+}
+
+/* Estilo para el enlace activo */
+.sidebar ul li a.active {
+    background-color: #000; /* Fondo negro */
+    color: #fff;            /* Texto blanco */
+    padding: 10px;          /* Espaciado alrededor del texto */
+    border-radius: 5px;     /* Bordes redondeados */
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Welcome Title Styles */
+.bienvenido-titulo {
+    display: inline-block;
+    font-size: 2em;
+    color: #2980b9;
+    vertical-align: middle;
+}
+
+/* Profile Image Styles */
+.bienvenida img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid #2980b9;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+/* Hide File Upload Input */
+#nueva_imagen {
+    display: none;
+}
+
+/* Error Message Styles */
+.mensaje-error {
+    color: #e74c3c;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Visual Improvements */
+.main-content p strong {
+    color: #2980b9;
+}
+
+/* User Info Styles */
+.user-info {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #005580;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.user-welcome {
+    font-size: 24px;
+    color: #005580;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #005580;
+    color: white;
+}
+
+/* User Table Styles */
+.tabla-usuario {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 18px;
+    text-align: left;
+}
+
+.tabla-usuario th, .tabla-usuario td {
+    padding: 15px;
+    border: 1px solid #000000;
+    text-align: left;
+}
+
+.tabla-usuario th {
+    background-color: #0a507e;
+    color: white;
+    font-weight: bold;
+}
+
+.tabla-usuario td {
+    color: #2c3e50;
+}
+
+/* Profile Container Styles */
+.profile-container {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 20px;
+}
+
+#profileImage {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2980b9;
+}
+
+.edit-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    display: none;
+    cursor: pointer;
+}
+
+.profile-container:hover .edit-icon {
+    display: block;
+}
+
+.edit-icon i {
+    font-size: 18px;
+}
+
+.profile-message-container {
+    display: flex;
+    align-items: center;
+}
+
+.welcome-message {
+    color: #005580;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.datos-usuario {
+    margin-top: 40px;
+    width: 100%;
+}
+
+
+.contenido-principal {
+    float: left;
+    width: 80%; /* Ancho del contenedor */
+    padding: 20px;
+}
+.sub-cursos {
+    display: none; /* Ocultar subcursos inicialmente */
+    list-style-type: none;
+    padding: 0;
+}
+
+.sub-cursos li {
+    padding-left: 20px; /* Espacio a la izquierda para los subcursos */
+}
+
+.sub-cursos a {
+    color: gray; /* Cambiar el color de la letra a gris */
+    text-decoration: none; /* Eliminar subrayado */
+}
+
+.sub-cursos a:hover {
+    text-decoration: underline; /* Subrayar al pasar el mouse */
+}
+

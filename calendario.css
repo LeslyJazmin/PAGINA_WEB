@@ -1,0 +1,295 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 111vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #00000070;
+}
+
+.sidebar ul li a.selected {
+    background-color: #000000;
+}
+.content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    justify-content: center;
+    min-height: 40vh;
+}
+
+.calendar {
+    width: 2500px;
+    max-width: 1070px;
+    background-color: #ffffff00;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+    height: 400px;
+}
+
+.month {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #005792; /* Azul oscuro */
+}
+
+.days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    box-sizing: border-box;
+}
+
+.day {
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #f0f8ff; /* Azul claro */
+    cursor: pointer;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.day:hover {
+    background-color: #b3e5fc; /* Azul celeste */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.today {
+    background-color: #005792; /* Azul oscuro */
+    color: #fff;
+    font-weight: bold;
+    border-radius: 10%;
+    font-size: 16px;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    padding: 10px 20px;
+    background-color: #005792; /* Azul oscuro */
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.controls button:hover {
+    background-color: #007bb5; /* Azul más claro */
+    transform: scale(1.05);
+}
+
+.selected {
+    background-color: #007bb5;
+    color: #fff;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 30px;
+    width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    position: relative;
+    border: 1px solid #ddd;
+}
+
+.modal-header {
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 26px;
+    color: #005792; /* Azul oscuro */
+}
+
+.modal-body {
+    margin-bottom: 20px;
+}
+
+.modal-body input {
+    width: calc(100% - 20px);
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.modal-footer button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 16px;
+}
+
+.modal-footer button.cancel {
+    background-color: #ccc;
+    color: #333;
+}
+
+.modal-footer button.cancel:hover {
+    background-color: #aaa;
+}
+
+.modal-footer button.save {
+    background-color: #005792; /* Azul oscuro */
+    color: #fff;
+}
+
+.modal-footer button.save:hover {
+    background-color: #007bb5; /* Azul más claro */
+}
+
+.save-reminder-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #005792; /* Azul oscuro */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 1000;
+}
+
+.save-reminder-button:hover {
+    background-color: #007bb5;
+    transform: scale(1.05);
+}
+
+.show-reminders-button {
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #005792; /* Azul oscuro */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.show-reminders-button:hover {
+    background-color: #007bb5; /* Azul más claro */
+    transform: scale(1.05);
+}
+
+.reminder-list {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 900px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.reminder-list div {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #f44336; /* Rojo para el botón de eliminar */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+    background-color: #c62828;
+    transform: scale(1.05);
+}
+
+/* Estilos para el contenedor del recordatorio */
+.reminder-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f1f1f1; /* Color de fondo para el contenedor del recordatorio */
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

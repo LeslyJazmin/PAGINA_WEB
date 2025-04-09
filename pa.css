@@ -1,0 +1,377 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.availability-message-container {
+    margin-top: 20px; /* Espacio superior */
+    padding: 15px; /* Espaciado interno */
+    background-color: #2051ffa7; /* Azul fosforescente semitransparente (80 indica opacidad) */
+    color: #030331; /* Color de texto negro */
+    font-size: 1.1em; /* Tamaño de fuente ligeramente más grande */
+    font-weight: bold; /* Texto en negrita */
+    text-align: center; /* Centrado del texto */
+    display: none; /* Se oculta por defecto */
+}
+/* Estilos para un mensaje de disponibilidad cuando el videotest está disponible */
+.availability-message-container.available {
+    background-color: #c7eed0; /* Verde claro */
+    color: #155724; /* Texto verde oscuro */
+}
+
+/* Estilos para un mensaje de disponibilidad cuando el videotest está fuera de plazo */
+.availability-message-container.expired {
+    background-color: #f8d7da; /* Rojo claro */
+    color: #721c24; /* Texto rojo oscuro */
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 60px;
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #066dd53e;
+    border-radius: 4px;
+}
+
+.sidebar ul li a.selected {
+    background-color: #066ed5;
+    border-radius: 4px;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color:#ffffff;
+}
+
+/* Image Container Styles */
+.image-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ecf0f1;
+    width: 1550px;
+    height: 240px;
+    position: relative;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay h2 {
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    margin: 0;
+}
+/* Info Container Styles */
+.info-container {
+    flex-grow: 0.5; /* Cambiado a 0.5 para ocupar menos espacio */
+    padding: 20px; /* Espaciado interno */
+    background-color: #083a69; /* Fondo del contenedor de información */
+    margin-left: 2px; /* Espacio entre la imagen y el contenedor de información */
+}
+
+/* Table Styles */
+.table-container {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ffffff00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-title td {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #0a507e;
+    color: #ffffff;
+    padding: 20px 40px;
+}
+
+.table-link td {
+    text-align: left;
+    padding: 35px 200px;
+    font-size: 16px;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.table-link i {
+    margin-right: 40px;
+    color: #e74c3c;
+}
+
+.table-link a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.table-link a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+.status-box {
+    position: absolute;
+    transform: translateY(-50%); 
+    display: flex;
+    margin-left: 1020px;
+    padding: 9px 30px;
+    border: 1px solid #4CAF50;
+    background-color: #DFF2BF;
+    color: #4F8A10;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+/* Modal Styles */
+.modal, .modal2 {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.449);
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 400px;
+    height: 800px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+#videotestModal .modal-content {
+    padding-bottom: 20px; /* Añade espacio al final del contenedor modal */
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+.exam-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+}
+
+.fullscreen-button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #0a507e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 20px; /* Ajusta el valor según el espacio necesario */
+}
+
+.fullscreen-button:hover {
+    background-color: #000000;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.modal img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Additional Styles */
+.hidden {
+    display: none;
+}
+
+.disabled-button {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Examen Panel */
+#examenPanel {
+    position: fixed;
+    top: 0;
+    right: -20%;
+    width: 20%;
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+#examenPanel.active {
+    right: 0;
+}
+
+#cerrarPanel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.panel-content {
+    padding: 20px;
+}
+
+.examen-info {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Form Styles */
+.form-certificado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 30px;
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input {
+    margin-bottom: 10px;
+    padding: 5px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+.contenido-celda {
+    position: relative;
+    padding-right: 60px; /* Espacio suficiente para el cuadro de nota */
+}
+
+.nota-cuadro {
+    position: absolute;
+    top: 10px; /* Ajusta la distancia desde la parte superior */
+    right: 10px; /* Alinea el cuadro de nota dentro del espacio de la celda */
+    background-color: #ebebeb; /* Color de fondo */
+    padding: 0px 20px; /* Relleno */
+    border: 1px solid #000000; /* Borde */
+    border-radius: 5px; /* Esquinas redondeadas */
+    font-weight: bold;
+    z-index: 10; /* Asegura que esté encima de otros elementos */
+}
+
+.nota-cuadro span {
+    font-weight: bold;
+    color: #007bff;
+}
+.progress-container {
+    background-color: #e0e0e0; /* Color del fondo de la barra */
+    border-radius: 5px; /* Esquinas redondeadas */
+    height: 20px; /* Altura de la barra de progreso */
+    overflow: hidden; /* Para evitar que el texto se desborde */
+    margin-top: 10px; /* Margen superior para separación */
+}
+
+.progress-bar {
+    background-color: #3a63d5; /* Color de la barra de progreso */
+    height: 100%; /* Ocupa toda la altura del contenedor */
+    text-align: center; /* Centrar el texto */
+    color: white; /* Color del texto */
+    line-height: 20px; /* Centrar verticalmente el texto */
+    transition: width 0.5s; /* Transición suave al cambiar el ancho */
+}

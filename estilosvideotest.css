@@ -1,0 +1,179 @@
+/* Encabezado */
+h1 {
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    width: 1485px;
+    text-align: center;
+}
+
+/* Temporizador */
+#timer {
+    font-size: 18px;
+    background-color: #9f9e9e;
+    color: white;
+    padding: 10px;
+    width: 780px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+    color: #333;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+.pregunta {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+.pregunta:hover {
+    box-shadow: 0 5px 15px rgba(0 ,0,0,0.1);
+}
+.pregunta p {
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+label:hover {
+    color: #3498db;
+}
+input[type="radio"] {
+    margin-right: 10px;
+}
+input[type="submit"], .modal-button, .reiniciar {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: 500;
+}
+input[type="submit"]:hover, .modal-button:hover, .reiniciar:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+.mensaje {
+    background-color: #e1f5fe;
+    border-color: #b3e5fc;
+    color: #0277bd;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center; /* Centra el texto */
+}
+
+.button-container {
+    display: flex; /* Botones en una fila */
+    justify-content: center; /* Centrar horizontalmente */
+    gap: 20px; /* Espacio entre botones */
+    margin-top: 20px; /* Espacio con respecto al mensaje */
+}
+
+.modal-button {
+    background-color: #3498db;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 100px auto; /* Agregamos margen superior para bajarlo */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+    text-align: center; /* Centramos el contenido */
+}
+.modal-content h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #2c3e50;
+}
+.modal-content p {
+    text-align: justify; /* Justificamos el texto */
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Opción 1: Usando float */
+input.volver {
+background-color: #2980b9;
+font-size: 16px;
+margin: 4px 2px;
+cursor: pointer;
+border-radius: 5px;
+float: right; /* Añadido para mover a la derecha */
+margin-top: 170px; /* Mueve el botón hacia arriba */
+}
+
+
+
+input.volver:hover {
+background-color: #2980b9;
+}
+input.volver:hover {
+    background-color: #2980b9; /* Color de fondo al pasar el mouse */
+}
+.button-container {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones */
+    right:30px;
+    
+}

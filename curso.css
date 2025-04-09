@@ -1,0 +1,158 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 111vh;
+    width: 100%; /* Permitir que el contenedor se ajuste al 100% del ancho */
+    box-sizing: border-box; /* Asegurarse de que los márgenes y el padding no afecten el tamaño total */
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px; /* Aumenta el ancho de la barra lateral */
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+    flex-shrink: 0; /* Evitar que la barra lateral se reduzca */
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #00000070;
+}
+
+.sidebar ul li a.selected {
+    background-color: #000000;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.bienvenido-titulo {
+    font-size: 2em;
+    margin-bottom: 10px; /* Reducir margen inferior */
+    color: #333;
+}
+
+/* Cursos Container */
+.cursos-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.curso-container {
+    width: calc(50% - 20px); /* Cada curso ocupa el 50% del ancho menos el espacio del gap */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ccc;
+    background-color: #000000;
+    border-radius: 0px;
+    box-shadow: 0 4px 8px rgba(3, 5, 88, 0.427);
+    height: 250px;
+    position: relative;
+    overflow: hidden; /* Importante para el recorte de la imagen */
+    margin-top: 20px;
+}
+
+.curso-info {
+    text-align: center;
+    padding: 12px;
+    flex-grow: 1; /* Permite que el texto ocupe el espacio restante */
+}
+
+.curso-info p {
+    margin: 0;
+    font-size: 1.0em;
+    color: #ffffff;
+    padding-top: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.curso-imagen-container {
+    width: 100%;
+    height: 200px; /* Ajusta la altura de la imagen según tu necesidad */
+    overflow: hidden; /* Para asegurar que el contenido extra de la imagen se oculte */
+    display: flex;
+    justify-content: center; /* Centra la imagen horizontalmente */
+    align-items: center; /* Centra la imagen verticalmente */
+}
+
+.curso-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta la imagen si es necesario, manteniendo el foco visual */
+}
+
+/* Barra de búsqueda */
+.busqueda-container {
+    margin-bottom: 20px;
+}
+
+.busqueda-container form {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.busqueda-container input[type="text"] {
+    width: 250px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.busqueda-container button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #066ed5;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.busqueda-container button:hover {
+    background-color: #065bb5;
+}

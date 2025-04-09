@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEKADDESH SOLUTION E.R.I.L</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
+    <link rel="stylesheet" href="estilo.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Aplicar el zoom del 90% para todas las pantallas
+    document.body.style.zoom = "80%";
+    
+    // Detectar si la pantalla es más pequeña que 480px de ancho
+    if (window.matchMedia("(max-width: 480px)").matches) {
+      document.body.style.zoom = "55%"; // Aplicar 50% de zoom en pantallas pequeñas
+    }
+  });
+  
+  // Agregar un listener para cambiar el zoom si el usuario redimensiona la pantalla
+  window.addEventListener('resize', function() {
+    if (window.matchMedia("(max-width: 480px)").matches) {
+      document.body.style.zoom = "55%"; // Aplicar 50% de zoom en pantallas pequeñas
+    } else {
+      document.body.style.zoom = "80%"; // Restaurar a 90% en pantallas más grandes
+    }
+  });
+</script>
+<style>
+        body {
+            zoom: 90%; /* Aplica un zoom del 75% a todo el contenido */
+        }
+    </style>
+
+    <a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
+        <span> ¡Contactanos!</span>
+        <img src="images1/contactanos.png" alt="WhatsApp">
+    </a>
+    <div class="boton-flotante">
+    <a href="indexregistro.php" class="boton-inscripcion">¡Inscríbete ahora!</a>
+    <img src="images1/inscripcion-abierta.png" alt="inscribetee" style="width: 15px; height: auto;">
+</div>
+
+    <header>
+        <div class="container">
+            <div class="top-panel">
+                <div class="logo">
+                    <a href="#">
+                    </a>
+                </div>
+                <!--Barra de busquedad-->
+                      <div class="search-panel">
+                        <input list="course-suggestions" type="text" placeholder="¿Qué curso quieres aprender hoy?" id="search-input">
+                         <span class="clear-button" onclick="clearSearchInput()">&times;</span>
+                         <datalist id="course-suggestions">
+                        <option value="Curso IPERC">
+                          <option value="Curso de primeros auxilios">
+                       <option value="Curso de Soldadura con arco eléctrico con electrodo revestido">
+                       <option value="Curso de Uso y manejo de extintores">
+                            </datalist>
+                            <button onclick="searchCourse()"><i class="fa fa-search"></i> Buscar</button>
+                          </div>
+                    
+
+                           <script>
+                                            document.addEventListener('DOMContentLoaded', function() {
+                                const searchInput = document.querySelector('.search-panel input[type="text"]');
+                                const clearButton = document.querySelector('.search-panel .clear-button');
+                                const searchButton = document.querySelector('.search-panel button');
+                                const courses = [
+                                    { title: 'Curso IPERC', url: 'curso1.php' },
+                                    { title: 'Curso de primeros auxilios', url: 'curso2.php' },
+                                    { title: 'Curso de Soldadura con arco eléctrico con electrodo revestido', url: 'curso3.php' },
+                                    { title: 'Curso de Uso y manejo de extintores', url: 'curso4.php' }
+                                ];
+
+                                searchInput.addEventListener('input', function() {
+                                    const query = searchInput.value.toLowerCase();
+                                    const suggestions = courses.filter(course => course.title.toLowerCase().includes(query));
+
+                                    const suggestionList = document.getElementById('suggestion-list');
+                                    suggestionList.innerHTML = '';
+                                    suggestions.forEach(suggestion => {
+                                        const listItem = document.createElement('li');
+                                        listItem.textContent = suggestion.title;
+                                        listItem.addEventListener('click', function() {
+                                            window.location.href = suggestion.url;
+                                        });
+                                        suggestionList.appendChild(listItem);
+                                    });
+
+                                    suggestionList.style.display = suggestions.length ? 'block' : 'none';
+                                });
+
+                                searchButton.addEventListener('click', function() {
+                                    const query = searchInput.value.toLowerCase();
+                                    const course = courses.find(course => course.title.toLowerCase().includes(query));
+                                    if (course) {
+                                        window.location.href = course.url;
+                                        searchInput.value = ''; // Limpiar el campo de búsqueda después de la redirección
+                                    } else {
+                                        alert('Curso no encontrado');
+                                    }
+                                });
+
+                                clearButton.addEventListener('click', function() {
+                                    searchInput.value = ''; // Limpiar el campo de búsqueda
+                                    searchInput.focus();    // Devolver el foco al campo de búsqueda
+                                });
+                            });
+
+                            function clearSearchInput() {
+                                const searchInput = document.querySelector('.search-panel input[type="text"]');
+                                searchInput.value = ''; // Limpiar el campo de búsqueda
+                                searchInput.focus();    // Devolver el foco al campo de búsqueda
+                            }
+
+                         </script>
+             <!--con respaldo de-->
+             <div class="imagenes-laterales">
+                    <p><span class=""></span></p>
+                    <img src="" alt=""class="imagen-1">
+                    <img src="" alt="">
+                  </div>
+               </div>
+               <!--<div class="imagenes-laterales">
+                    <p><span class="respaldo">Con el respaldo de:</span></p>
+                    <img src="images1/unp.png" alt="Imagen 1"class="imagen-1">
+                    <img src="images1/foto3.png" alt="Imagen 2">
+                  </div>
+               </div-->
+               <nav class="nav-buttons">
+            <a href="#countdown-container" class="nav-btn">Promociones</a>
+                <a href="#quienes-somos" class="nav-btn">¿Quienes somos?</a>
+                <a href="#cursos" class="nav-btn">Cursos</a>
+                <a href="#caracteristicas" class="nav-btn">Beneficios</a>
+                <a href="#carouselExampleControls" class="nav-btn">Certificados</a>
+                <a href="aula_virtual.php" id="aula-btn" class="fas-fa-user">Aula Virtual</i>
+            </a>
+            </nav>
+            <script>
+                document.querySelectorAll('.nav-btn').forEach(anchor => {
+                    anchor.addEventListener('click', function (e) {
+                        e.preventDefault(); // Evita el comportamiento predeterminado
+            
+                        const targetId = this.getAttribute('href'); // Obtiene el ID del destino
+                        const targetElement = document.querySelector(targetId); // Selecciona el elemento destino
+                        const headerOffset = 190; // Ajusta este valor según la altura de tu menú
+                        const additionalOffset = 10; // Desplazamiento adicional si es necesario
+            
+                        const elementPosition = targetElement.getBoundingClientRect().top; // Posición del elemento
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset - additionalOffset; // Posición ajustada
+            
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth' // Desplazamiento suave
+                        });
+                    });
+                });
+            </script>
+            
+        </div>
+    </header>
+     <section class="hero">
+            <div class="white-container">
+                <img src="images1/p1.jpg" alt="MEKADDESH SOLUTION">
+            </div>
+        </section>
+        <div id="reloj-container" class="reloj">
+    <div id="countdown-container" class="countdown">
+        <img src="images1/244.png" alt="Imagen" class="countdown-image">
+        <div class="countdown-text">
+            <strong>Quedan:</strong>
+        </div>
+        <div id="timer">
+            <div class="timer-section">
+                <span id="hours">00</span>
+                <strong><div class="timer-label">Horas</div></strong>
+            </div>
+            <div class="timer-section">
+                <span id="minutes">00</span>
+                <strong><div class="timer-label">Minutos</div></strong>
+            </div>
+            <div class="timer-section">
+                <span id="seconds">00</span>
+                <strong><div class="timer-label">Segundos</div></strong>
+            </div>
+        </div>
+        <a id="my-button" class="timer-button" href="promociones.php">
+            <img src="images1/pro.png" alt="Icono" class="button-icon">¡OFERTAS ESPECIALES!</a>
+    </div>
+</div>
+
+                
+
+            </div>
+            <script>
+                // Set the countdown time (24 hours in seconds)
+                const countdownTime = 24 * 60 * 60; // 24 hours * 60 minutes * 60 seconds
+            
+                // Function to update the countdown timer
+                function updateCountdown() {
+                    const timer = document.getElementById('timer');
+                    const hoursSpan = document.getElementById('hours');
+                    const minutesSpan = document.getElementById('minutes');
+                    const secondsSpan = document.getElementById('seconds');
+            
+                    let remainingTime;
+            
+                    // Check if there's remaining time stored in localStorage
+                    if (localStorage.getItem('remainingTime')) {
+                        remainingTime = parseInt(localStorage.getItem('remainingTime'), 10);
+                    } else {
+                        remainingTime = countdownTime; // Countdown starts from 24 hours if no stored time
+                    }
+            
+                    // Update the timer every second
+                    const countdownInterval = setInterval(function() {
+                        if (remainingTime <= 0) {
+                            clearInterval(countdownInterval);
+                            timer.textContent = '00:00:00';
+                            localStorage.removeItem('remainingTime'); // Clear stored time when countdown ends
+                            return;
+                        }
+            
+                        const hours = Math.floor(remainingTime / 3600);
+                        const minutes = Math.floor((remainingTime % 3600) / 60);
+                        const seconds = remainingTime % 60;
+            
+                        hoursSpan.textContent = formatTime(hours);
+                        minutesSpan.textContent = formatTime(minutes);
+                        secondsSpan.textContent = formatTime(seconds);
+            
+                        remainingTime--;
+            
+                        // Store remaining time in localStorage
+                        localStorage.setItem('remainingTime', remainingTime);
+                    }, 1000);
+                }
+            
+                // Function to format time (adds leading zero if necessary)
+                function formatTime(time) {
+                    return time < 10 ? `0${time}` : time;
+                }
+            
+                // Start the countdown when the page loads
+                updateCountdown();
+            </script>
+            
+            <!--Seccion quienes somos-->
+            <section id="quienes-somos" class="quienes-somos">
+                <div class="quienes-somos-container">
+                    <h1 class="titulo-principal">¿QUIÉNES SOMOS?</h1>
+                    <div class="columns-container">
+                        <div class="column">
+                        <div class="quienes-somos-text">
+                        <div class="mision">
+                            <img src="images1/mision.png" alt="Misión de MEKADDESH SOLUTION" style="max-width: 114px; margin-top: 6px;">
+                                    <p>Nuestra misión es proporcionar soluciones de aprendizaje efectivas y adaptadas a las necesidades específicas de nuestros clientes, contribuyendo así al desarrollo personal y profesional de individuos y organizaciones en el entorno laboral actual.</p>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="column">
+                           <div class="quienes-somos-text">
+                           <div class="valores">
+                           <img src="images1/valores.png" alt="Valores de MEKADDESH SOLUTION" style="max-width: 170px; margin-top: 8px;">
+                                <p>
+                                •	Integridad<br>
+                                •	Excelencia<br>
+                                •	Seguridad<br>
+                                •	Innovación y Compromiso con el cliente<br>
+                                •	Aprendizaje continuo y Trabajo en equipo<br>
+                                •	Adaptabilidad
+
+                                </p>
+                               </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                        <div class="quienes-somos-text">
+                        <div class="vision">
+                            <img src="images1/vision3d.png" alt= "Visión de MEKADDESH SOLUTION" style="max-width: 100px; margin-top: 6px;">
+                                    <p>En "Mekaddesh Solution E.I.R.L." nos proyectamos a ser socios confiables que promuevan la seguridad, la excelencia y la innovación en la industria. Así como, ser líderes en la transformación industrial hacia entornos más seguros y eficientes. Nos comprometemos a ser el estándar de excelencia en capacitación; ofreciendo programas innovadores y adaptados a las necesidades de cada cliente; y en asesoría personalizada para optimizar operaciones cumpliendo con estándares de seguridad.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="quienes-somos-text">
+                                <div class="objetivos">
+                                <img src="images1/objetivo3d1.png" alt="Objetivos de MEKADDESH SOLUTION" style="max-width: 110px; margin-right: 20px;">
+                                    <p>
+                                        •  Mejorar la Calidad de los Servicios<br>
+                                        •  Invertir en Tecnología y Desarrollo<br>
+                                        •  Fortalecer Alianzas Estratégicas<br>
+                                        •  Fomentar el Desarrollo del Talento<br>
+                                        •  Mejorar la Eficiencia Operativa
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                 </section>
+            <div class="overlay" id="overlay">
+                <div class="popup">
+                    <div class="popup-content">
+                        <div class="popup-left">
+                            <img src="images1/años.jpeg" alt="Imagen de promoción" class="popup-image">
+                        </div>
+                        <div class="popup-right">
+                            <h2>¡Recibe notificaciones de nuestras promociones y descuentos!</h2>
+                            <p>Suscríbete y no te pierdas de nada <span class="emoji">&#x1F604; &#x1F499;</span></p>
+                            <button id="maybeLater">Tal vez luego</button>
+                            <button id="yesPlease">¡Sí, quiero!</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                    const overlay = document.getElementById('overlay');
+                    const maybeLaterButton = document.getElementById('maybeLater');
+                    const yesPleaseButton = document.getElementById('yesPlease');
+                
+                    // Verificar si ya se ha mostrado la notificación utilizando localStorage
+                    if (localStorage.getItem('notificationShown') === 'true') {
+                        overlay.style.display = 'none';
+                    }
+                
+                    maybeLaterButton.addEventListener('click', function() {
+                        overlay.style.display = 'none';
+                        // Establecer el indicador en localStorage para indicar que se ha mostrado la notificación
+                        localStorage.setItem('notificationShown', 'true');
+                    });
+                
+                    yesPleaseButton.addEventListener('click', function() {
+                        if (Notification.permission !== 'granted') {
+                        Notification.requestPermission().then(function(permission) {
+                            if (permission === 'granted') {
+                            alert('¡Ahora estás suscrito a nuestras notificaciones!');
+                            overlay.style.display = 'none';
+                            // Establecer el indicador en localStorage para indicar que se ha mostrado la notificación
+                            localStorage.setItem('notificationShown', 'true');
+                            }
+                        });
+                        } else {
+                        alert('¡Ya estás suscrito a nuestras notificaciones!');
+                        overlay.style.display = 'none';
+                        // Establecer el indicador en localStorage para indicar que se ha mostrado la notificación
+                        localStorage.setItem('notificationShown', 'true');
+                        }
+                    });
+                    });
+                </script> 
+            <!-- Sección de cursos -->
+            <section id="cursos" class="espacio-carrucel">
+                     <!-- Contenedor para "NUESTROS CURSOS" -->
+                    <div class="texto-encima-contenedor">
+                        <div class="texto-encima">
+                            CURSOS : MODALIDAD SEMIPRESENCIAL
+                        </div>
+                    </div>
+                        <div class="carrusel-container">
+                        <div class="carrusel">
+                            <button class="carrusel-item active" onclick="window.location.href='curso1.php';">
+                                <img src="images1/cur1.jpeg" alt="Curso 1">
+                                <div class="texto-container">VER DETALLES</div>
+                            </button>
+                            <button class="carrusel-item" onclick="window.location.href='curso2.php';">
+                                <img src="images1/cur2.jpeg" alt="Curso 2">
+                                <div class="texto-container">VER DETALLES</div>
+                            </button>
+                            <button class="carrusel-item" onclick="window.location.href='curso3.php';">
+                                <img src="images1/cur3.jpeg" alt="Curso 3">
+                                <div class="texto-container">VER DETALLES</div>
+                            </button>
+                            <button class="carrusel-item" onclick="window.location.href='curso4.php';">
+                                <img src="images1/cur4.jpeg" alt="Curso 4">
+                                <div class="texto-container">VER DETALLES</div>
+                            </button>
+                        </div>
+                        <div class="carrusel-controles">
+                            <button class="prev">❮</button>
+                            <button class="next">❯</button>
+                        </div>
+                    </div>
+            </section>
+            <section id="caracteristicas">
+                <div class="container">
+                    <h2>Beneficios de Estudiar con Nosotros</h2>
+                    <div class="features-grid">
+                        <div class="feature">
+                            <i class="fas fa-laptop-code"></i>
+                            <h3>Plataforma Virtual</h3>
+                            <p>Acceso 24/7 a recursos y materiales</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-users"></i>
+                            <h3>Instructores Expertos</h3>
+                            <p>Profesionales con amplia experiencia</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-file-alt"></i>
+                            <h3>Práctica Intensiva</h3>
+                            <p>Ejercicios y proyectos reales</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-certificate"></i>
+                            <h3>Certificación</h3>
+                            <p>Reconocimiento oficial avalado</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--section id="convenios">
+                <div class="texto-convenio">
+                    CONOCE LOS BENEFICIOS DE NUESTRO <br>CONVENIO CON:<br>
+                </div>
+                <div class="contenedor-flex">
+                    <div class="imagenes">
+                        <div class="imagen-con-texto">
+                            <div class="texto-imagen">FUNDENORP</div>
+                            <img src="images1/fundenor2.png" alt="Imagen c1">
+                        </div>
+                        <div class="imagen-con-texto">
+                            <div class="texto-imagen">UNP</div>
+                            <img src="images1/unp2.png" alt="Imagen c2">
+                        </div>
+                    </div>
+                    <div class="beneficios-container">
+                        <BR><p>• ACCESO A CURSOS EXCLUSIVOS.</p>
+                        <p>• DESCUENTOS EN MATRÍCULA.</p>
+                        <p>• CERTIFICACIONES RECONOCIDAS.</p>
+                    </div>
+                </div>
+            </section-->
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+    <div class="mi-contenedor">
+        <div class="container">
+            <div class="content">
+                <strong><h1>¡OBTÉN TU CERTIFICADO HOY MISMO Y ABRE NUEVAS OPORTUNIDADES PROFESIONALES!</h1></strong>
+                <div class="steps">
+                    <div class="step">
+                        <p>Dale clic en el botón de "valida tu certificado"</p>
+                    </div>
+                </div>
+                <a href="certificado.php" class="validate-button">Valida tu certificado aquí</a>
+            </div>
+
+            <!-- Carrusel -->
+            <div class="mi-contenedor-carrusel">
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+                    <div class="carousel-item active">
+                    <img src="images1/ejemplo1.png" class="d-block img-pequena" alt="Paso 1">
+                        <div class="carousel-caption d-none d-md-block">
+                            
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images1/ejemplo2.png" class="d-block img-pequena" alt="Paso 2">
+                        <div class="carousel-caption d-none d-md-block">
+                            
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <img src="images1/ejemplo4.png" class="d-block img-pequena" alt="Paso 3">
+                        <div class="carousel-caption d-none d-md-block">
+                            
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Anterior</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Siguiente</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS y dependencias -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+                <script>
+                    window.addEventListener('scroll', function() {
+                        const section = document.querySelector('.certificado .contenido');
+                        const sectionPosition = section.getBoundingClientRect().top;
+                        const screenPosition = window.innerHeight / 1.2;
+
+                        if (sectionPosition < screenPosition) {
+                            section.classList.add('appear');
+                        }
+                    });
+                </script>
+            </section>
+            <footer class="footer">
+    <div class="footer-container">
+        <div class="contact-us">
+            <h3>CONTÁCTANOS</h3>
+            <p>📧 <a href="mailto:capacitacionmekaddesh@gmail.com">capacitacionmekaddesh@gmail.com</a></p>
+            <p>📞 <a href="https://wa.me/message/D7LD33NF66RGD1">+51 908 874 797</a></p>
+        </div>
+        <div class="social-media">
+            <h3>VISITA REDES SOCIALES</h3>
+            <div class="social-icons">
+                <div class="social-icon">
+                    <a href="https://www.instagram.com/mekaddeshsolution?utm_source=qr&igsh=MXROOTRpZjY4cTVhcw==" target="_blank">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+                <div class="social-icon">
+                    <a href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+                <div class="social-icon">
+                    <a href="https://web.facebook.com/profile.php?id=61564501761493" target="_blank">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                </div>
+                <div class="social-icon">
+                    <a href="https://www.tiktok.com/@tupagina" target="_blank">
+                        <i class="fab fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© Todos los derechos reservados. MEKADDESH SOLUTION E.R.I.L.</p>
+    </div>
+</footer>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1eeee;
+}
+
+.container {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #000000;
+    color: #fdfdfd;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+}
+
+.main-header {
+    padding: 20px 0;
+}
+
+.header-cursos {
+    background-color: #89b3d7;
+    color: #000;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.header-cursos h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+.header-secondary {
+    background-color: #070707;
+    color: #fefefe;
+    padding: 15px 0;
+    text-align: center;
+}
+
+.header-secondary h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8em; /* Reducir aún más el tamaño del h1 en pantallas pequeñas */
+    }
+
+    .main-header {
+        padding: 10px 0; /* Ajustar padding para pantallas pequeñas */
+    }
+
+    .header-cursos, .header-secondary {
+        padding: 8px 0; /* Ajustar padding para pantallas pequeñas */
+    }
+
+    .header-cursos h2, .header-secondary h2 {
+        font-size: 1.4em; /* Reducir tamaño de los h2 en pantallas pequeñas */
+        margin-bottom: 6px; /* Ajustar margen inferior */
+    }
+}
+
+footer {
+    background-color: #fefefe;
+    color: #090909;
+    text-align: center;
+    padding: 10px 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Estilos para el botón flotante */
+@keyframes pulso {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 20px; /* Ajusta la distancia desde abajo según sea necesario */
+    right: 20px; /* Distancia desde la derecha */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background: linear-gradient(135deg, #a2f78d, #15b68b, #0bb214); /* Degradado de verde claro a verde oscuro */
+    padding: 4px; /* Reducir el padding para hacer el botón más pequeño */
+    border-radius: 30px; /* Forma redondeada del botón */
+    box-shadow: 0 4px 8px rgba(4, 4, 4, 0.782); /* Sombra suave */
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* Quitamos el subrayado del enlace */
+    animation: pulso 1.5s infinite; /* Aplicar la animación de pulso */
+}
+
+.whatsapp-float {
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Espacio interno del botón (aumentar o reducir según sea necesario) */
+    background-color: #25D366; /* Color de fondo de WhatsApp, opcional */
+    border-radius: 25px; /* Bordes redondeados, opcional */
+}
+
+.whatsapp-float img {
+    width: 35px; /* Tamaño del ícono */
+    height: auto; /* Mantener la proporción del ícono */
+    margin-right: 6px; /* Espacio entre el ícono y el texto */
+}
+
+.whatsapp-float span {
+    color: #000000; /* Color del texto, puedes cambiarlo según el diseño */
+    font-weight: bold;
+    font-size: 14px; /* Tamaño del texto */
+}
+@keyframes pulso {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.boton-flotante {
+    position: fixed;
+    bottom: 90px; /* Ajusta la distancia desde abajo según sea necesario */
+    right: 20px; /* Distancia desde la derecha */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background: linear-gradient(135deg, #67b3c4, #07f5f5, #07f5f5, #dfefff, #07f5f5); /* Degradado de color celeste */
+    padding: 10px 20px;
+    border-radius: 50px; /* Forma redondeada del botón */
+    box-shadow: 0 4px 8px rgba(25, 13, 90, 0.873); /* Sombra suave */
+    display: flex; /* Usa flexbox para alinear el contenido */
+    align-items: center; /* Alinea verticalmente el contenido */
+    gap: 10px; /* Espacio entre el texto y la imagen */
+    animation: pulso 1.5s infinite; /* Aplicar la animación de pulso */
+}
+.boton-flotante img {
+    width: 35px !important; /* Ajusta el ancho de la imagen según necesites */
+    height: auto; /* Mantiene la proporción de la imagen */
+    
+}
+.boton-flotante span {
+    font-size: 14px; /* Ajusta el tamaño del texto según necesites */
+    color: #121212; /* Ajusta el color del texto según necesites */
+}
+.boton-inscripcion {
+    text-decoration: none;
+    color: #040404; /* Color del texto */
+    font-weight: bold;
+    font-size: 14px; /* Ajusta el tamaño del texto según necesites */
+    
+}
+
+.boton-flotante-arriba {
+    position: fixed;
+    top: 30px; /* Ajusta la distancia desde arriba según sea necesario */
+    right: 20px; /* Distancia desde la derecha */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    background-color: #007bff; /* Color de fondo del botón */
+    padding: 10px 20px;
+    border-radius: 50px; /* Forma redondeada del botón */
+    box-shadow: 0 4px 8px rgba(97, 157, 181, 0.884); /* Sombra suave */
+}
+
+.boton-ir-inicio {
+    text-decoration: none;
+    color: #f9f8f8; /* Color del texto */
+    font-weight: bold;
+    font-size: 16px;
+}
+.header-pagina {
+    background-color: #1426ac;
+    color: #060606;
+    text-align: center;
+    padding: 0 0 20px 0;
+    margin: 0;
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.book {
+    position: relative;
+    width: 100%;
+    height: 630px;
+    margin: 0 auto;
+    display: flex;
+    overflow: hidden;
+}
+.page {
+    min-width: 100%;
+    height: 100%;
+    background-color: rgba(14, 104, 163, 0.975);
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 0 10px rgba(10, 10, 10, 0.975);
+    transition: transform 1.5s ease, opacity 1.5s ease; /* Transición lenta */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.5); /* Empieza con un tamaño reducido */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.page.active {
+    opacity: 1;
+    transform: scale(1); /* Expande al tamaño completo al activarse */
+    z-index: 1;
+}
+
+.page.inactive {
+    opacity: 0;
+    transform: scale(1.5); /* Se agranda antes de desaparecer */
+    z-index: 0;
+}
+
+#page1 { background-image: url('images/IPERC1.png'); }
+#page2 { background-image: url('images/IPERC2.png'); }
+#page3 { background-image: url('images/IPERC3.png'); }
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: #11bf1c;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease;
+}
+
+.arrow:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.left-arrow { left: 10px; }
+.right-arrow { right: 10px; }
+
+/* Estilos para celulares (pantallas pequeñas) */
+@media (max-width: 480px) {
+    .book {
+        height: 280px; /* Reducir la altura del carrusel en celulares */
+    }
+
+    .page {
+        min-width: 100%;
+        height: 100%;
+        box-shadow: 0 0 3px rgba(10, 10, 10, 0.3); /* Sombras más ligeras */
+        transform: scale(0.9); /* Reducir el tamaño de la página */
+        transition: transform 1s ease, opacity 1s ease; /* Transición más rápida */
+    }
+
+    .page.active {
+        transform: scale(1); /* Tamaño completo cuando está activo */
+    }
+
+    .page.inactive {
+        transform: scale(1.2); /* Tamaño agrandado cuando está inactivo */
+    }
+
+    .arrow {
+        padding: 5px; /* Reducir el tamaño de las flechas */
+        font-size: 12px; /* Tamaño del texto más pequeño */
+        top: 45%; /* Ajustar la posición de las flechas */
+    }
+
+    .dot {
+        height: 8px;
+        width: 8px; /* Hacer los puntos de paginación más pequeños */
+    }
+}
+
+/* Estilos para pantallas extra pequeñas (menos de 360px de ancho) */
+@media (max-width: 360px) {
+    .book {
+        height: 220px; /* Altura aún más pequeña para celulares con pantallas muy pequeñas */
+    }
+
+    .page {
+        transform: scale(0.85); /* Reducir un poco más las páginas */
+    }
+
+    .arrow {
+        padding: 4px; /* Flechas más pequeñas y compactas */
+        font-size: 10px;
+    }
+
+    .dot {
+        height: 6px;
+        width: 6px; /* Los puntos más pequeños aún para pantallas pequeñas */
+    }
+}
+
+/* Estilos para los cursos - beneficios*/
+.header-cursos .container {
+    text-align: center;
+}
+
+.cursos-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.course {
+    display: flex;
+    align-items: stretch; /* Estira los elementos secundarios para llenar la altura */
+    background-color: #0d024a;
+    border: 1px solid #160d9c7a;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%; /* Ajusta el ancho del contenedor según sea necesario */
+    max-width: 370px; /* Ajusta el ancho máximo del contenedor según sea necesario */
+    height: 210px; /* Ajusta la altura del contenedor según sea necesario */
+}
+
+.course a {
+    display: flex; /* Usa flexbox para centrar el contenido */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    text-align: center;
+}
+
+.course a img {
+    width: 110px; /* Ajusta el ancho de la imagen */
+    height: auto; /* Mantiene la proporción de la imagen */
+    display: block;
+    margin-right: 20px; /* Espacio entre la imagen y el contenedor de texto */
+    margin-left: 20px; /* Agrega espacio a la izquierda de la imagen */
+}
+
+.course-text {
+    padding: 10px;
+    background-color: #ffffff;
+    flex: 1; /* Ocupa el espacio restante */
+    display: flex; /* Usa flexbox para alinear el contenido */
+    flex-direction: column; /* Alinea el contenido en una columna */
+    justify-content: center; /* Centra verticalmente el contenido */
+}
+
+.course-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+    .course {
+        max-width: 300px; /* Reducir el ancho para adaptarse a pantallas medianas */
+        height: 180px; /* Reducir la altura */
+    }
+
+    .course a img {
+        width: 90px; /* Reducir el tamaño de la imagen en pantallas más pequeñas */
+        margin-right: 15px;
+        margin-left: 15px;
+    }
+
+    .course-text {
+        padding: 8px; /* Reducir el padding */
+    }
+
+    .course-text p {
+        font-size: 0.85rem; /* Reducir el tamaño del texto */
+        line-height: 1.6;
+    }
+}
+
+@media (max-width: 480px) {
+    .cursos-grid {
+        gap: 10px; /* Reducir el espacio entre los cursos */
+    }
+
+    .course {
+        max-width: 180px; /* Ajustar el ancho para pantallas muy pequeñas */
+        height: 160px; /* Ajustar la altura */
+    }
+
+    .course a img {
+        width: 50px; /* Reducir aún más la imagen */
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .course-text {
+        padding: 5px; /* Reducir el padding en pantallas más pequeñas */
+    }
+
+    .course-text p {
+        font-size: 0.55rem; /* Ajustar el tamaño del texto */
+        line-height: 1.4;
+    }
+}
+/* Estilos para el contenedor del pie de página en la esquina superior izquierda */
+.footer-container {
+    position: absolute;
+    top: 20px; /* Ajusta la posición vertical según sea necesario */
+    left: 20px; /* Ajusta la posición horizontal según sea necesario */
+    color: #fefefe;
+    background-color: #007bff;
+    box-shadow: 0 4px 8px rgba(97, 157, 181, 0.884);
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 1em; /* Ajusta el tamaño de la letra */
+    font-family: 'Times New Roman', serif; 
+}
+
+.page h2 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.page p {
+    font-size: 1em;
+}
+

@@ -1,0 +1,157 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #003366, #005bb5);
+    margin: 0;
+    padding: 20px;
+    color: white;
+}
+
+.container {
+    width: 60%;
+    margin: auto;
+    background: #005bb5;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1s ease-in-out;
+}
+
+h2 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #333;
+    outline: none;
+}
+
+.pregunta {
+    background: linear-gradient(120deg, #a3bfdc, #e3efff);
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.pregunta:hover {
+    transform: scale(1.02);
+    padding: 25px;
+}
+
+.pregunta label {
+    font-weight: bold;
+    display: block;
+    color: #003366;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #005bb5;
+    background: #f8f9fa;
+    color: black;
+    font-size: 16px;
+}
+
+.opciones {
+    display: flex;
+    flex-direction: column;
+}
+
+.opcion {
+    background: #0073e6;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.opcion:hover {
+    background: #005bb5;
+}
+
+.opcion input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.opcion label {
+    color: white;
+    font-size: 16px;
+
+}
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.botones button {
+    width: 100%;
+    padding: 12px;
+    background: #00bfff;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Estilos específicos para el botón "Cerrar" */
+.botones .cerrar {
+    width: 100%;
+    padding: 12px;
+    background: #f44336; /* Rojo */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra el texto horizontalmente */
+    transition: 0.3s;
+}
+
+.botones .cerrar:hover {
+    background: #d32f2f;
+    transform: scale(1.05);
+}
+
+
+
+.mensaje {
+    text-align: center;
+    color: #00ff00;
+    font-weight: bold;
+    padding: 10px;
+    background: #003366;
+    border-radius: 5px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

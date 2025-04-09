@@ -1,0 +1,148 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilos para el encabezado */
+header {
+    background-color: #C7E2E5;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.top-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
+
+.logo img {
+    height: 60px;
+}
+
+.search-panel {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    margin-left: 10px;
+    width: 300px;
+}
+
+.search-panel input[type="text"] {
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.search-panel button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.search-panel .clear-button {
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.imagenes-laterales {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.imagenes-laterales img {
+    width: 65px;
+    height: auto;
+}
+
+.imagenes-laterales .respaldo {
+    font-size: 12px;
+}
+
+/* Estilos para el formulario */
+.form-section {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.form-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-content label {
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.form-content input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    flex: 1;
+}
+
+/* Estilos para el pie de página */
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-icon a {
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.company-name {
+    margin: 0;
+}

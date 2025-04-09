@@ -1,0 +1,207 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEKADDESH SOLUTION E.R.I.L</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
+    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+
+</head>
+<?php
+require('fpdf/fpdf.php');
+
+if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI']) && !empty($_POST['DNI'])) {
+    // Conectar a la base de datos
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+
+    // Verificar la conexión
+    if ($conn->connect_error) {
+        die("Conexión fallida: " . $conn->connect_error);
+    }
+
+    // Establecer la codificación de la conexión a UTF-8
+    $conn->set_charset("utf8mb4");
+
+    // Obtener el id_curso y DNI del formulario
+    $id_curso = $_POST['id_curso'];
+    $DNI = $_POST['DNI'];
+
+    // Consulta modificada para verificar tanto el id_curso como el DNI
+    $sql = "
+        SELECT e.nombre, c.nombre_curso, c.fecha, i.DNI
+        FROM estudiantes e 
+        JOIN inscripciones i ON e.DNI = i.DNI
+        JOIN cursos c ON c.id_curso = i.id_curso
+        WHERE i.id_curso = ? AND i.DNI = ?
+    ";
+
+    // Preparar la consulta
+    $stmt = $conn->prepare($sql);
+
+    if ($stmt === false) {
+        die("Error en la preparación de la consulta: " . $conn->error);
+    }
+
+    // Vincular los parámetros
+    $stmt->bind_param("is", $id_curso, $DNI);
+    $stmt->execute();
+    $stmt->store_result();
+    $stmt->bind_result(
+        $nombre_estudiante, 
+        $nombre_curso, 
+        $fecha, 
+        $dni
+    );
+
+    // Mostrar los resultados
+    if ($stmt->num_rows > 0) {
+        while ($stmt->fetch()) {
+            echo "<div class='contenedor-resultados'>";
+            echo "<div class='resultado-individual'>";
+            echo "<p class='nombre-persona'>$nombre_estudiante</p>";
+            echo "<p class='nombre-curso'>$nombre_curso</p>";
+            echo "<p class='fecha'>Fecha: $fecha</p>";
+            
+            // Agregar el botón para descargar el certificado
+            echo "<div class='btn-container'>";
+            echo "<form method='post' action='descargar_certificado.php' target='_blank'>";
+            echo "<input type='hidden' name='id_curso' value='$id_curso'>";
+            echo "<input type='hidden' name='DNI' value='$dni'>";
+            echo "<button type='submit' class='btn-flotante'>Descargar Certificado</button>";
+            echo "</form>";
+            echo "</div>";
+            
+            echo "</div>";
+            echo "</div>";
+        }
+    } else {
+        echo "<p>No se encontró un certificado para el DNI y curso especificados.</p>";
+    }
+
+    // Cerrar la conexión
+    $stmt->close();
+    $conn->close();
+} else {
+    die("ID del curso o DNI no proporcionado o vacío");
+}
+?>
+<!-- Contenedor para el botón flotante -->
+<div class="btn-container">
+    <form method="post" action="descargar_certificado.php" target="_blank">
+        <input type="hidden" name="DNI" value="<?php echo $DNI; ?>">
+        <button type="submit" class="btn-flotante">Descargar Certificado</button>
+    </form>
+</div>
+
+<style>
+   html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    background: 
+        url('certificadoimagen.png'), /* Imagen superior */
+        url('fondocertificado.jpg');   /* Imagen de fondo */
+    background-size: 
+        800px 600px,  /* Tamaño de la primera imagen */
+        cover;        /* Tamaño de la imagen de fondo */
+    background-position: 
+        center,       /* Posición de la primera imagen */
+        center;       /* Posición de la imagen de fondo */
+    background-repeat: 
+        no-repeat,    /* La primera imagen no se repite */
+        no-repeat;    /* La imagen de fondo no se repite */
+    background-attachment: 
+        fixed,        /* Primera imagen fija */
+        fixed;        /* Imagen de fondo fija */
+}
+        .contenido {
+            padding: 20px; /* Ajusta el padding según sea necesario */
+            border-radius: 10px; /* Opcional: agrega esquinas redondeadas */
+            max-width: 500px; /* Limita el ancho del contenido */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra para dar profundidad */
+            background: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente para mejor legibilidad */
+        }
+.resultado-individual {
+  padding: 0.1px;
+    max-width: 450px; /* Limita el ancho del contenedor */
+    height: 300px; /* Ajusta la altura del contenedor */
+    font-size: 25px; /* Ajusta el tamaño de la letra según sea necesario */
+    line-height: 1.0;
+    margin-bottom: 10px;
+    border-radius: 5px; /* Opcional: agrega esquinas redondeadas */
+    text-align: right;
+}
+.nombre-persona {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 28px;
+    position: relative;
+    top: 268px;      /* Reduje de 280px a 220px para subirlo */
+    left: 430px;     /* Aumenté de 360px a 460px para moverlo más a la derecha */
+    text-align: right;
+}
+
+
+.nombre-curso {
+    position: fixed; /* Posicionamiento fijo */
+    font-size: 25px; /* Ajusta el tamaño de la fuente */
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Estilo de letra */
+    font-style: italic; /* Estilo en cursiva */
+    top: 48%; /* Posiciona verticalmente en la mitad de la ventana */
+    left: 50%; /* Posiciona horizontalmente en la mitad de la ventana */
+    transform: translate(-50%, -50%); /* Ajusta la posición para centrar el elemento en el punto central */
+    text-align: center; /* Alinea el texto al centro del contenedor */
+    white-space: nowrap; /* Evita el salto de línea del texto */
+}
+
+
+.fecha {
+    position: fixed; /* Posicionamiento fijo para que el texto permanezca en la misma posición al hacer scroll */
+    font-size: 19px; /* Tamaño de la fuente */
+    font-style: italic; /* Estilo en cursiva */
+    top: 550px; /* Distancia desde la parte superior de la ventana del navegador */
+    left: 560px; /* Distancia desde el lado izquierdo de la ventana del navegador */
+    text-align: right ; /* Alinea el texto a la derecha */
+}
+
+
+
+/* Estilo general del contenedor del botón */
+.btn-container {
+    position: fixed; /* Fija el contenedor en una posición específica de la pantalla */
+    bottom: 90px; /* Distancia desde el borde inferior de la pantalla. Ajusta este valor para subir el botón. */
+    right: 20px; /* Distancia desde el borde derecho de la pantalla */
+    z-index: 1000; /* Asegura que el botón quede encima de otros elementos */
+}
+
+/* Estilo del botón flotante */
+.btn-flotante {
+    background-color: #010101; /* Nuevo color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Quita el borde del botón */
+    padding: 10px 20px; /* Espaciado interno del botón */
+    border-radius: 25px; /* Bordes redondeados más pronunciados */
+    font-size: 16px; /* Tamaño del texto */
+    cursor: pointer; /* Cambia el cursor a una mano al pasar sobre el botón */
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.2); /* Sombra del botón */
+    transition: background-color 0.3s, transform 0.3s; /* Transición suave para cambios de color y tamaño */
+}
+
+.btn-flotante:hover {
+    background-color: #4f5153 ; /* Nuevo color de fondo al pasar el cursor sobre el botón */
+    transform: scale(1.05); /* Aumenta el tamaño del botón ligeramente al pasar el cursor */
+}
+
+.btn-flotante:focus {
+    outline: none; /* Quita el contorno del botón al recibir el foco */
+}
+
+
+</style>
+

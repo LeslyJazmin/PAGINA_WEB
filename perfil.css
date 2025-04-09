@@ -1,0 +1,160 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    display: flex;
+    min-height: 111vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #0a507e;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #00000070;
+}
+
+.sidebar ul li a.selected {
+    background-color: #000000;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #ecf0f1;
+}
+
+.main-content p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+/* Estilo para el texto de bienvenida */
+.bienvenido-titulo {
+    display: inline-block;
+    font-size: 2em;
+    color: #2980b9;
+    vertical-align: middle; /* Alinear verticalmente con la imagen */
+}
+/* Estilo para la imagen de perfil */
+.bienvenida img {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 3px solid #2980b9;
+    margin-bottom: 20px;
+    cursor: pointer; /* Cambia el cursor al pasar sobre la imagen */
+}
+
+/* Oculta el campo de subida de archivo */
+#nueva_imagen {
+    display: none;
+}
+
+/* Mensaje de Error */
+.mensaje-error {
+    color: #e74c3c;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Mejoras Visuales */
+.main-content p strong {
+    color: #2980b9;
+}
+/* Estilo para la tabla de datos del usuario */
+.tabla-usuario {
+    width: 100%; /* Aumenta el ancho de la tabla */
+    max-width: 1000px; /* Tamaño máximo para evitar que la tabla se expanda demasiado */
+    margin: 20px auto; /* Centrar la tabla horizontalmente */
+    border-collapse: collapse; /* Unir las líneas de los bordes */
+    font-size: 18px; /* Aumentar el tamaño de la fuente */
+    text-align: left; /* Alinear el texto a la izquierda */
+}
+
+.tabla-usuario th, .tabla-usuario td {
+    padding: 15px; /* Espaciado interno */
+    border: 1px solid #000000; /* Bordes azules */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+.tabla-usuario th {
+    background-color: #0a507e; /* Fondo azul para encabezados */
+    color: white; /* Texto blanco en los encabezados */
+    font-weight: bold;
+}
+
+.tabla-usuario td {
+    color: #2c3e50; /* Color del texto en las celdas */
+}
+/* Estilos para el contenedor de la imagen de perfil */
+.profile-container {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle; /* Alinear verticalmente con el texto */
+    margin-right: 20px; /* Espacio entre la imagen y el texto */
+}
+
+#profileImage {
+    width: 130px; /* Ajusta el tamaño de la imagen */
+    height: 130px;
+    border-radius: 50%; /* Hacer la imagen circular */
+    object-fit: cover;
+    border: 3px solid #2980b9; /* Borde azul alrededor de la imagen */
+}
+
+.edit-icon {
+    position: absolute;
+    top: 10px; /* Posición desde la parte superior */
+    right: 10px; /* Posición desde la derecha */
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    padding: 10px;
+    display: none;
+    cursor: pointer;
+}
+
+.profile-container:hover .edit-icon {
+    display: block; /* Mostrar el icono al pasar el cursor */
+}
+
+.edit-icon i {
+    font-size: 18px; /* Tamaño del ícono */
+}
+

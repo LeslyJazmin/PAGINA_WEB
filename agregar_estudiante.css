@@ -1,0 +1,138 @@
+/* Estilos generales del cuerpo */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #053660; /* Fondo celeste pastel */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Estilos para el formulario */
+form {
+    background-color: #00000070; /* Fondo blanco */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 700px;
+    max-width: 90%;
+}
+
+/* Título del formulario */
+h2 {
+    text-align: center;
+    color: #ffffff; /* Color blanco */
+    margin-top: 50px; /* Aumentar el espacio en la parte superior del título */
+    margin-bottom: 40px; /* Espacio debajo del título */
+}
+
+/* Estilos de las etiquetas */
+label {
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Estilos de los inputs */
+input[type="text"], input[type="password"], input[type="email"], select {
+    width: 660px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ffffff; /* Borde azul pastel */
+    border-radius: 5px;
+    background-color: #e6f2ff; /* Fondo celeste pastel */
+    font-size: 14px;
+    color: #333;
+}
+
+input[type="submit"] {
+    background-color: #007acc; /* Azul pastel */
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #005f99; /* Azul más oscuro al pasar el mouse */
+}
+
+/* Estilos para los botones de acción (Eliminar y Cerrar) */
+.form-buttons {
+    display: flex;
+    justify-content: space-between; /* Alinea los botones uno al lado del otro */
+    margin-top: 20px; /* Espacio entre los botones y el formulario */
+}
+
+.form-buttons input[type="submit"], .form-buttons button {
+    background-color: #007acc; /* Azul pastel */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 48%; /* Ajusta el ancho de los botones, asegurando que haya espacio entre ellos */
+}
+
+.form-buttons input[type="submit"]:hover, .form-buttons button:hover {
+    background-color: #005f99; /* Azul más oscuro al pasar el mouse */
+}
+
+
+/* Estilos del modal */
+.modal {
+    display: none; /* Inicialmente oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    background-color: #007acc; /* Azul pastel */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.modal-buttons button:hover {
+    background-color: #005f99; /* Azul más oscuro al pasar el mouse */
+}
+
+#modal-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
