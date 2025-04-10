@@ -23,11 +23,11 @@
     </style></body>
 <a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
         <span> ¡Contactanos!</span>
-        <img src="contactanos.png" alt="WhatsApp">
+        <img src="images1/contactanos.png" alt="WhatsApp">
     </a>
     <div class="boton-flotante">
     <a href="indexregistro.php" class="boton-inscripcion">¡Inscríbete ahora!</a>
-    <img src="inscripcion-abierta.png" alt="inscribetee" style="width: 15px; height: auto;">
+    <img src="images1/inscripcion-abierta.png" alt="inscribetee" style="width: 15px; height: auto;">
 </div>
 <body>
     <header>
