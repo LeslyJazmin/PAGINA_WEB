@@ -44,7 +44,7 @@ $stmt->close();
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+            <h2>MEKADDESH SOLUTION E.R.I.L CREADO </h2>
             <ul>
                 <li><a href="inicio_admin.php"><i class="fas fa-home"></i> Inicio</a></li>
                 <li>
