@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 // Asegurarse que el path es correcto
 require('fpdf/fpdf.php');
 
-// Añade esto después de require('fpdf/fpdf.php')
+// Verificar que PHP QR Code esté disponible
 if (!file_exists('phpqrcode/qrlib.php')) {
     error_log("ERROR: No se encuentra la librería PHP QR Code");
     die("Error: Falta la librería PHP QR Code");
@@ -56,7 +56,7 @@ class PDF extends FPDF {
                 // Agregar texto explicativo
                 $color = imagecolorallocate($certificate, 0, 0, 0);
                 $font = 'arial.ttf';   // Asegúrate de que este archivo exista
-                imagettftext($certificate, 12, 0, $x + $qr_width + 10, $y + ($qr_height/2), $color, $font, 'Escanea para verificar la autenticidad');
+                imagettftext($certificate, 12, 0, $x + $qr_width + 10, $y + ($qr_height / 2), $color, $font, 'Escanea para verificar la autenticidad');
 
                 // Guardar la imagen combinada
                 imagepng($certificate, $tempImage);
@@ -106,7 +106,7 @@ class PDF extends FPDF {
 
                 // Fondo blanco
                 $this->SetFillColor(255, 255, 255);
-                $this->Rect($x-2, $y-2, $size+4, $size+4, 'F');
+                $this->Rect($x - 2, $y - 2, $size + 4, $size + 4, 'F');
 
                 // Agregar QR
                 $this->Image($temp_qr, $x, $y, $size);
@@ -137,10 +137,8 @@ class PDF extends FPDF {
                 return false;
             }
 
-
             // Agregar QR
             $this->Image($qr_path, $x, $y, $size);
-
 
             error_log("QR agregado exitosamente");
             return true;
@@ -151,7 +149,7 @@ class PDF extends FPDF {
     }
 }
 
-// Añade esto al inicio del archivo, después de la clase PDF
+// Añadir log de inicio
 ini_set('log_errors', 1);
 ini_set('error_log', 'C:/xampp/php/logs/php_error.log');
 error_log("=== Inicio generación de certificado ===");
@@ -204,9 +202,9 @@ try {
         $pdf->Cell(130, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
         // Datos para el QR - Cambia esta línea
-        $qr_data = "http://localhost/PAGINA_WEB/AULA_VIRTUAL/verificacion_certificado.php?dni={$DNI}";
+        $qr_data = "http://localhost/Cloneproyecto/PAGINA_WEB/verificacion_certificado.php?dni={$DNI}&curso={$row['nombre_curso']}";
 
-        // Agregar QR
+        // Generar el QR con solo el curso
         if (!$pdf->AddQR($qr_data)) {
             error_log("No se pudo agregar el QR");
         }
