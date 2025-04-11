@@ -173,7 +173,7 @@
     align-items: stretch;
     height: 100%;
   }
-  
+  /*Formulario*/
   .formulario {
     flex: 1;
     max-width: none; /* Eliminar el límite */
