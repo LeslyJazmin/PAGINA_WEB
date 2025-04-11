@@ -7,110 +7,149 @@
     <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="promocion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-</head>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    document.body.style.zoom = "75%";
-  });
-</script>
-<style>
-        body {
-            zoom: 90%; /* Aplica un zoom del 75% a todo el contenido */
-        }
-    </style></body>
-<a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
-        <span> ¡Contactanos!</span>
-        <img src="contactanos.png" alt="WhatsApp">
-    </a>
-    <div class="boton-flotante">
-    <a href="indexregistro.php" class="boton-inscripcion">¡Inscríbete ahora!</a>
-    <img src="inscripcion-abierta.png" alt="inscribetee" style="width: 15px; height: auto;">
-</div>
-<body>
-    <header>
-        <h1>Bienvenido a nuestra Academia de Cursos</h1>
-        <nav>
-            <ul>
-                <li><a href="#cursos.php">Cursos</a></li> <!-- Link a cursos.html -->
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="carrusel">
-        <div class="carrusel-fotos">
-            <img src="promocion1.jpg" alt="Foto 1">
-            <img src="promocion2.avif" alt="Foto 2">
-            <img src="promocion3.avif" alt="Foto 3">
-            <img src="promocion4.avif" alt="Foto 3">
-            <!-- Añade más fotos según sea necesario -->
-        </div>
-        <button class="prev">❮</button>
-        <button class="next">❯</button>
-    </div>
-    <div class="texto-carrusel">
-        <p>MIS CURSOS</p>
-    </div>
-    <div class="cursos-promocion">
-        <div class="curso">
-            <img src="images/cur1.jpeg" alt="Curso 1">
-            <h3>Curso 1</h3>
-            <p>Descripción breve del curso 1.</p>
-            <p class="precio">Antes: $100 - Ahora: $50</p>
-        </div>
-        <div class="curso">
-            <img src="images/cur2.jpeg" alt="Curso 2">
-            <h3>Curso 2</h3>
-            <p>Descripción breve del curso 2.</p>
-            <p class="precio">Antes: $150 - Ahora: $75</p>
-        </div>
-        <div class="curso">
-            <img src="images/cur3.jpeg" alt="Curso 3">
-            <h3>Curso 3</h3>
-            <p>Descripción breve del curso 3.</p>
-            <p class="precio">Antes: $200 - Ahora: $100</p>
-        </div>
-        <div class="curso">
-            <img src="images/cur4.jpeg" alt="Curso 4">
-            <h3>Curso 4</h3>
-            <p>Descripción breve del curso 4.</p>
-            <p class="precio">Antes: $120 - Ahora: $60</p>
-        </div>
-        <!-- Añade más cursos según sea necesario -->
-    </div>
-
-
+    
     <script>
-        const prevButton = document.querySelector('.prev');
-const nextButton = document.querySelector('.next');
-const carruselFotos = document.querySelector('.carrusel-fotos');
-const totalFotos = carruselFotos.children.length;
-let index = 0;
-
-function showPhoto(index) {
-    const offset = -index * 100;
-    carruselFotos.style.transform = `translateX(${offset}%)`;
-}
-
-prevButton.addEventListener('click', () => {
-    index = (index > 0) ? index - 1 : totalFotos - 1;
-    showPhoto(index);
-});
-
-nextButton.addEventListener('click', () => {
-    index = (index < totalFotos - 1) ? index + 1 : 0;
-    showPhoto(index);
-});
-
+      document.addEventListener("DOMContentLoaded", function() {
+        document.body.style.zoom = "85%";
+      });
     </script>
+</head>
+<body>
 
-    <section id="sobre-nosotros">
-        <h2>Sobre Nosotros</h2>
-        <p>Somos un equipo de profesionales dedicados a la enseñanza en línea. Nuestra misión es ofrecer cursos de alta calidad que se adapten a tus necesidades.</p>
+<a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
+    <span> ¡Contáctanos!</span>
+    <img src="images1/contactanos.png" alt="WhatsApp">
+</a>
+
+<div class="boton-flotante">
+    <a href="indexregistro.php" class="boton-inscripcion">¡Inscríbete ahora!</a>
+    <img src="images1/inscripcion-abierta.png" alt="inscribetee" style="width: 15px; height: auto;">
+</div>
+
+<header>
+    <h1>Bienvenido a nuestra Academia de Cursos</h1>
+</header>
+    <header class="referido-banner">
+        <h4>🎉 ¡Comparte y gana! El descuento por referido se activa solo si tu referido se matricula con nosotros. ¡Invita, anima y asegura tu beneficio! 💸✨</h4>
+    </header>
+    <section class="form-section">
+    <div class="form-content">
+        <!-- FORMULARIO -->
+            <div class="formulario">
+            <h2>¡¡REGÍSTRATE AHORA!!</h2>
+
+            <form id="miFormulario" onsubmit="enviarDatosWhatsApp(event)">
+                
+                <!-- PASO 1 -->
+                <div class="paso1">
+                <label for="nombreyapellidos">Nombre y Apellidos:</label>
+                <input type="text" id="nombreyapellidos" name="nombre_y_apellidos" required>
+
+                <label for="pais">País:</label>
+                <select id="pais" name="pais" required>
+                    <option value="Perú">Perú</option>
+                </select>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="telefono">Teléfono:</label>
+                <input type="tel" id="telefono" name="telefono" required>
+
+                <label for="quequieresestudiar">¿Qué quieres estudiar?</label>
+                <select id="quequieresestudiar" name="quequieresestudiar" required>
+                    <?php include 'get_cursos.php'; ?>
+                </select>
+
+                <button type="button" onclick="mostrarPaso2()">Siguiente ➜</button>
+                </div>
+
+                <!-- PASO 2 -->
+                <div class="paso2" style="display: none;">
+                <h3>Datos del referido (si aplica):</h3>
+
+                <label for="referido_nombre">Nombre del referido:</label>
+                <input type="text" id="referido_nombre" name="referido_nombre" placeholder="Nombre completo del referido">
+
+                <label for="referido_dni">DNI del referido:</label>
+                <input type="text" id="referido_dni" name="referido_dni" placeholder="DNI del referido">
+
+                <label for="referido_telefono">Celular del referido:</label>
+                <input type="tel" id="referido_telefono" name="referido_telefono" placeholder="Celular del referido">
+
+                <label for="referido_email">Email del referido:</label>
+                <input type="email" id="referido_email" name="referido_email" placeholder="Correo del referido">
+
+                <button type="submit">Enviar</button>
+                </div>
+            </form>
+
+            <div id="mensajeExito" class="mensaje-exito" style="display:none;">
+                ¡Los datos se han enviado con éxito!
+            </div>
+            </div>
+
+        <!-- IMAGEN AL LADO DERECHO -->
+        <div class="imagen-formulario">
+        <img src="images1/referidos.png" alt="referidos">
+        </div>
+    </div>
     </section>
+        <!-- Script - mostrar segunda parte del formulario -->
+        <script>
+        function mostrarPaso2() {
+            // Oculta el paso 1
+            document.querySelector('.paso1').style.display = 'none';
+
+            // Muestra el paso 2
+            document.querySelector('.paso2').style.display = 'block';
+        }
+
+        function enviarDatosWhatsApp(event) {
+            event.preventDefault();
+
+            // Obtener los valores de los campos del formulario
+            var nombre = document.getElementById('nombreyapellidos').value;
+            var pais = document.getElementById('pais').value;
+            var email = document.getElementById('email').value;
+            var telefono = document.getElementById('telefono').value;
+            var queEstudiar = document.getElementById('quequieresestudiar').value;
+
+            // Obtener los datos del referido (pueden estar vacíos)
+            var referidoNombre = document.getElementById('referido_nombre').value;
+            var referidoDni = document.getElementById('referido_dni').value;
+            var referidoTelefono = document.getElementById('referido_telefono').value;
+            var referidoEmail = document.getElementById('referido_email').value;
+
+            // Crear el mensaje principal del estudiante
+            var mensaje = `Datos del estudiante:
+            Nombre: ${nombre}
+            País: ${pais}
+            Correo: ${email}
+            Teléfono: ${telefono}
+            Curso de interés: ${queEstudiar}`;
+
+            // Agregar datos del referido solo si alguno fue llenado
+            if (referidoNombre || referidoDni || referidoTelefono || referidoEmail) {
+            mensaje += `\n\nDatos del referido:\nNombre: ${referidoNombre}\nDNI: ${referidoDni}\nCelular: ${referidoTelefono}\nCorreo: ${referidoEmail}`;
+            }
+
+            // Número de destino
+            var numero = "51908874797";
+        
+            // Codificar mensaje para la URL de WhatsApp
+            var url = `https://api.whatsapp.com/send?phone=${numero}&text=${encodeURIComponent(mensaje)}`;
+
+            // Redirigir a WhatsApp con el mensaje
+            window.location.href = url;
+        }
+        </script>
+            </div>
+        </section>
+    </div>
+</body>
+
     <footer class="footer">
     <div class="footer-container">
         <div class="contact-us">
