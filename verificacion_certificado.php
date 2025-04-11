@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificación de Certificado</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -181,7 +182,7 @@
             $stmt->close();
         }
         ?>
-        <p class="footer-msg">Si tienes alguna duda, no dudes en contactarnos.</p>
+        <p class="footer-msg">Si tienes alguna duda, no dudes en <a href="https://api.whatsapp.com/message/D7LD33NF66RGD1?autoload=1&app_absent=0" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold;">contactarnos por WhatsApp</a>.</p>
     </div>
 </body>
 </html>
