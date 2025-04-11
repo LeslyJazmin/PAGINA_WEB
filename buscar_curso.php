@@ -32,7 +32,11 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
 
     // Consulta modificada para verificar tanto el id_curso como el DNI
     $sql = "
-        SELECT e.nombre, c.nombre_curso, c.fecha, i.DNI
+        SELECT 
+            e.nombre, 
+            CONCAT(c.nombre_curso) as nombre_curso,
+            c.fecha, 
+            i.DNI
         FROM estudiantes e 
         JOIN inscripciones i ON e.DNI = i.DNI
         JOIN cursos c ON c.id_curso = i.id_curso
@@ -64,7 +68,7 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
             echo "<div class='resultado-individual'>";
             echo "<p class='nombre-persona'>$nombre_estudiante</p>";
             echo "<p class='nombre-curso'>$nombre_curso</p>";
-            echo "<p class='fecha'>Fecha: $fecha</p>";
+            echo "<p class='fecha'>$fecha</p>";
             
             // Agregar el botón para descargar el certificado
             echo "<div class='btn-container'>";
@@ -89,13 +93,6 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
     die("ID del curso o DNI no proporcionado o vacío");
 }
 ?>
-<!-- Contenedor para el botón flotante -->
-<div class="btn-container">
-    <form method="post" action="descargar_certificado.php" target="_blank">
-        <input type="hidden" name="DNI" value="<?php echo $DNI; ?>">
-        <button type="submit" class="btn-flotante">Descargar Certificado</button>
-    </form>
-</div>
 
 <style>
    html, body {
@@ -141,36 +138,39 @@ body {
 .nombre-persona {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 28px;
-    position: relative;
-    top: 268px;      /* Reduje de 280px a 220px para subirlo */
-    left: 430px;     /* Aumenté de 360px a 460px para moverlo más a la derecha */
-    text-align: right;
+    position: absolute;
+    top: 180px;      /* Ajustado para la posición correcta del nombre */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 80%;
+    margin-bottom: 40px;
 }
-
 
 .nombre-curso {
-    position: fixed; /* Posicionamiento fijo */
-    font-size: 25px; /* Ajusta el tamaño de la fuente */
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; /* Estilo de letra */
-    font-style: italic; /* Estilo en cursiva */
-    top: 48%; /* Posiciona verticalmente en la mitad de la ventana */
-    left: 50%; /* Posiciona horizontalmente en la mitad de la ventana */
-    transform: translate(-50%, -50%); /* Ajusta la posición para centrar el elemento en el punto central */
-    text-align: center; /* Alinea el texto al centro del contenedor */
-    white-space: nowrap; /* Evita el salto de línea del texto */
+    position: absolute;
+    font-size: 25px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-style: italic;
+    top: 260px;     /* Ajustado de 300px a 260px para subir el texto */
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: 80%;
+    word-wrap: break-word;
+    white-space: pre-line;
+    line-height: 1.3;
+    padding: 0 20px;
 }
-
 
 .fecha {
-    position: fixed; /* Posicionamiento fijo para que el texto permanezca en la misma posición al hacer scroll */
-    font-size: 19px; /* Tamaño de la fuente */
-    font-style: italic; /* Estilo en cursiva */
-    top: 550px; /* Distancia desde la parte superior de la ventana del navegador */
-    left: 560px; /* Distancia desde el lado izquierdo de la ventana del navegador */
-    text-align: right ; /* Alinea el texto a la derecha */
+    position: absolute;
+    font-size: 19px;
+    font-style: italic;
+    bottom: 120px;   /* Ajustado desde la parte inferior */
+    right: 100px;    /* Ajustado desde la derecha */
+    text-align: right;
 }
-
-
 
 /* Estilo general del contenedor del botón */
 .btn-container {
