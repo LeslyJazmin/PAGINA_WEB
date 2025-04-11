@@ -73,11 +73,11 @@ class PDF extends FPDF {
             $this->SetFont('Times', 'B', 28);
             $this->SetTextColor(0, 0, 0);
             $this->SetXY(50, 110);
-            $this->Cell(130, 10, utf8_decode($data['nombre']), 0, 1, 'C');
+            $this->Cell(130, 10, mb_convert_encoding($data['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
             $this->SetFont('Times', 'I', 20);
             $this->SetXY(40, 145);
-            $this->Cell(130, 10, utf8_decode($data['nombre_curso']), 0, 1, 'C');
+            $this->Cell(130, 10, mb_convert_encoding($data['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
             // Limpiar
             imagedestroy($certificate);
@@ -95,20 +95,16 @@ class PDF extends FPDF {
             // Crear QR temporal
             $temp_qr = __DIR__ . '/temp_qr.png';
 
-            // Generar QR
-            QRcode::png($data, $temp_qr, QR_ECLEVEL_H, 10);
+            // Generar QR con mayor nivel de corrección de errores y más pequeño
+            QRcode::png($data, $temp_qr, QR_ECLEVEL_H, 8);
 
             if (file_exists($temp_qr)) {
-                // Posición del QR
+                // Posición del QR (parte inferior izquierda)
                 $x = 15;     // desde la izquierda
-                $y = 240;   // desde arriba
-                $size = 35; // tamaño del QR
+                $y = 255;   // desde arriba (más abajo)
+                $size = 25; // tamaño del QR más pequeño
 
-                // Fondo blanco
-                $this->SetFillColor(255, 255, 255);
-                $this->Rect($x - 2, $y - 2, $size + 4, $size + 4, 'F');
-
-                // Agregar QR
+                // Agregar QR sin fondo ni contorno
                 $this->Image($temp_qr, $x, $y, $size);
 
                 // Eliminar archivo temporal
@@ -122,6 +118,59 @@ class PDF extends FPDF {
         }
     }
 
+    function AddQRColor($data) {
+        try {
+            // Crear QR temporal
+            $temp_qr = __DIR__ . '/temp_qr.png';
+
+            // Generar QR con mayor nivel de corrección de errores y más pequeño
+            QRcode::png($data, $temp_qr, QR_ECLEVEL_H, 8);
+
+            if (file_exists($temp_qr)) {
+                // Cargar la imagen del QR
+                $qr_image = imagecreatefrompng($temp_qr);
+                
+                // Obtener dimensiones
+                $width = imagesx($qr_image);
+                $height = imagesy($qr_image);
+                
+                // Crear nueva imagen con fondo transparente
+                $qr_color = imagecreatetruecolor($width, $height);
+                
+                // Hacer el fondo transparente
+                imagealphablending($qr_color, false);
+                imagesavealpha($qr_color, true);
+                $transparent = imagecolorallocatealpha($qr_color, 255, 255, 255, 127);
+                imagefilledrectangle($qr_color, 0, 0, $width, $height, $transparent);
+                
+                // Copiar el QR manteniendo el color negro
+                imagecopy($qr_color, $qr_image, 0, 0, 0, 0, $width, $height);
+                
+                // Guardar la imagen
+                imagepng($qr_color, $temp_qr);
+                
+                // Liberar memoria
+                imagedestroy($qr_image);
+                imagedestroy($qr_color);
+                
+                // Posición del QR (parte inferior izquierda)
+                $x = 15;     // desde la izquierda
+                $y = 255;   // desde arriba (más abajo)
+                $size = 25; // tamaño del QR más pequeño
+
+                // Agregar QR sin fondo ni contorno
+                $this->Image($temp_qr, $x, $y, $size);
+
+                // Eliminar archivo temporal
+                unlink($temp_qr);
+                return true;
+            }
+            return false;
+        } catch (Exception $e) {
+            error_log("Error al generar QR con color: " . $e->getMessage());
+            return false;
+        }
+    }
     function AddQRSimple($qr_path) {
         try {
             // Posiciones fijas para el QR
@@ -158,12 +207,17 @@ error_log("=== Inicio generación de certificado ===");
 ob_start();
 
 try {
-    // Verificar DNI
+    // Verificar DNI e id_curso
     if (!isset($_POST['DNI']) || empty($_POST['DNI'])) {
         throw new Exception("DNI no proporcionado");
     }
+    
+    if (!isset($_POST['id_curso']) || empty($_POST['id_curso'])) {
+        throw new Exception("ID del curso no proporcionado");
+    }
 
     $DNI = $_POST['DNI'];
+    $id_curso = $_POST['id_curso'];
 
     // Conexión a la base de datos
     $conn = new mysqli('localhost', 'root', '', 'usuario');
@@ -172,15 +226,18 @@ try {
     }
     $conn->set_charset("utf8mb4");
 
-    // Consulta SQL
-    $sql = "SELECT e.nombre, c.nombre_curso, c.fecha
-                FROM estudiantes e
-                JOIN inscripciones i ON e.DNI = i.DNI
-                JOIN cursos c ON c.id_curso = i.id_curso
-                WHERE e.DNI = ?";
+    // Consulta SQL modificada para filtrar por id_curso y DNI
+    $sql = "SELECT 
+                e.nombre, 
+                CONCAT(c.nombre_curso) as nombre_curso,
+                c.fecha
+            FROM estudiantes e
+            JOIN inscripciones i ON e.DNI = i.DNI
+            JOIN cursos c ON c.id_curso = i.id_curso
+            WHERE e.DNI = ? AND i.id_curso = ?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $DNI);
+    $stmt->bind_param("si", $DNI, $id_curso);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -196,17 +253,29 @@ try {
         $pdf->SetXY(50, 110);
         $pdf->Cell(130, 10, mb_convert_encoding($row['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // Nombre del curso
+        // Nombre del curso (sin texto adicional)
         $pdf->SetFont('Times', 'I', 20);
         $pdf->SetXY(40, 145);
         $pdf->Cell(130, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // Datos para el QR - Cambia esta línea
-        $qr_data = "http://localhost/Cloneproyecto/PAGINA_WEB/verificacion_certificado.php?dni={$DNI}&curso={$row['nombre_curso']}";
+        // Fecha
+        $pdf->SetFont('Times', 'I', 14);
+        $pdf->SetXY(120, 220);
+        $pdf->Cell(60, 10, mb_convert_encoding($row['fecha'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
 
-        // Generar el QR con solo el curso
-        if (!$pdf->AddQR($qr_data)) {
-            error_log("No se pudo agregar el QR");
+        // Datos para el QR - Cambia esta línea
+        $qr_data = "http://localhost/PAGINA_WEB/verificacion_certificado.php?dni={$DNI}&curso=" . urlencode($row['nombre_curso']);
+        
+        // Depuración
+        error_log("URL del QR: " . $qr_data);
+
+        // Generar el QR con color personalizado (RGB 53, 76, 133)
+        if (!$pdf->AddQRColor($qr_data)) {
+            error_log("No se pudo agregar el QR con color");
+            // Intentar con el método normal como respaldo
+            if (!$pdf->AddQR($qr_data)) {
+                error_log("No se pudo agregar el QR");
+            }
         }
 
     } else {
@@ -214,7 +283,7 @@ try {
         $pdf->AddPage();
         $pdf->SetFont('Arial', 'B', 12);
         $pdf->SetXY(10, 150);
-        $pdf->Cell(190, 10, utf8_decode("No se encontraron resultados para el DNI: " . $DNI), 0, 1, 'C');
+        $pdf->Cell(190, 10, mb_convert_encoding("No se encontraron resultados para el DNI: " . $DNI, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
     }
 
     // Limpiar cualquier salida anterior
@@ -243,9 +312,9 @@ try {
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, utf8_decode('Error al generar el certificado'), 0, 1, 'C');
+    $pdf->Cell(0, 10, mb_convert_encoding('Error al generar el certificado', 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, utf8_decode('Por favor, verifique sus datos e intente nuevamente.'), 0, 1, 'C');
+    $pdf->Cell(0, 10, mb_convert_encoding('Por favor, verifique sus datos e intente nuevamente.', 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
     // Configurar headers
     header('Content-Type: application/pdf');
