@@ -66,7 +66,6 @@ class PDF extends FPDF {
             }
 
             // Agregar la imagen combinada al PDF
-            $this->AddPage();
             $this->Image($tempImage, 0, 0, 210, 297);
 
             // Agregar texto del certificado
@@ -94,22 +93,40 @@ class PDF extends FPDF {
         try {
             // Crear QR temporal
             $temp_qr = __DIR__ . '/temp_qr.png';
+            
+            // Añadir log para depuración
+            error_log("Generando QR con datos: " . $data);
 
-            // Generar QR
+            // Generar QR con mayor tamaño y nivel de corrección de errores
             QRcode::png($data, $temp_qr, QR_ECLEVEL_H, 10);
 
             if (file_exists($temp_qr)) {
-                // Posición del QR
-                $x = 15;     // desde la izquierda
-                $y = 240;   // desde arriba
-                $size = 35; // tamaño del QR
+                // Posición del QR - Parte inferior izquierda
+                $x = 15;     // Posición desde la izquierda
+                $y = 260;    // Posición vertical ajustada a la parte inferior
+                $size = 25;  // Tamaño del QR más pequeño
 
-                // Fondo blanco
-                $this->SetFillColor(255, 255, 255);
-                $this->Rect($x - 2, $y - 2, $size + 4, $size + 4, 'F');
+                // Fondo con color RGB(53, 76, 133)
+                $this->SetFillColor(53, 76, 133);
+                $this->Rect($x - 8, $y - 8, $size + 16, $size + 16, 'F');
+                
+                // Borde decorativo
+                $this->SetDrawColor(255, 255, 255);
+                $this->SetLineWidth(0.5);
+                $this->Rect($x - 8, $y - 8, $size + 16, $size + 16);
+                
+                // Borde interior
+                $this->SetDrawColor(200, 200, 200);
+                $this->Rect($x - 5, $y - 5, $size + 10, $size + 10);
 
                 // Agregar QR
                 $this->Image($temp_qr, $x, $y, $size);
+                
+                // Añadir texto decorativo
+                $this->SetFont('Arial', 'B', 6);
+                $this->SetTextColor(255, 255, 255);
+                $this->SetXY($x - 8, $y + $size + 10);
+                $this->Cell($size + 16, 4, 'VERIFICAR CERTIFICADO', 0, 1, 'C');
 
                 // Eliminar archivo temporal
                 unlink($temp_qr);
@@ -164,6 +181,7 @@ try {
     }
 
     $DNI = $_POST['DNI'];
+    $id_curso = isset($_POST['id_curso']) ? $_POST['id_curso'] : null;
 
     // Conexión a la base de datos
     $conn = new mysqli('localhost', 'root', '', 'usuario');
@@ -172,20 +190,46 @@ try {
     }
     $conn->set_charset("utf8mb4");
 
-    // Consulta SQL
+    // Consulta SQL modificada para incluir id_curso
     $sql = "SELECT e.nombre, c.nombre_curso, c.fecha
-                FROM estudiantes e
-                JOIN inscripciones i ON e.DNI = i.DNI
-                JOIN cursos c ON c.id_curso = i.id_curso
-                WHERE e.DNI = ?";
+            FROM estudiantes e
+            JOIN inscripciones i ON e.DNI = i.DNI
+            JOIN cursos c ON c.id_curso = i.id_curso
+            WHERE e.DNI = ?";
+    
+    // Si se proporciona id_curso, añadirlo a la consulta
+    if ($id_curso !== null) {
+        $sql .= " AND c.id_curso = ?";
+    }
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $DNI);
+    
+    // Vincular parámetros según si se proporciona id_curso o no
+    if ($id_curso !== null) {
+        $stmt->bind_param("si", $DNI, $id_curso);
+    } else {
+        $stmt->bind_param("s", $DNI);
+    }
+    
     $stmt->execute();
     $result = $stmt->get_result();
 
+    // Añadir log para depuración
+    error_log("Consulta SQL ejecutada para DNI: " . $DNI);
+    error_log("Número de resultados: " . $result->num_rows);
+
     if ($row = $result->fetch_assoc()) {
-        $pdf = new PDF();
+        // Limpiar cualquier salida anterior
+        ob_end_clean();
+
+        // Crear nuevo PDF
+        $pdf = new PDF('P', 'mm', 'A4');
+        
+        // Configurar márgenes
+        $pdf->SetMargins(0, 0, 0);
+        $pdf->SetAutoPageBreak(false);
+        
+        // Agregar única página
         $pdf->AddPage();
 
         // Agregar imagen de fondo
@@ -201,34 +245,41 @@ try {
         $pdf->SetXY(40, 145);
         $pdf->Cell(130, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // Datos para el QR - Cambia esta línea
-        $qr_data = "http://localhost/Cloneproyecto/PAGINA_WEB/verificacion_certificado.php?dni={$DNI}&curso={$row['nombre_curso']}";
+        // Datos para el QR
+        $curso_encoded = urlencode($row['nombre_curso']);
+        $qr_data = "http://localhost/Cloneproyecto/PAGINA_WEB/verificacion_certificado.php?dni={$DNI}&nombre_curso={$curso_encoded}";
+        
+        // Generar y agregar QR
+        $pdf->AddQR($qr_data);
 
-        // Generar el QR con solo el curso
-        if (!$pdf->AddQR($qr_data)) {
-            error_log("No se pudo agregar el QR");
-        }
+        // Configurar headers
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="certificado_' . $DNI . '.pdf"');
+        header('Cache-Control: private, no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
 
+        // Salida del PDF
+        $pdf->Output('D', 'certificado_' . $DNI . '.pdf');
     } else {
+        // Limpiar cualquier salida anterior
+        ob_end_clean();
+
+        // Crear PDF de error
         $pdf = new FPDF();
         $pdf->AddPage();
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->SetXY(10, 150);
-        $pdf->Cell(190, 10, utf8_decode("No se encontraron resultados para el DNI: " . $DNI), 0, 1, 'C');
+        $pdf->SetFont('Arial', 'B', 16);
+        $pdf->Cell(0, 10, 'No se encontraron resultados', 0, 1, 'C');
+        $pdf->SetFont('Arial', '', 12);
+        $pdf->Cell(0, 10, utf8_decode("No se encontró certificado para el DNI: " . $DNI), 0, 1, 'C');
+
+        // Configurar headers
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="no_encontrado.pdf"');
+        
+        // Salida del PDF
+        $pdf->Output('D', 'no_encontrado.pdf');
     }
-
-    // Limpiar cualquier salida anterior
-    ob_end_clean();
-
-    // Configurar headers
-    header('Content-Type: application/pdf');
-    header('Content-Disposition: attachment; filename="certificado_' . $DNI . '.pdf"');
-    header('Cache-Control: private, no-cache, no-store, must-revalidate');
-    header('Pragma: no-cache');
-    header('Expires: 0');
-
-    // Salida del PDF
-    $pdf->Output('D', 'certificado_' . $DNI . '.pdf');
 
     // Cerrar conexiones
     $stmt->close();
@@ -236,22 +287,22 @@ try {
     exit();
 
 } catch (Exception $e) {
-    // Si hay algún error, limpiar el buffer
+    // Limpiar cualquier salida anterior
     ob_end_clean();
 
     // Crear PDF de error
     $pdf = new FPDF();
     $pdf->AddPage();
     $pdf->SetFont('Arial', 'B', 16);
-    $pdf->Cell(0, 10, utf8_decode('Error al generar el certificado'), 0, 1, 'C');
+    $pdf->Cell(0, 10, 'Error al generar el certificado', 0, 1, 'C');
     $pdf->SetFont('Arial', '', 12);
-    $pdf->Cell(0, 10, utf8_decode('Por favor, verifique sus datos e intente nuevamente.'), 0, 1, 'C');
+    $pdf->Cell(0, 10, utf8_decode('Por favor, inténtelo de nuevo más tarde.'), 0, 1, 'C');
 
-    // Configurar headers
+    // Configurar headers para descarga
     header('Content-Type: application/pdf');
     header('Content-Disposition: attachment; filename="error_certificado.pdf"');
-
-    // Salida del PDF de error
+    
+    // Salida del PDF
     $pdf->Output('D', 'error_certificado.pdf');
     exit();
 }

@@ -66,7 +66,7 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
             echo "<p class='nombre-curso'>$nombre_curso</p>";
             echo "<p class='fecha'>Fecha: $fecha</p>";
             
-            // Agregar el botón para descargar el certificado
+            // Botón para descargar el certificado
             echo "<div class='btn-container'>";
             echo "<form method='post' action='descargar_certificado.php' target='_blank'>";
             echo "<input type='hidden' name='id_curso' value='$id_curso'>";
@@ -89,13 +89,6 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
     die("ID del curso o DNI no proporcionado o vacío");
 }
 ?>
-<!-- Contenedor para el botón flotante -->
-<div class="btn-container">
-    <form method="post" action="descargar_certificado.php" target="_blank">
-        <input type="hidden" name="DNI" value="<?php echo $DNI; ?>">
-        <button type="submit" class="btn-flotante">Descargar Certificado</button>
-    </form>
-</div>
 
 <style>
    html, body {
