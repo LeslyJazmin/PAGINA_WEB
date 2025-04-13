@@ -3,11 +3,13 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    overflow-x: hidden; /* Evitar scroll horizontal */
 }
 
 .container {
     display: flex;
-    min-height: 111vh;
+    min-height: 100vh;
+    position: relative; /* Añadir posición relativa */
 }
 
 /* Sidebar Styles */
@@ -16,16 +18,32 @@ body {
     background-color: #0a507e;
     color: white;
     padding: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 1000; /* Asegurar que esté por encima de otros elementos */
+    box-sizing: border-box; /* Asegurar que el padding no afecte el ancho total */
 }
 
 .sidebar h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background-color: #0a507e;
+    padding-bottom: 10px;
+    z-index: 1001;
 }
 
 .sidebar ul {
     list-style-type: none;
     padding: 0;
+    position: sticky;
+    top: 60px; /* Ajustar según la altura del título */
+    background-color: #0a507e;
+    z-index: 1001;
 }
 
 .sidebar ul li {
@@ -64,6 +82,8 @@ body {
 .main-content {
     flex-grow: 1;
     padding: 20px;
+    margin-left: 230px; /* Añadir margen izquierdo igual al ancho del sidebar */
+    width: calc(100% - 230px); /* Ajustar el ancho para evitar desbordamiento */
 }
 
 .main-content p {

@@ -75,6 +75,18 @@
             background-color: #005f99;
         }
 
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .form-buttons button {
+            flex: 1;
+            width: auto;
+        }
+
         .section-header {
             background-color: #007acc;
             color: white;
@@ -133,8 +145,17 @@
             <small>Ingrese el nombre del archivo PHP que mostrará los detalles del curso</small>
         </div>
         
-    
-        <button type="submit">Crear Curso</button>
+        <div class="form-buttons">
+            <button type="submit">Crear Curso</button>
+            <button type="button" onclick="cerrarFormulario()">Cerrar</button>
+        </div>
     </form>
+
+    <script>
+        // Función para cerrar el formulario
+        function cerrarFormulario() {
+            window.location.href = "auladmi.php";
+        }
+    </script>
 </body>
 </html>

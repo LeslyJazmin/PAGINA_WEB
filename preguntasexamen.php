@@ -62,6 +62,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <title>Gestión de Preguntas de Examen Final</title>
     <style>
         body {
@@ -381,6 +382,7 @@ $conn->close();
             
             <div class="botones">
                 <button type="submit">Añadir Preguntas</button>
+                <button type="button" onclick="window.location.href='auladmi.php';">Cerrar</button>
             </div>
         </form>
     </div>

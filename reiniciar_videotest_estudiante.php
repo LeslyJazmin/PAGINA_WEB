@@ -114,6 +114,11 @@ $conexion->close();
         function cerrarModal() {
             window.location.href = "auladmi.php";
         }
+        
+        // Función para cerrar el formulario
+        function cerrarFormulario() {
+            window.location.href = "auladmi.php";
+        }
     </script>
 </body>
 </html>
