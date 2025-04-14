@@ -84,6 +84,11 @@ body {
     padding: 20px;
     margin-left: 230px; /* Añadir margen izquierdo igual al ancho del sidebar */
     width: calc(100% - 230px); /* Ajustar el ancho para evitar desbordamiento */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar horizontalmente */
+    justify-content: center; /* Centrar verticalmente */
+    min-height: 100vh; /* Asegurar que ocupe toda la altura de la pantalla */
 }
 
 .main-content p {
@@ -251,12 +256,15 @@ th {
     width: 100%;
 }
 
-
+/* Contenedor principal para centrar todo el contenido */
 .contenido-principal {
-    float: left;
-    width: 80%; /* Ancho del contenedor */
+    width: 100%;
+    max-width: 1200px; /* Limitar el ancho máximo para mejor legibilidad */
+    margin: 0 auto; /* Centrar horizontalmente */
     padding: 20px;
+    box-sizing: border-box;
 }
+
 .sub-cursos {
     display: none; /* Ocultar subcursos inicialmente */
     list-style-type: none;

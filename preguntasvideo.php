@@ -11,7 +11,8 @@ if ($conn->connect_error) {
 }
 
 // Verificar si se seleccionó un curso
-$id_curso = isset($_POST['id_curso']) && !empty($_POST['id_curso']) ? $_POST['id_curso'] : null;
+$id_curso = isset($_POST['id_curso']) && !empty($_POST['id_curso']) ? $_POST['id_curso'] : 
+            (isset($_GET['id_curso']) && !empty($_GET['id_curso']) ? $_GET['id_curso'] : null);
 
 // Si se envió el formulario para guardar cambios
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['guardar'])) {
