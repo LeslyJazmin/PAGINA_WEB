@@ -108,119 +108,142 @@ $stmt->close();
 
         <div class="contenido-principal">
             <h1 style="text-align: center;">Estudiantes en <?= htmlspecialchars($nombre_curso) ?></h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>DNI</th> 
-                        <th>Nota Videotest</th>
-                        <th>Examen Final</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?= htmlspecialchars($row['DNI']) ?></td>
-                                <td><?= htmlspecialchars($row['nota_videotest']) ?></td>
-                                <td><?= htmlspecialchars($row['examen_final']) ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
+            <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+                <table>
+                    <thead>
                         <tr>
-                            <td colspan="3" style="text-align: center;">No se encontraron registros.</td>
+                            <th>DNI</th> 
+                            <th>Nota Videotest</th>
+                            <th>Examen Final</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-                <form action="guardar_datos.php" method="POST">
-    <table>
-        <thead>
-            <tr>
-                <th>Videotest</th>
-                <th>Examen Final</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>
-                    <!-- Selector de fecha para Videotest -->
-                    <label for="fecha_inicio_videotest">Fecha de Inicio:</label>
-                    <input type="date" name="fecha_inicio_videotest" id="fecha_inicio_videotest" 
-                           value="<?php echo $current_data ? $current_data['fecha_inicio_videotest'] : ''; ?>" required>
-                    <br>
-                    <!-- Selector de hora de inicio para Videotest -->
-                    <label for="hora_inicio_videotest">Hora de Inicio:</label>
-                    <input type="time" name="hora_inicio_videotest" id="hora_inicio_videotest" 
-                           value="<?php echo $current_data ? $current_data['hora_inicio_videotest'] : ''; ?>" required>
-                    <br>
-                    <label for="fecha_fin_videotest">Fecha de Fin:</label>
-                    <input type="date" name="fecha_fin_videotest" id="fecha_fin_videotest" 
-                           value="<?php echo $current_data ? $current_data['fecha_fin_videotest'] : ''; ?>" required>
-                    <br>
-                    <!-- Selector de hora de fin para Videotest -->
-                    <label for="hora_fin_videotest">Hora de Fin:</label>
-                    <input type="time" name="hora_fin_videotest" id="hora_fin_videotest" 
-                           value="<?php echo $current_data ? $current_data['hora_fin_videotest'] : ''; ?>" required>
-                    <br>
-                </td>
-                <td>
-                    <!-- Selector de fecha para Examen Final -->
-                    <label for="fecha_inicio_examen">Fecha de Inicio:</label>
-                    <input type="date" name="fecha_inicio_examen" id="fecha_inicio_examen" 
-                           value="<?php echo $current_data ? $current_data['fecha_inicio_examen'] : ''; ?>" required>
-                    <br>
-                    <!-- Selector de hora de inicio para examen -->
-                    <label for="hora_inicio_examen">Hora de Inicio:</label>
-                    <input type="time" name="hora_inicio_examen" id="hora_inicio_examen" 
-                           value="<?php echo $current_data ? $current_data['hora_inicio_examen'] : ''; ?>" required>
-                    <br>
-                    <label for="fecha_fin_examen">Fecha de Fin:</label>
-                    <input type="date" name="fecha_fin_examen" id="fecha_fin_examen" 
-                           value="<?php echo $current_data ? $current_data['fecha_fin_examen'] : ''; ?>" required>
-                    <br>
-                    <!-- Selector de hora de fin para examen -->
-                    <label for="hora_fin_examen">Hora de Fin:</label>
-                    <input type="time" name="hora_fin_examen" id="hora_fin_examen" 
-                           value="<?php echo $current_data ? $current_data['hora_fin_examen'] : ''; ?>" required>
-                    <br>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <!-- Campo oculto para el id_curso con valor 1 -->
-    <input type="hidden" name="id_curso" value="22">
+                    </thead>
+                    <tbody>
+                        <?php if ($result->num_rows > 0): ?>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row['DNI']) ?></td>
+                                    <td><?= htmlspecialchars($row['nota_videotest']) ?></td>
+                                    <td><?= htmlspecialchars($row['examen_final']) ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="3" style="text-align: center;">No se encontraron registros.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+                <form action="guardar_datos.php" method="POST" style="max-width: 1000px; margin: 20px auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Videotest</th>
+                                <th>Examen Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <!-- Selector de fecha para Videotest -->
+                                    <label for="fecha_inicio_videotest">Fecha de Inicio:</label>
+                                    <input type="date" name="fecha_inicio_videotest" id="fecha_inicio_videotest" 
+                                           value="<?php echo $current_data ? $current_data['fecha_inicio_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de inicio para Videotest -->
+                                    <label for="hora_inicio_videotest">Hora de Inicio:</label>
+                                    <input type="time" name="hora_inicio_videotest" id="hora_inicio_videotest" 
+                                           value="<?php echo $current_data ? $current_data['hora_inicio_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <label for="fecha_fin_videotest">Fecha de Fin:</label>
+                                    <input type="date" name="fecha_fin_videotest" id="fecha_fin_videotest" 
+                                           value="<?php echo $current_data ? $current_data['fecha_fin_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de fin para Videotest -->
+                                    <label for="hora_fin_videotest">Hora de Fin:</label>
+                                    <input type="time" name="hora_fin_videotest" id="hora_fin_videotest" 
+                                           value="<?php echo $current_data ? $current_data['hora_fin_videotest'] : ''; ?>" required>
+                                    <br>
+                                </td>
+                                <td>
+                                    <!-- Selector de fecha para Examen Final -->
+                                    <label for="fecha_inicio_examen">Fecha de Inicio:</label>
+                                    <input type="date" name="fecha_inicio_examen" id="fecha_inicio_examen" 
+                                           value="<?php echo $current_data ? $current_data['fecha_inicio_examen'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de inicio para examen -->
+                                    <label for="hora_inicio_examen">Hora de Inicio:</label>
+                                    <input type="time" name="hora_inicio_examen" id="hora_inicio_examen" 
+                                           value="<?php echo $current_data ? $current_data['hora_inicio_examen'] : ''; ?>" required>
+                                    <br>
+                                    <label for="fecha_fin_examen">Fecha de Fin:</label>
+                                    <input type="date" name="fecha_fin_examen" id="fecha_fin_examen" 
+                                           value="<?php echo $current_data ? $current_data['fecha_fin_examen'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de fin para examen -->
+                                    <label for="hora_fin_examen">Hora de Fin:</label>
+                                    <input type="time" name="hora_fin_examen" id="hora_fin_examen" 
+                                           value="<?php echo $current_data ? $current_data['hora_fin_examen'] : ''; ?>" required>
+                                    <br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Campo oculto para el id_curso con valor 1 -->
+                    <input type="hidden" name="id_curso" value="22">
 
-    <!-- Botones de guardado y actualización -->
-    <button type="submit" name="guardar" class="update-btn">Guardar</button>
-    <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
-</form>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        padding: 15px;
-        text-align: left;
-        border: 1px solid #ddd;
-        vertical-align: middle;  /* Centra los elementos verticalmente */
-    }
-    input[type="date"],
-    input[type="time"] {
-        width: 100%;
-        padding: 5px;
-        margin: 5px 0;
-        box-sizing: border-box;
-    }
-    th {
-        width: 200px;  /* Ajusta el ancho de las celdas de los encabezados */
-    }
-    label {
-        font-weight: bold;
-        margin-top: 10px;
-        display: block;  /* Asegura que los labels estén por encima de los campos */
-    }
-</style>
+                    <!-- Botones de guardado y actualización -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button type="submit" name="guardar" class="update-btn" style="display: inline-block; margin: 0 10px;">Guardar</button>
+                        <button type="submit" name="actualizar" class="update-btn" style="display: inline-block; margin: 0 10px;">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+            <style>
+                .contenido-principal {
+                    margin-left: 250px;
+                    padding: 20px;
+                    width: calc(100% - 250px);
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 0 auto;
+                }
+                th, td {
+                    padding: 15px;
+                    text-align: left;
+                    border: 1px solid #ddd;
+                    vertical-align: middle;
+                }
+                input[type="date"],
+                input[type="time"] {
+                    width: 100%;
+                    padding: 5px;
+                    margin: 5px 0;
+                    box-sizing: border-box;
+                }
+                th {
+                    width: 200px;
+                }
+                label {
+                    font-weight: bold;
+                    margin-top: 10px;
+                    display: block;
+                }
+                .update-btn {
+                    padding: 10px 20px;
+                    background-color: #0a507e;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    min-width: 120px;
+                }
+                .update-btn:hover {
+                    background-color: #083d5f;
+                }
+            </style>
         </div>
     </div>
 </body>

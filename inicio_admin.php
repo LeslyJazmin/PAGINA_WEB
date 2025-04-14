@@ -114,72 +114,79 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 <?php endif; ?>
 
-
-            <form action="" method="POST">
-                <div class="form-container">
-                    <table class="centered-table">
-                        <thead>
-                            <tr>
-                                <th>ID DEL CURSO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                <label for="id_curso">Selecciona el curso:</label>
-                                <select name="id_curso" id="id_curso" class="styled-select" required>
-                                    <?php foreach ($cursos as $curso): ?>
-                                        <option value="<?php echo $curso['id_curso']; ?>" <?php echo (isset($current_data['id_curso']) && $current_data['id_curso'] == $curso['id_curso']) ? 'selected' : ''; ?>>
-                                            <?php echo $curso['nombre_curso']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-
-                                    <br>
-                                </td>
-                            </tr>
+            <div class="contenido-principal">
+                <form action="" method="POST">
+                    <div class="form-container">
+                        <table class="centered-table">
                             <thead>
                                 <tr>
-                                    <th>LINK DEL MATERIAL</th>
+                                    <th>ID DEL CURSO</th>
                                 </tr>
                             </thead>
-                            <tr>
-                                <td>
-                                    <label for="link_material">Link del material:</label>
-                                    <input type="url" name="link_material" id="link_curso_material" 
-                                           value="<?php echo isset($current_data['link_curso_material']) ? $current_data['link_curso_material'] : ''; ?>" required>
-                                    <br>
-                                </td>
-                            </tr>
-                            <thead>
+                            <tbody>
                                 <tr>
-                                    <th>LINK DEL VIDEO</th>
+                                    <td>
+                                    <label for="id_curso">Selecciona el curso:</label>
+                                    <select name="id_curso" id="id_curso" class="styled-select" required>
+                                        <?php foreach ($cursos as $curso): ?>
+                                            <option value="<?php echo $curso['id_curso']; ?>" <?php echo (isset($current_data['id_curso']) && $current_data['id_curso'] == $curso['id_curso']) ? 'selected' : ''; ?>>
+                                                <?php echo $curso['nombre_curso']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+
+                                        <br>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tr>
-                                <td>
-                                    <label for="link_video">Link del video:</label>
-                                    <input type="url" name="link_video" id="link_curso_video" 
-                                           value="<?php echo isset($current_data['link_curso_video']) ? $current_data['link_curso_video'] : ''; ?>" required>
-                                    <br>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button type="submit" name="guardar" class="update-btn">Guardar</button>
-                                    <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                                <thead>
+                                    <tr>
+                                        <th>LINK DEL MATERIAL</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        <label for="link_material">Link del material:</label>
+                                        <input type="url" name="link_material" id="link_curso_material" 
+                                               value="<?php echo isset($current_data['link_curso_material']) ? $current_data['link_curso_material'] : ''; ?>" required>
+                                        <br>
+                                    </td>
+                                </tr>
+                                <thead>
+                                    <tr>
+                                        <th>LINK DEL VIDEO</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        <label for="link_video">Link del video:</label>
+                                        <input type="url" name="link_video" id="link_curso_video" 
+                                               value="<?php echo isset($current_data['link_curso_video']) ? $current_data['link_curso_video'] : ''; ?>" required>
+                                        <br>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="button-container">
+                                            <button type="submit" name="guardar" class="update-btn">Guardar</button>
+                                            <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
         </main>
     </div>
     
     <style>
         main {
             margin-left: 90px; /* Ajusta el valor según el espacio que desees */
+            width: calc(100% - 90px); /* Ajustar el ancho para evitar desbordamiento */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centrar horizontalmente */
         }
 
         .styled-select {
@@ -193,7 +200,8 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             background-color: transparent;
             cursor: pointer;
             transition: all 0.3s ease;
-            width: 1000px;
+            width: 100%; /* Cambiar a 100% para que se ajuste al contenedor */
+            max-width: 1000px; /* Mantener un ancho máximo */
         }
 
         .styled-select:hover {
@@ -216,7 +224,8 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         /* Estilo para los inputs de tipo URL */
         input[type="url"] {
-            width: 1000px; /* Ancho completo del contenedor */
+            width: 100%; /* Cambiar a 100% para que se ajuste al contenedor */
+            max-width: 1000px; /* Mantener un ancho máximo */
             padding: 10px; /* Espaciado interno */
             font-size: 16px; /* Tamaño del texto */
             border: 1px solid #ccc; /* Borde suave */
@@ -283,16 +292,19 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             margin: 0 auto; /* Centra horizontalmente */
             border-collapse: collapse; /* Colapsa bordes */
             text-align: left;
-            width: 800px; /* Haz que ocupe el 80% del ancho de la página */
+            width: 100%; /* Cambiar a 100% para que se ajuste al contenedor */
+            max-width: 800px; /* Mantener un ancho máximo */
         }
 
         .form-container {
             display: flex;
             justify-content: center; /* Centro horizontal */
             align-items: center; /* Centro vertical */
-            height: 70vh; /* Asegura que ocupe toda la altura de la pantalla */
+            width: 100%; /* Asegurar que ocupe todo el ancho disponible */
+            padding: 20px;
+            box-sizing: border-box;
         }
-
+        
         .centered-table th, 
         .centered-table td {
             padding: 10px;
@@ -304,6 +316,30 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             text-align: center;
         }
         
+        /* Estilos para los botones */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+            flex-direction: row; /* Asegura que los botones estén en una línea */
+        }
+        
+        .update-btn {
+            padding: 10px 20px;
+            background-color: #0a507e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block; /* Asegura que los botones se muestren en línea */
+            margin: 0 5px; /* Añade un pequeño margen entre botones */
+        }
+        
+        .update-btn:hover {
+            background-color: #083d5f;
+        }
     </style>
     
     <script>

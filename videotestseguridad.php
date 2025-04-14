@@ -56,29 +56,81 @@ function tiempoExpirado() {
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
 
-// Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué equipo de protección es obligatorio al trabajar en altura?', 
-     ['Casco de protección', 'Arnés de seguridad', 'Guantes de protección'], 
-     1, 4],
-    
-    ['¿Cuál es la altura mínima a partir de la cual se considera trabajo en altura según la normativa general?', 
-     ['1.5 metros', '2 metros', '3 metros'], 
-     1, 4],
-    
-    ['¿Qué sistema se debe utilizar para evitar caídas al trabajar en altura?', 
-     ['Sistema de retención', 'Sistema de rescate', 'Sistema de posicionamiento'], 
-     0, 4],
-    
-    ['¿Con qué frecuencia se debe inspeccionar el equipo de protección para trabajos en altura?', 
-     ['Mensualmente', 'Antes de cada uso', 'Cada seis meses'], 
-     1, 4],
-    
-    ['¿Qué acción se debe tomar si el arnés de seguridad muestra signos de desgaste o daño?', 
-     ['Seguir usándolo con precaución', 'Repararlo antes de usarlo', 'Dejar de usarlo y reportarlo'], 
-     2, 4]
-];
+// Cargar preguntas desde la base de datos
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
+// Consulta para obtener las preguntas del curso
+$id_curso = 19; // ID del curso de Seguridad para Trabajos con Altura
+$sql = "SELECT p.id AS pregunta_id, p.pregunta, o.id AS opcion_id, o.opcion, o.es_correcta 
+        FROM preguntas p 
+        JOIN opciones o ON p.id = o.pregunta_id 
+        WHERE p.id_curso = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $id_curso);
+$stmt->execute();
+$result = $stmt->get_result();
+
+// Organizar las preguntas y opciones
+$preguntas_temp = [];
+while ($row = $result->fetch_assoc()) {
+    $pregunta_id = $row['pregunta_id'];
+    
+    if (!isset($preguntas_temp[$pregunta_id])) {
+        $preguntas_temp[$pregunta_id] = [
+            'pregunta' => $row['pregunta'],
+            'opciones' => [],
+            'correcta' => null
+        ];
+    }
+    
+    $preguntas_temp[$pregunta_id]['opciones'][] = $row['opcion'];
+    
+    if ($row['es_correcta'] == 1) {
+        $preguntas_temp[$pregunta_id]['correcta'] = count($preguntas_temp[$pregunta_id]['opciones']) - 1;
+    }
+}
+
+// Convertir al formato esperado por el código existente
+foreach ($preguntas_temp as $pregunta) {
+    $preguntas[] = [
+        $pregunta['pregunta'],
+        $pregunta['opciones'],
+        $pregunta['correcta'],
+        4 // Cada pregunta vale 4 puntos
+    ];
+}
+
+// Si no hay preguntas en la base de datos, usar preguntas predeterminadas
+if (empty($preguntas)) {
+    $preguntas = [
+        ['¿Qué equipo de protección es obligatorio al trabajar en altura?', 
+         ['Casco de protección', 'Arnés de seguridad', 'Guantes de protección'], 
+         1, 4],
+        
+        ['¿Cuál es la altura mínima a partir de la cual se considera trabajo en altura según la normativa general?', 
+         ['1.5 metros', '2 metros', '3 metros'], 
+         1, 4],
+        
+        ['¿Qué sistema se debe utilizar para evitar caídas al trabajar en altura?', 
+         ['Sistema de retención', 'Sistema de rescate', 'Sistema de posicionamiento'], 
+         0, 4],
+        
+        ['¿Con qué frecuencia se debe inspeccionar el equipo de protección para trabajos en altura?', 
+         ['Mensualmente', 'Antes de cada uso', 'Cada seis meses'], 
+         1, 4],
+        
+        ['¿Qué acción se debe tomar si el arnés de seguridad muestra signos de desgaste o daño?', 
+         ['Seguir usándolo con precaución', 'Repararlo antes de usarlo', 'Dejar de usarlo y reportarlo'], 
+         2, 4]
+    ];
+}
+
+$stmt->close();
+$conn->close();
 
 $mensaje = '';
 
