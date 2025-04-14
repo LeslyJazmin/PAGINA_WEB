@@ -387,13 +387,16 @@ if (isset($_SESSION['nombre_usuario'])) {
 
     <table>
         <tr>
-            <th>Agregar preguntas para Examen final </th>
+            <th>Agregar preguntas para Examen final</th>
+            <th>Actualizar preguntas para Examen final</th>
         </tr>
         <tr>
-            <td>Recuerda rellenar y cumplir con todos los datos solicitados </td>
+            <td>Recuerda rellenar y cumplir con todos los datos solicitados</td>
+            <td>Recuerda que al actualizar las preguntas se modificará igualmente en el examen final</td>
         </tr>
         <tr>
-            <td><button onclick="window.location.href='preguntasexamen.php'"> Editar preguntas </button></td>
+            <td><button onclick="window.location.href='preguntasexamen.php'">Agregar Preguntas</button></td>
+            <td><button onclick="window.location.href='editar_preguntasexamen.php'">Editar preguntas</button></td>
         </tr>
     </table>
             </div>
