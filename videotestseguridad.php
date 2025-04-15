@@ -56,81 +56,55 @@ function tiempoExpirado() {
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
 
-// Cargar preguntas desde la base de datos
+// Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
 $preguntas = [];
 $conn = new mysqli('localhost', 'root', '', 'usuario');
+
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
-// Consulta para obtener las preguntas del curso
-$id_curso = 19; // ID del curso de Seguridad para Trabajos con Altura
-$sql = "SELECT p.id AS pregunta_id, p.pregunta, o.id AS opcion_id, o.opcion, o.es_correcta 
-        FROM preguntas p 
-        JOIN opciones o ON p.id = o.pregunta_id 
-        WHERE p.id_curso = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id_curso);
-$stmt->execute();
-$result = $stmt->get_result();
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 19";
+$result_preguntas = $conn->query($sql_preguntas);
 
-// Organizar las preguntas y opciones
-$preguntas_temp = [];
-while ($row = $result->fetch_assoc()) {
-    $pregunta_id = $row['pregunta_id'];
-    
-    if (!isset($preguntas_temp[$pregunta_id])) {
-        $preguntas_temp[$pregunta_id] = [
-            'pregunta' => $row['pregunta'],
-            'opciones' => [],
-            'correcta' => null
-        ];
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
+
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
     }
-    
-    $preguntas_temp[$pregunta_id]['opciones'][] = $row['opcion'];
-    
-    if ($row['es_correcta'] == 1) {
-        $preguntas_temp[$pregunta_id]['correcta'] = count($preguntas_temp[$pregunta_id]['opciones']) - 1;
-    }
 }
 
-// Convertir al formato esperado por el código existente
-foreach ($preguntas_temp as $pregunta) {
-    $preguntas[] = [
-        $pregunta['pregunta'],
-        $pregunta['opciones'],
-        $pregunta['correcta'],
-        4 // Cada pregunta vale 4 puntos
-    ];
-}
-
-// Si no hay preguntas en la base de datos, usar preguntas predeterminadas
-if (empty($preguntas)) {
-    $preguntas = [
-        ['¿Qué equipo de protección es obligatorio al trabajar en altura?', 
-         ['Casco de protección', 'Arnés de seguridad', 'Guantes de protección'], 
-         1, 4],
-        
-        ['¿Cuál es la altura mínima a partir de la cual se considera trabajo en altura según la normativa general?', 
-         ['1.5 metros', '2 metros', '3 metros'], 
-         1, 4],
-        
-        ['¿Qué sistema se debe utilizar para evitar caídas al trabajar en altura?', 
-         ['Sistema de retención', 'Sistema de rescate', 'Sistema de posicionamiento'], 
-         0, 4],
-        
-        ['¿Con qué frecuencia se debe inspeccionar el equipo de protección para trabajos en altura?', 
-         ['Mensualmente', 'Antes de cada uso', 'Cada seis meses'], 
-         1, 4],
-        
-        ['¿Qué acción se debe tomar si el arnés de seguridad muestra signos de desgaste o daño?', 
-         ['Seguir usándolo con precaución', 'Repararlo antes de usarlo', 'Dejar de usarlo y reportarlo'], 
-         2, 4]
-    ];
-}
-
-$stmt->close();
 $conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
@@ -311,7 +285,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_seguridad'][19] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='seguridadTA.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -403,9 +381,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+    <!-- Modal para "No hay preguntas registradas" -->
+    <div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='seguridadTA.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

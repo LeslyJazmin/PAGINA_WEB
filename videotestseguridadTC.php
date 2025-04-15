@@ -57,27 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué documento es obligatorio antes de ingresar a un espacio confinado?', 
-     ['Permiso de trabajo', 'Certificado médico', 'Lista de herramientas'], 
-     0, 4], // Respuesta correcta: "Permiso de trabajo"
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
-    ['¿Cuál es el principal riesgo en un espacio confinado?', 
-     ['Falta de oxígeno o presencia de gases tóxicos', 'Temperaturas bajas', 'Ruidos fuertes'], 
-     0, 4], // Respuesta correcta: "Falta de oxígeno o presencia de gases tóxicos"
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
-    ['¿Qué equipo de seguridad es esencial para trabajar en espacios confinados?', 
-     ['Detector de gases, arnés de seguridad y ventilación adecuada', 'Lentes de sol y guantes de algodón', 'Botas de goma y casco'], 
-     0, 4], // Respuesta correcta: "Detector de gases, arnés de seguridad y ventilación adecuada"
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 26";
+$result_preguntas = $conn->query($sql_preguntas);
 
-    ['¿Qué medida se debe tomar si hay presencia de gases tóxicos en un espacio confinado?', 
-     ['Seguir trabajando con precaución', 'Ventilar el área y usar detectores de gases', 'Tapar el espacio confinado y esperar'], 
-     1, 4], // Respuesta correcta: "Ventilar el área y usar detectores de gases"
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
 
-    ['¿Qué tipo de señalización debe usarse en espacios confinados?', 
-     ['Señales luminosas únicamente', 'Señales visibles que alerten del peligro y acceso restringido', 'Señales auditivas únicamente'], 
-     1, 4] // Respuesta correcta: "Señales visibles que alerten del peligro y acceso restringido"
-];
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 
 $mensaje = '';
@@ -259,7 +286,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_seguridadTC'][26] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='seguridadTC.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -351,9 +382,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+        <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='seguridadTC.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

@@ -57,27 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué tipo de extintor se debe utilizar para apagar un fuego de clase A (materiales combustibles sólidos)?', 
-     ['Extintor de CO2', 'Extintor de agua', 'Extintor de polvo químico seco'], 
-     1, 4],
-    
-    ['¿Cuál es el primer paso al utilizar un extintor?', 
-     ['Apuntar al fuego', 'Sacar el seguro', 'Presionar el mango'], 
-     1, 4],
-    
-    ['¿Qué clase de fuego puede ser apagado con un extintor de CO2?', 
-     ['Fuegos eléctricos', 'Fuegos de líquidos inflamables', 'Fuegos de metales'], 
-     0, 4],
-    
-    ['¿Cuándo es apropiado usar un extintor de polvo químico seco?', 
-     ['En fuegos de grasa o aceites', 'En fuegos de materiales eléctricos', 'En fuegos de madera y papel'], 
-     1, 4],
-    
-    ['¿Qué acción se debe tomar si un extintor no tiene presión suficiente?', 
-     ['Utilizarlo con precaución', 'No usarlo y buscar otro extintor', 'Ponerlo a recargar inmediatamente'], 
-     1, 4]
-];
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 3";
+$result_preguntas = $conn->query($sql_preguntas);
+
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
+
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
@@ -258,7 +285,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_me'][3] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='pa.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -350,9 +381,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+<!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='me.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

@@ -57,28 +57,55 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Cuál es la posición de soldadura 4G en el proceso SMAW?', 
-     ['Sobre cabeza', 'Vertical ascendente', 'Horizontal'], 
-     0], // Respuesta correcta: "Sobre cabeza" (índice 0)
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
-    ['¿Qué tipo de electrodo es más recomendado para soldadura en posición 4G?', 
-     ['E6010', 'E7018', 'E7024'], 
-     1], // Respuesta correcta: "E7018" (índice 1)
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
-    ['¿Cuál es el mayor desafío al soldar en posición 4G?', 
-     ['Controlar la gravedad y evitar goteo', 'Mantener la temperatura baja', 'Evitar la oxidación'], 
-     0], // Respuesta correcta: "Controlar la gravedad y evitar goteo" (índice 0)
+// Obtener las preguntas del curso con id = 23
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 29";
+$result_preguntas = $conn->query($sql_preguntas);
 
-    ['¿Qué parámetro es más crítico al soldar en posición 4G?', 
-     ['Amperaje', 'Velocidad de alimentación del electrodo', 'Tipo de gas protector'], 
-     0], // Respuesta correcta: "Amperaje" (índice 0)
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
 
-    ['¿Qué equipo de protección personal (EPP) es esencial para soldadura SMAW en 4G?', 
-     ['Guantes de cuero, careta de soldador y mandil de cuero', 'Casco de obra y guantes de látex', 'Gafas de seguridad y botas dieléctricas'], 
-     0], // Respuesta correcta: "Guantes de cuero, careta de soldador y mandil de cuero" (índice 0)
-];
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
 
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
+ 
 $mensaje = '';
 
 // Procesar respuestas del examen
@@ -258,7 +285,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_Homologacion4G'][29] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+    <form method="post">
+        <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+    </form>
+<?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='Homologacion4G.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -350,9 +381,16 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+    
+<!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='Homologacion4G.php'">Cerrar</button>
+    </div>
+</div>
 </body>
 </html>    
 

@@ -58,33 +58,57 @@ function tiempoExpirado() {
 
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué tipo de protección se debe utilizar al trabajar con soldadura con arco eléctrico?', 
-     ['Guantes de cuero', 'Gafas de protección', 'Máscara con filtro adecuado'], 
-     2, 4],  // Respuesta correcta: Máscara con filtro adecuado (ítem 2)
-    
-    ['¿Cuál es el principal riesgo al trabajar con un soldador de arco eléctrico?', 
-     ['Quemaduras', 'Descargas eléctricas', 'Exposición a humos tóxicos'], 
-     1, 4],  // Respuesta correcta: Descargas eléctricas (ítem 1)
-    
-    ['¿Qué se debe hacer antes de comenzar a soldar?', 
-     ['Asegurarse de que el equipo esté correctamente conectado', 'Ajustar la potencia del arco', 'Limpiar la superficie de soldadura'], 
-     0, 4],  // Respuesta correcta: Asegurarse de que el equipo esté correctamente conectado (ítem 0)
-    
-    ['¿Cómo se debe manejar el electrodo en el proceso de soldadura?', 
-     ['Sujételo firmemente durante todo el proceso', 'Manténgalo en ángulo recto respecto a la pieza', 'Mueva el electrodo de forma constante y lenta'], 
-     2, 4],  // Respuesta correcta: Mueva el electrodo de forma constante y lenta (ítem 2)
-    
-    ['¿Cuál es la temperatura aproximada que alcanza el arco de soldadura?', 
-     ['1,000°C', '3,500°C', '6,000°C'], 
-     2, 4]  // Respuesta correcta: 6,000°C (ítem 2)
-     
-];
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 1";
+$result_preguntas = $conn->query($sql_preguntas);
+
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
+
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
-// Procesar respuestas del examen
 // Procesar respuestas del examen
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
     if (tiempoExpirado()) {
@@ -263,7 +287,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_sa'][1] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='sa.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -284,7 +312,6 @@ if (isset($_POST['reiniciar'])) {
             <input type="submit" value="Enviar respuestas">
         </form>
     <?php endif; ?>
-
 <?php endif; ?>
 
 <!-- Mensaje adicional si existe -->
@@ -305,7 +332,6 @@ if (isset($_POST['reiniciar'])) {
         </form>
     </div>
 </div>
-
 </div>
 
     <script>
@@ -355,9 +381,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+    <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='sa.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 
