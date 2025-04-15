@@ -55,30 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Qué herramienta de Microsoft Word permite corregir errores ortográficos?', 
-    ['Revisar', 'Diseño', 'Vista'], 
-    0, 4], // Respuesta correcta: "Revisar"
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
-   ['¿Qué función de Excel permite sumar un rango de celdas automáticamente?', 
-    ['=SUMA()', '=PROMEDIO()', '=CONTAR()'], 
-    0, 4], // Respuesta correcta: "=SUMA()"
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-   ['¿Cuál es el atajo de teclado para guardar un documento en la mayoría de los programas de ofimática?', 
-    ['Ctrl + S', 'Ctrl + G', 'Ctrl + P'], 
-    0, 4], // Respuesta correcta: "Ctrl + S"
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
 
-   ['¿En qué pestaña de Microsoft Word se encuentra la opción para insertar una tabla?', 
-    ['Inicio', 'Insertar', 'Diseño'], 
-    1, 4], // Respuesta correcta: "Insertar"
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
 
-   ['¿Qué herramienta en PowerPoint permite agregar efectos de entrada y salida a los objetos?', 
-    ['Transiciones', 'Animaciones', 'Diseño'], 
-    1, 4] // Respuesta correcta: "Animaciones"
-];
-
-
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4); // 4 es el ID del curso de IPERC
 $mensaje = '';
 
 // Procesar respuestas del examen
@@ -105,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_ofimatica'][27] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_ofimatica'][27] = $_SESSION['nota_final_por_curso_ofimatica'][27];
+            $_SESSION['nota_final_por_curso_ofimatica'][27] = $nota;
             $_SESSION['examen_completado_por_curso_ofimatica'][27] = true;
         } else {
             $_SESSION['estado_final_por_curso_ofimatica'][27] = 'REPROBADO';
@@ -424,6 +432,10 @@ input.volver:hover {
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

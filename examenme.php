@@ -57,24 +57,38 @@ function tiempoExpirado() {
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
 
-// Preguntas del examen
-$preguntas = [
-    ['¿Cuál es el primer paso al utilizar un extintor?', 
-     ['Apuntar al fuego', 'Sacar el seguro', 'Presionar el mango'], 
-     1],
-    ['¿Qué clase de fuego puede ser apagado con un extintor de CO2?', 
-     ['Fuegos eléctricos', 'Fuegos de metales', 'Fuegos de materiales sólidos'], 
-     0],
-    ['¿Qué tipo de extintor se debe utilizar para apagar un fuego de clase A?', 
-     ['Extintor de agua', 'Extintor de CO2', 'Extintor de espuma'], 
-     0],
-    ['¿Qué se debe hacer si un extintor no tiene presión suficiente?', 
-     ['Seguir usándolo con precaución', 'No usarlo y buscar otro extintor', 'Ponerlo a recargar inmediatamente'], 
-     1],
-    ['¿Cuándo es apropiado usar un extintor de polvo químico seco?', 
-     ['En fuegos de grasa o aceites', 'En fuegos de materiales eléctricos', 'En fuegos de madera y papel'], 
-     0]
-];
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4);
 
 
 $mensaje = '';
@@ -412,6 +426,10 @@ input.volver:hover {
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

@@ -55,30 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Qué documento es obligatorio antes de iniciar una excavación?', 
-     ['Permiso de trabajo', 'Certificado médico', 'Orden de compra de herramientas'], 
-     0], // Respuesta correcta: "Permiso de trabajo" (índice 0)
-    
-    ['¿Cuál es la profundidad mínima a partir de la cual se deben emplear sistemas de entibado o apuntalamiento?', 
-     ['0.5 metros', '1.2 metros', '2 metros'], 
-     1], // Respuesta correcta: "1.2 metros" (índice 1)
-    
-    ['¿Cuál es el principal riesgo asociado a las excavaciones profundas?', 
-     ['Caídas de altura', 'Derrumbe de las paredes', 'Exposición a ruido excesivo'], 
-     1], // Respuesta correcta: "Derrumbe de las paredes" (índice 1)
-    
-    ['¿Qué medida se debe tomar si hay presencia de gases tóxicos en una excavación?', 
-     ['Seguir trabajando con precaución', 'Ventilar el área y usar detectores de gases', 'Tapar la excavación y esperar'], 
-     1], // Respuesta correcta: "Ventilar el área y usar detectores de gases" (índice 1)
-    
-    ['¿Qué tipo de señalización debe usarse en las zonas de excavación?', 
-     ['Señales luminosas únicamente', 'Señales visibles que alerten del peligro de caída y acceso restringido', 'Señales auditivas únicamente'], 
-     1] // Respuesta correcta: "Señales visibles que alerten del peligro de caída y acceso restringido" (índice 1)
-];
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4);
 $mensaje = '';
 
 // Procesar respuestas del examen
@@ -105,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_seguridadTE'][22] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_seguridadTE'][22] = $_SESSION['nota_final_por_curso_seguridadTE'][22];
+            $_SESSION['nota_final_por_curso_seguridadTE'][22] = $nota;
             $_SESSION['examen_completado_por_curso_seguridadTE'][22] = true;
         } else {
             $_SESSION['estado_final_por_curso_seguridadTE'][22] = 'REPROBADO';
@@ -424,6 +432,10 @@ input.volver:hover {
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

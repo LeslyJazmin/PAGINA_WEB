@@ -56,34 +56,38 @@ function tiempoExpirado() {
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
 
-// Preguntas del examen
-$preguntas = [  
-    ['¿Qué significa el acrónimo IPERC?',  
-        ['Identificación de Peligros, Evaluación y Control de Riesgos', // Respuesta correcta
-         'Inspección de Procesos y Evaluación de Riesgos Críticos',  
-         'Implementación de Planes para Emergencias y Riesgos'],  
-        0],  
-    ['¿Cuál es el primer paso en el proceso de IPERC?',  
-        ['Implementar medidas de control',  
-         'Identificar los peligros', // Respuesta correcta
-         'Evaluar los riesgos'],  
-        1],  
-    ['¿Qué herramienta se utiliza comúnmente para identificar peligros en una tarea específica?',  
-        ['Lista de verificación', // Respuesta correcta
-         'Simulacro de emergencia',  
-         'Plan de contingencia'],  
-        0],  
-    ['¿Cómo se clasifica un riesgo después de ser evaluado en IPERC?',  
-        ['Leve, moderado o crítico',  
-         'Bajo, medio o alto', // Respuesta correcta
-         'Insignificante, significativo o catastrófico'],  
-        1],  
-    ['¿Qué medida se debe tomar primero para controlar un riesgo alto identificado en IPERC?',  
-        ['Aplicar controles administrativos',  
-         'Eliminación del peligro', // Respuesta correcta
-         'Suministrar equipo de protección personal (EPP)'],  
-        1]  
-];  
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4); // 4 es el ID del curso de IPERC
 
 $mensaje = '';
 
@@ -110,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_iperc'][4] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_iperc'][4] = $_SESSION['nota_final_por_curso_iperc'][4];
+            $_SESSION['nota_final_por_curso_iperc'][4] = $nota;
             $_SESSION['examen_completado_por_curso_iperc'][4] = true;
         } else {
             $_SESSION['estado_final_por_curso_iperc'][4] = 'REPROBADO';
@@ -428,7 +432,10 @@ input.volver:hover {
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
-                            <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>
