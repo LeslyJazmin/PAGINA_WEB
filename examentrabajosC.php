@@ -55,29 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Cuál es el principal equipo de protección personal para trabajos en caliente?', 
-     ['Casco con pantalla facial y guantes resistentes al calor', 'Chaleco reflectante', 'Gafas de sol'], 
-     0], // Respuesta correcta: "Casco con pantalla facial y guantes resistentes al calor" (índice 0)
-    
-    ['¿Qué se debe hacer antes de iniciar un trabajo en caliente?', 
-     ['Asegurar que haya un extintor cerca y retirar materiales inflamables', 'Encender la máquina y empezar a trabajar', 'No se requiere ninguna preparación especial'], 
-     0], // Respuesta correcta: "Asegurar que haya un extintor cerca y retirar materiales inflamables" (índice 0)
-    
-    ['¿Cuál es el tiempo mínimo de vigilancia después de terminar un trabajo en caliente?', 
-     ['5 minutos', '30 minutos', 'No es necesario vigilar'], 
-     1], // Respuesta correcta: "30 minutos" (índice 1)
-    
-    ['¿Qué tipo de permiso se necesita antes de realizar trabajos en caliente?', 
-     ['Permiso de trabajo en caliente', 'Permiso de acceso al área', 'No se necesita ningún permiso'], 
-     0], // Respuesta correcta: "Permiso de trabajo en caliente" (índice 0)
-    
-    ['¿Cuál es la función del vigilante de fuego en un trabajo en caliente?', 
-     ['Realizar la soldadura', 'Supervisar el área y actuar en caso de incendio', 'Controlar el acceso al área'], 
-     1] // Respuesta correcta: "Supervisar el área y actuar en caso de incendio" (índice 1)
-];
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4);
 
 $mensaje = '';
 
@@ -105,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_trabajosC'][25] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_trabajosC'][25] = $_SESSION['nota_final_por_curso_trabajosC'][25];
+            $_SESSION['nota_final_por_curso_trabajosC'][25] = $nota;
             $_SESSION['examen_completado_por_curso_trabajosC'][25] = true;
         } else {
             $_SESSION['estado_final_por_curso_trabajosC'][25] = 'REPROBADO';
@@ -422,8 +431,12 @@ input.volver:hover {
                     <p><strong><?php echo ($index + 1) . '. ' . $pregunta[0]; ?></strong></p>
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
-                            <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
+                        <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

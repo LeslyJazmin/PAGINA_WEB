@@ -55,26 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
-// Preguntas del examen
-$preguntas = [
-    ['¿Cuál es el primer paso en la evaluación de una situación de emergencia?', 
-     ['Llamar a emergencias', 'Verificar la seguridad del entorno', 'Iniciar la reanimación cardiopulmonar (RCP)'], 
-     1],
-    ['¿Cuál es la técnica adecuada para realizar compresiones en RCP en un adulto?', 
-     ['20 compresiones por minuto', '30 compresiones y 2 ventilaciones', '40 compresiones y 3 ventilaciones'], 
-     1],
-    ['¿Qué se debe hacer en caso de quemaduras leves?', 
-     ['Aplicar hielo directamente sobre la quemadura', 'Enfriar con agua corriente durante al menos 10 minutos', 'Romper las ampollas'], 
-     1],
-    ['¿Cómo se debe actuar si una persona está inconsciente pero respira?', 
-     ['Iniciar RCP de inmediato', 'Colocarla en posición de recuperación', 'Realizar maniobras de Heimlich'], 
-     1],
-    ['¿Qué hacer en caso de una obstrucción de las vías respiratorias en un adulto consciente?', 
-     ['Realizar golpes en la espalda y compresiones abdominales', 'Suministrar oxígeno', 'Realizar RCP'], 
-     0]
-];
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4); // 4 es el ID del curso de IPERC
 $mensaje = '';
 
 // Procesar respuestas del examen
@@ -100,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso'][2] = 'APROBADO';
-            $_SESSION['nota_final_por_curso'][2] = $_SESSION['nota_final_por_curso'][2];
+            $_SESSION['nota_final_por_curso'][2] = $nota;
             $_SESSION['examen_completado_por_curso'][2] = true;
         } else {
             $_SESSION['estado_final_por_curso'][2] = 'REPROBADO';
@@ -417,8 +429,12 @@ input.volver:hover {
                     <p><strong><?php echo ($index + 1) . '. ' . $pregunta[0]; ?></strong></p>
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
-                            <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
+                        <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

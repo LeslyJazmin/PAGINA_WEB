@@ -55,30 +55,39 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Qué es un indicador de gestión en Seguridad y Salud en el Trabajo (SST)?', 
-     ['Un parámetro que mide el desempeño en SST', 'Un documento legal obligatorio', 'Un equipo de protección personal'], 
-     0], // Respuesta correcta: "Un parámetro que mide el desempeño en SST" (índice 0)
-    
-    ['¿Cuál de los siguientes es un indicador de gestión reactivo en SST?', 
-     ['Tasa de accidentalidad', 'Número de capacitaciones realizadas', 'Cantidad de inspecciones preventivas'], 
-     0], // Respuesta correcta: "Tasa de accidentalidad" (índice 0)
-    
-    ['¿Cuál es un ejemplo de indicador proactivo en SST?', 
-     ['Número de inspecciones de seguridad', 'Cantidad de días perdidos por accidentes', 'Tasa de severidad'], 
-     0], // Respuesta correcta: "Número de inspecciones de seguridad" (índice 0)
-    
-    ['¿Cómo se calcula la tasa de frecuencia en SST?', 
-     ['(N° de accidentes con tiempo perdido × 1,000,000) / Horas-hombre trabajadas', 
-      '(N° de inspecciones de seguridad × 100) / Trabajadores', 
-      '(N° de capacitaciones × 1,000) / Días trabajados'], 
-     0], // Respuesta correcta: "Fórmula de la tasa de frecuencia" (índice 0)
-    
-    ['¿Cuál es el objetivo principal de los indicadores de gestión en SST?', 
-     ['Monitorear y mejorar el desempeño en seguridad y salud', 'Cumplir con requisitos administrativos', 'Aumentar la producción sin importar la seguridad'], 
-     0] // Respuesta correcta: "Monitorear y mejorar el desempeño en seguridad y salud" (índice 0)
-];
+
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(23); // 23 es el ID del curso de Indicadores de Gestión de SST
 
 $mensaje = '';
 
@@ -106,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_indicadoresSST'][23] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_indicadoresSST'][23] = $_SESSION['nota_final_por_curso_indicadoresSST'][23];
+            $_SESSION['nota_final_por_curso_indicadoresSST'][23] = $nota;
             $_SESSION['examen_completado_por_curso_indicadoresSST'][23] = true;
         } else {
             $_SESSION['estado_final_por_curso_indicadoresSST'][23] = 'REPROBADO';
@@ -424,7 +433,10 @@ input.volver:hover {
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
-                            <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

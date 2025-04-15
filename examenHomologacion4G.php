@@ -55,29 +55,39 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Qué tipo de corriente es más recomendable para soldadura SMAW con electrodo E7018 en 4G?', 
-     ['Corriente alterna (AC)', 'Corriente continua (DC+)', 'Corriente continua (DC-)'], 
-     1], // Respuesta correcta: "Corriente continua (DC+)" (índice 1)
 
-    ['¿Qué defecto común puede ocurrir si la velocidad de desplazamiento es muy rápida en 4G?', 
-     ['Falta de fusión', 'Exceso de refuerzo', 'Inclusiones de escoria'], 
-     0], // Respuesta correcta: "Falta de fusión" (índice 0)
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
-    ['¿Qué prueba no destructiva se usa para inspeccionar soldaduras en homologación 4G?', 
-     ['Radiografía industrial', 'Ensayo de impacto', 'Doblado en raíz'], 
-     0], // Respuesta correcta: "Radiografía industrial" (índice 0)
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    ['¿Cuál es el ángulo recomendado del electrodo para una soldadura en posición 4G?', 
-     ['75-85°', '45-60°', '90°'], 
-     0], // Respuesta correcta: "75-85°" (índice 0)
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
 
-    ['¿Qué técnica ayuda a reducir la acumulación de material fundido al soldar sobre cabeza (4G)?', 
-     ['Movimiento en zigzag o semicírculos', 'Aumentar el amperaje', 'Usar electrodos de mayor diámetro'], 
-     0] // Respuesta correcta: "Movimiento en zigzag o semicírculos" (índice 0)
-];
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
 
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(29); // 29 es el ID del curso de Homologación 4G
 
 $mensaje = '';
 
@@ -105,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_Homologacion4G'][29] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_Homologacion4G'][29] = $_SESSION['nota_final_por_curso_Homologacion4G'][29];
+            $_SESSION['nota_final_por_curso_Homologacion4G'][29] = $nota;
             $_SESSION['examen_completado_por_curso_Homologacion4G'][29] = true;
         } else {
             $_SESSION['estado_final_por_curso_Homologacion4G'][29] = 'REPROBADO';
@@ -423,7 +433,10 @@ input.volver:hover {
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
-                            <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

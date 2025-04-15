@@ -55,29 +55,39 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Cuál es la posición de soldadura 3G en el proceso SMAW?', 
-     ['Vertical ascendente', 'Horizontal', 'Plana'], 
-     0], // Respuesta correcta: "Vertical ascendente" (índice 0)
 
-    ['¿Qué tipo de electrodo se recomienda para soldadura en posición 3G ascendente?', 
-     ['E6010', 'E7018', 'E6013'], 
-     1], // Respuesta correcta: "E7018" (índice 1)
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
-    ['¿Cuál es el principal gas protector utilizado en el proceso SMAW?', 
-     ['Dióxido de carbono', 'Oxígeno', 'No requiere gas protector'], 
-     2], // Respuesta correcta: "No requiere gas protector" (índice 2)
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    ['¿Qué defecto común puede ocurrir si la soldadura 3G se realiza con una corriente demasiado alta?', 
-     ['Falta de fusión', 'Excesiva penetración', 'Porosidad'], 
-     1], // Respuesta correcta: "Excesiva penetración" (índice 1)
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
 
-    ['¿Qué equipo de protección personal (EPP) es esencial para soldadura SMAW en 3G?', 
-     ['Guantes de cuero, careta de soldador y mandil de cuero', 'Casco de obra y guantes de látex', 'Gafas de seguridad y botas dieléctricas'], 
-     0] // Respuesta correcta: "Guantes de cuero, careta de soldador y mandil de cuero" (índice 0)
-];
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
 
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(28); // 28 es el ID del curso de Homologación 3G
 
 $mensaje = '';
 
@@ -105,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_Homologacion3G'][28] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_Homologacion3G'][28] = $_SESSION['nota_final_por_curso_Homologacion3G'][28];
+            $_SESSION['nota_final_por_curso_Homologacion3G'][28] = $nota;
             $_SESSION['examen_completado_por_curso_Homologacion3G'][28] = true;
         } else {
             $_SESSION['estado_final_por_curso_Homologacion3G'][28] = 'REPROBADO';
