@@ -86,7 +86,7 @@ function obtenerPreguntas($id_curso) {
 }
 
 // Obtener las preguntas del examen
-$preguntas = obtenerPreguntas(4); // 4 es el ID del curso de IPERC
+$preguntas = obtenerPreguntas(2); // 4 es el ID del curso de IPERC
 $mensaje = '';
 
 // Procesar respuestas del examen

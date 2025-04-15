@@ -86,7 +86,7 @@ function obtenerPreguntas($id_curso) {
 }
 
 // Obtener las preguntas del examen
-$preguntas = obtenerPreguntas(4);
+$preguntas = obtenerPreguntas(25);
 
 $mensaje = '';
 

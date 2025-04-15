@@ -55,28 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Cuál es la función principal del comando LINE en AutoCAD?', 
-     ['Dibujar líneas rectas', 'Crear círculos', 'Borrar objetos'], 
-     0], // Respuesta correcta: "Dibujar líneas rectas" (índice 0)
-    
-    ['¿Qué atajo de teclado permite copiar un objeto en AutoCAD?', 
-     ['CTRL + C', 'MIRROR', 'COPY'], 
-     2], // Respuesta correcta: "COPY" (índice 2)
-    
-    ['¿Qué sistema de coordenadas se utiliza en AutoCAD 3D?', 
-     ['Coordenadas Cartesianas y Polares', 'Coordenadas Relativas', 'Coordenadas XYZ'], 
-     2], // Respuesta correcta: "Coordenadas XYZ" (índice 2)
-    
-    ['¿Qué comando permite extruir un objeto 2D en AutoCAD 3D?', 
-     ['EXTRUDE', 'REVOLVE', 'OFFSET'], 
-     0], // Respuesta correcta: "EXTRUDE" (índice 0)
-    
-    ['¿Para qué se usa el comando UCS en AutoCAD 3D?', 
-     ['Cambiar el sistema de coordenadas', 'Unir dos objetos', 'Hacer una copia de seguridad'], 
-     0] // Respuesta correcta: "Cambiar el sistema de coordenadas" (índice 0)
-];
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
+
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(24);
 
 $mensaje = '';
 
@@ -421,8 +431,12 @@ input.volver:hover {
                     <p><strong><?php echo ($index + 1) . '. ' . $pregunta[0]; ?></strong></p>
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
-                            <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
+                        <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>
