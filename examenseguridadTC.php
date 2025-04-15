@@ -55,29 +55,38 @@ function tiempoExpirado() {
     $tiempo_transcurrido = time() - $_SESSION['tiempo_inicio'];
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
-// Preguntas del examen
-$preguntas = [
-    ['¿Qué se considera un espacio confinado?', 
-     ['Un área cerrada con acceso limitado y ventilación restringida', 'Cualquier lugar con techo', 'Un área al aire libre con poca iluminación'], 
-     0], // Respuesta correcta: "Un área cerrada con acceso limitado y ventilación restringida" (índice 0)
-    
-    ['¿Qué documento es obligatorio antes de ingresar a un espacio confinado?', 
-     ['Permiso de trabajo', 'Orden de compra', 'Lista de herramientas'], 
-     0], // Respuesta correcta: "Permiso de trabajo" (índice 0)
-    
-    ['¿Cuál es el principal riesgo en un espacio confinado?', 
-     ['Falta de oxígeno o presencia de gases tóxicos', 'Temperaturas bajas', 'Ruidos fuertes'], 
-     0], // Respuesta correcta: "Falta de oxígeno o presencia de gases tóxicos" (índice 0)
-    
-    ['¿Qué equipo de seguridad es esencial para trabajar en espacios confinados?', 
-     ['Detector de gases, arnés de seguridad y ventilación adecuada', 'Lentes de sol y guantes de algodón', 'Botas de goma y casco'], 
-     0], // Respuesta correcta: "Detector de gases, arnés de seguridad y ventilación adecuada" (índice 0)
-    
-    ['¿Cuál es el procedimiento correcto antes de ingresar a un espacio confinado?', 
-     ['Evaluar la atmósfera con detectores de gases', 'Entrar rápidamente y evaluar desde dentro', 'Solo ingresar si hay buena iluminación'], 
-     0] // Respuesta correcta: "Evaluar la atmósfera con detectores de gases" (índice 0)
-];
+// Función para obtener las preguntas del examen desde la base de datos
+function obtenerPreguntas($id_curso) {
+    $conn = new mysqli('localhost', 'root', '', 'usuario');
+    if ($conn->connect_error) {
+        die("Error de conexión: " . $conn->connect_error);
+    }
 
+    $preguntas = [];
+    $sql = "SELECT * FROM examen_final WHERE id_curso = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id_curso);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
+        $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
+        
+        $preguntas[] = [
+            $row['pregunta'],
+            $opciones,
+            $respuesta_correcta
+        ];
+    }
+
+    $stmt->close();
+    $conn->close();
+    return $preguntas;
+}
+
+// Obtener las preguntas del examen
+$preguntas = obtenerPreguntas(4);
 
 $mensaje = '';
 
@@ -105,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_seguridadTC'][26] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_seguridadTC'][26] = $_SESSION['nota_final_por_curso_seguridadTC'][26];
+            $_SESSION['nota_final_por_curso_seguridadTC'][26] = $nota;
             $_SESSION['examen_completado_por_curso_seguridadTC'][26] = true;
         } else {
             $_SESSION['estado_final_por_curso_seguridadTC'][26] = 'REPROBADO';
@@ -424,6 +433,10 @@ input.volver:hover {
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
                             <?php echo $opcion; ?>
+                            <?php 
+                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                            echo $letra_opcion . ') ' . $opcion; 
+                            ?>
                         </label>
                     <?php endforeach; ?>
                 </div>

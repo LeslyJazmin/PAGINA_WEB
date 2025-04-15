@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
         // Evaluar estado
         if ($nota >= 13) {
             $_SESSION['estado_final_por_curso_autocad'][24] = 'APROBADO';
-            $_SESSION['nota_final_por_curso_autocad'][24] = $_SESSION['nota_final_por_curso_autocad'][24];
+            $_SESSION['nota_final_por_curso_autocad'][24] = $nota;
             $_SESSION['examen_completado_por_curso_autocad'][24] = true;
         } else {
             $_SESSION['estado_final_por_curso_autocad'][24] = 'REPROBADO';
