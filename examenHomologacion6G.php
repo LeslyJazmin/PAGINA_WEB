@@ -6,12 +6,12 @@ function inicializarSesion() {
     if (!isset($_SESSION['intentos_por_curso_Homologacion6G'])) {
         $_SESSION['intentos_por_curso_Homologacion6G'] = [];
     }
-    
-    // ID 2 corresponde al curso de primeros auxilios
+
+    // ID 30 corresponde al curso de Homologación 6G en proceso smaw
     if (!isset($_SESSION['intentos_por_curso_Homologacion6G'][30])) {
         $_SESSION['intentos_por_curso_Homologacion6G'][30] = 0;
     }
-    
+
     if (!isset($_SESSION['notas_por_curso_Homologacion6G'])) {
         $_SESSION['notas_por_curso_Homologacion6G'] = [];
     }
@@ -20,16 +20,16 @@ function inicializarSesion() {
     }
     if (!isset($_SESSION['examen_completado_por_curso_Homologacion6G'][30])) {
         $_SESSION['examen_completado_por_curso_Homologacion6G'][30] = false;
-    }    
-    
+    }
+
     $_SESSION['tiempo_inicio'] = 0;
-    $_SESSION['tiempo_restante'] = 10 * 60; // 20 minutos en segundos
+    $_SESSION['tiempo_restante'] = 10 * 60; // 10 minutos en segundos - ajusta si es necesario
     $_SESSION['examen_iniciado'] = false;
     $_SESSION['examen_completado_por_curso_Homologacion6G'][30] = false;
     $_SESSION['nota_final_por_curso_Homologacion6G'][30] = 0;
     $_SESSION['estado_final_por_curso_Homologacion6G'][30] = '';
     $_SESSION['nota_mas_alta_por_curso_Homologacion6G'][30] = 0;
-    $_SESSION['id_curso'] = 30; // Curso de primeros auxilios
+    $_SESSION['id_curso'] = 30; // Curso de Homologación 6G en proceso smaw
 }
 
 // Inicializar sesión si no existe o si se solicita reiniciar
@@ -37,7 +37,7 @@ if (!isset($_SESSION['intentos_por_curso_Homologacion6G']) || isset($_POST['rein
     inicializarSesion();
 }
 
-$duracion_examen = 20 * 60;
+$duracion_examen = 10 * 60; // 10 minutos
 
 // Procesar la acción de iniciar el examen
 if (isset($_POST['iniciar_examen'])) {
@@ -73,7 +73,7 @@ function obtenerPreguntas($id_curso) {
     while ($row = $result->fetch_assoc()) {
         $opciones = [$row['opcion_a'], $row['opcion_b'], $row['opcion_c'], $row['opcion_d']];
         $respuesta_correcta = array_search($row['correcta'], ['a', 'b', 'c', 'd']);
-        
+
         $preguntas[] = [
             $row['pregunta'],
             $opciones,
@@ -86,8 +86,8 @@ function obtenerPreguntas($id_curso) {
     return $preguntas;
 }
 
-// Obtener las preguntas del examen
-$preguntas = obtenerPreguntas(30); // 30 es el ID del curso de Homologación 6G
+// Obtener las preguntas del examen para el curso de Homologación 6G (id_curso = 30)
+$preguntas = obtenerPreguntas(30);
 
 $mensaje = '';
 
@@ -150,9 +150,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['respuestas'])) {
             if ($resultadoVerificar->num_rows > 0) {
                 // Actualizar el intento correspondiente
                 $campo_intento = "intentose{$intento_actual}";
-                $sql = "UPDATE inscripciones 
-                        SET $campo_intento = ?, examen_final = ? 
-                        WHERE DNI = ? AND id_curso = 30";
+                $sql = "UPDATE inscripciones
+                            SET $campo_intento = ?, examen_final = ?
+                            WHERE DNI = ? AND id_curso = 30";
 
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("iis", $nota, $nota_mas_alta, $DNI);
@@ -191,7 +191,7 @@ if (isset($_POST['reiniciar'])) {
     }
 
     $DNI = $_SESSION['DNI'];
-    
+
     $sql = "UPDATE inscripciones SET `intentose1` = 0, `intentose2` = 0, `intentose3` = 0, `examen_final` = 0 WHERE DNI = ? AND id_curso = 30";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $DNI);
@@ -354,30 +354,28 @@ if (isset($_POST['reiniciar'])) {
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-      /* Opción 1: Usando float */
-input.volver {
-    background-color: #2980b9;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 5px;
-    float: right; /* Añadido para mover a la derecha */
-    margin-top: 170px; /* Mueve el botón hacia arriba */
-}
+    /* Opción 1: Usando float */
+    input.volver {
+        background-color: #2980b9;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        float: right; /* Añadido para mover a la derecha */
+        margin-top: 20px; /* Mueve el botón hacia arriba */
+    }
 
-
-
-input.volver:hover {
-    background-color: #2980b9;
-}
+    input.volver:hover {
+        background-color: #2980b9;
+    }
         input.volver:hover {
             background-color: #2980b9; /* Color de fondo al pasar el mouse */
         }
         .button-container {
             display: flex;
             gap: 10px; /* Espacio entre los botones */
-            right:30px;
-            
+            justify-content: center;
+
         }
     </style>
 <body>
@@ -386,83 +384,78 @@ input.volver:hover {
         <h1>Examen de Homologación 6G en proceso smaw</h1>
     <?php if ($_SESSION['examen_completado_por_curso_Homologacion6G'][30]): ?>
     <?php if ($_SESSION['estado_final_por_curso_Homologacion6G'][30] == 'APROBADO'): ?>
-        <!-- Mensaje de éxito si se aprueba el examen -->
-        <div class="mensaje">
-            Felicidades! Ya has aprobado el examen. No necesitas realizar más intentos.
-        </div>
-        <!-- Botón para volver al curso -->
-        <form method="post">
-            <button type="button" value="Volver a mi curso" class="volver" onclick="window.location.href='Homologacion6G.php'">Volver a mi curso</button>
-        </form>
+            <div class="mensaje">
+                Felicidades! Ya has aprobado el examen. No necesitas realizar más intentos.
+            </div>
+            <form method="post">
+                <button type="button" value="Volver a mi curso" class="volver" onclick="window.location.href='Homologacion6G.php'">Volver a mi curso</button>
+            </form>
 
     <?php else: ?>
-        <!-- Si no está aprobado, y se tiene menos de 3 intentos -->
-        <?php if ($_SESSION['intentos_por_curso_Homologacion6G'][30] < 3): ?>
-            <div class="mensaje">
-                Has reprobado el examen con <?php echo $_SESSION['nota_final']; ?> puntos. Te queda 
-                <?php echo 3 - $_SESSION['intentos_por_curso_Homologacion6G'][30]; ?> intento(s). Puedes intentar nuevamente.
-            </div>
-            <div class="mensaje">
-                El puntaje más alto obtenido hasta ahora es <?php echo max($_SESSION['notas_por_curso_Homologacion6G']); ?> puntos.
-            </div>
-            <button onclick="mostrarModal()" class="modal-button">Continuar con el siguiente intento</button>
-        <?php else: ?>
-            <!-- Si ya se han agotado los intentos -->
-            <form method="post">
-                <input type="button" value="Volver a mi curso" class="volver" onclick="window.location.href='Homologacion6G.php'">
-            </form>
-            <div class="mensaje">
-                Has agotado tus 3 intentos. Por favor, contacta al instructor para más información o reinicia el examen a continuación.
-            </div>
-        <?php endif; ?>
+            <?php if ($_SESSION['intentos_por_curso_Homologacion6G'][30] < 3): ?>
+                <div class="mensaje">
+                    Has reprobado el examen con <?php echo $_SESSION['nota_final_por_curso_Homologacion6G'][30]; ?> puntos. Te queda
+                    <?php echo 3 - $_SESSION['intentos_por_curso_Homologacion6G'][30]; ?> intento(s). Puedes intentar nuevamente.
+                </div>
+                <div class="mensaje">
+                    El puntaje más alto obtenido hasta ahora es <?php echo max($_SESSION['notas_por_curso_Homologacion6G'][30] ?? [0]); ?> puntos.
+                </div>
+                <button onclick="mostrarModal()" class="modal-button">Continuar con el siguiente intento</button>
+            <?php else: ?>
+                <form method="post">
+                    <input type="button" value="Volver a mi curso" class="volver" onclick="window.location.href='Homologacion6G.php'">
+                </form>
+                <div class="mensaje">
+                    Has agotado tus 3 intentos. Por favor, contacta al instructor para más información o reinicia el examen a continuación.
+                </div>
+            <?php endif; ?>
     <?php endif; ?>
 
-<!-- Si no se ha completado el Videotest -->
 <?php elseif ($_SESSION['intentos_por_curso_Homologacion6G'][30] < 3): ?>
     <?php if (!$_SESSION['examen_iniciado']): ?>
-        <!-- Botón para iniciar el Videotest -->
         <button onclick="mostrarModal()" class="modal-button">Iniciar Examen</button>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='Homologacion6G.php'">
     <?php else: ?>
-        <!-- Temporizador y formulario del examen -->
         <div id="timer">Tiempo restante: 20:00</div>
         <form method="post" id="examenForm">
-            <?php foreach ($preguntas as $index => $pregunta): ?>
-                <div class="pregunta">
-                    <p><strong><?php echo ($index + 1) . '. ' . $pregunta[0]; ?></strong></p>
-                    <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
-                        <label>
+            <?php if (!empty($preguntas)): ?>
+                <?php foreach ($preguntas as $index => $pregunta): ?>
+                    <div class="pregunta">
+                        <p><strong><?php echo ($index + 1) . '. ' . htmlspecialchars($pregunta[0]); ?></strong></p>
+                        <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
+                            <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
-                            <?php 
-                            $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
-                            echo $letra_opcion . ') ' . $opcion; 
-                            ?>
-                        </label>
-                    <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
-            <input type="hidden" name="tiempo_actual" id="tiempo_actual" value="<?php echo $_SESSION['tiempo_restante']; ?>">
-            <input type="submit" value="Enviar respuestas">
+                                <?php
+                                $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
+                                echo htmlspecialchars($letra_opcion . ') ' . $opcion);
+                                ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endforeach; ?>
+                <input type="hidden" name="tiempo_actual" id="tiempo_actual" value="<?php echo $_SESSION['tiempo_restante']; ?>">
+                <input type="submit" value="Enviar respuestas">
+            <?php else: ?>
+                <div class="mensaje">No hay preguntas disponibles para este examen.</div>
+            <?php endif; ?>
         </form>
     <?php endif; ?>
 
 <?php endif; ?>
 
-<!-- Mensaje adicional si existe -->
 <?php if ($mensaje): ?>
     <div class="mensaje"><?php echo $mensaje; ?></div>
 <?php endif; ?>
 
-<!-- Modal para iniciar el Videotest -->
 <div id="inicioModal" class="modal">
     <div class="modal-content">
-                <h2>Iniciar Examen</h2>
-                <p>El examen tiene un tiempo límite de 20 minutos. El tiempo empezará a contar desde el momento en el que inicia su intento y debe presentarse antes de que el tiempo termine, de lo contrario será reprobado. ¿Seguro que desea empezar ahora?</p>
-                <form method="post" id="iniciarExamenForm">
-                <div class="button-container">
-                        <input type="submit" name="iniciar_examen" value="Comenzar Examen" class="modal-button">
-                        <button type="button" class="modal-button" onclick="window.location.href='Homologacion6G.php'">Volver atrás</button>
-            </div>
+        <h2>Iniciar Examen</h2>
+        <p>El examen tiene un tiempo límite de 20 minutos. El tiempo empezará a contar desde el momento en el que inicia su intento y debe presentarse antes de que el tiempo termine, de lo contrario será reprobado. ¿Seguro que desea empezar ahora?</p>
+        <form method="post" id="iniciarExamenForm">
+        <div class="button-container">
+            <input type="submit" name="iniciar_examen" value="Comenzar Examen" class="modal-button">
+            <button type="button" class="modal-button" onclick="window.location.href='Homologacion6G.php'">Volver atrás</button>
+        </div>
         </form>
     </div>
 </div>
@@ -481,41 +474,41 @@ input.volver:hover {
                 var seconds = tiempoRestante % 60;
 
                 minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
 
-            document.getElementById('timer').textContent = "Tiempo restante: " + minutes + ":" + seconds;
-            document.getElementById('tiempo_actual').value = tiempoRestante;
+                document.getElementById('timer').textContent = "Tiempo restante: " + minutes + ":" + seconds;
+                document.getElementById('tiempo_actual').value = tiempoRestante;
 
-            if (--tiempoRestante < 0) {
-                clearInterval(timerInterval);
-                alert("El tiempo ha expirado. El examen se enviará automáticamente.");
-                document.getElementById("examenForm").submit(); // Enviar examen automáticamente
+                if (--tiempoRestante < 0) {
+                    clearInterval(timerInterval);
+                    alert("El tiempo ha expirado. El examen se enviará automáticamente.");
+                    document.getElementById("examenForm").submit(); // Enviar examen automáticamente
+                }
+            }, 1000);
+        }
+
+        // Mostrar el modal para iniciar el examen
+        function mostrarModal() {
+            document.getElementById('inicioModal').style.display = 'block';
+        }
+
+        // Si el examen ya está iniciado, inicia el temporizador
+        if (examenIniciado) {
+            startTimer();
+        }
+
+        // Manejar el envío del formulario para iniciar el examen
+        document.getElementById('iniciarExamenForm').addEventListener('submit', function(e) {
+            examenIniciado = true;
+            startTimer(); // Iniciar el temporizador al comenzar el examen
+        });
+
+        // Reiniciar el temporizador cuando el usuario vuelve a la página
+        window.addEventListener('focus', function() {
+            if (examenIniciado) {
+                startTimer();
             }
-        }, 1000);
-}
-
-// Mostrar el modal para iniciar el examen
-function mostrarModal() {
-    document.getElementById('inicioModal').style.display = 'block';
-}
-
-// Si el examen ya está iniciado, inicia el temporizador
-if (examenIniciado) {
-    startTimer();
-}
-
-// Manejar el envío del formulario para iniciar el examen
-document.getElementById('iniciarExamenForm').addEventListener('submit', function(e) {
-    examenIniciado = true;
-    startTimer(); // Iniciar el temporizador al comenzar el examen
-});
-
-// Reiniciar el temporizador cuando el usuario vuelve a la página
-window.addEventListener('focus', function() {
-    if (examenIniciado) {
-        startTimer();
-    }
-});
+        });
 
 
     </script>
