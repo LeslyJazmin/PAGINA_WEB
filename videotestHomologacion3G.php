@@ -56,28 +56,56 @@ function tiempoExpirado() {
     return $tiempo_transcurrido >= $_SESSION['tiempo_restante'];
 }
 
+
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Cuál es la función del revestimiento en los electrodos para SMAW?', 
-    ['Generar gas protector y escoria', 'Aumentar la velocidad de soldadura', 'Reducir la temperatura de fusión'], 
-    0], // Respuesta correcta: "Generar gas protector y escoria" (índice 0)
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
-   ['¿Qué tipo de corriente se usa comúnmente con electrodos E7018?', 
-    ['Corriente alterna (AC)', 'Corriente continua (DC+)', 'Corriente continua (DC-)'], 
-    1], // Respuesta correcta: "Corriente continua (DC+)" (índice 1)
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
-   ['¿Cuál es un defecto típico en soldadura 3G cuando se usa una velocidad de desplazamiento muy rápida?', 
-    ['Falta de fusión', 'Exceso de refuerzo', 'Inclusiones de escoria'], 
-    0], // Respuesta correcta: "Falta de fusión" (índice 0)
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 28";
+$result_preguntas = $conn->query($sql_preguntas);
 
-   ['¿Qué prueba no destructiva se usa para inspeccionar soldaduras en homologación 3G?', 
-    ['Radiografía industrial', 'Ensayo de impacto', 'Doblado en raíz'], 
-    0], // Respuesta correcta: "Radiografía industrial" (índice 0)
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
 
-   ['¿Cuál es el ángulo recomendado del electrodo para una soldadura en posición 3G ascendente?', 
-    ['75-85°', '45-60°', '90°'], 
-    0] // Respuesta correcta: "75-85°" (índice 0)
-];
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
@@ -258,7 +286,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_Homologacion3G'][28] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='Homologacion3G.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -350,9 +382,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+        <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='Homologacion3G.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

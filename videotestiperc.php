@@ -57,48 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    [
-        '¿Qué significa el acrónimo IPERC?', 
-        ['Identificación de Peligros, Evaluación y Control de Riesgos', // Respuesta correcta
-         'Inspección de Procesos y Evaluación de Riesgos Críticos', 
-         'Implementación de Planes para Emergencias y Riesgos'], 
-        0, // Respuesta correcta: "Identificación de Peligros, Evaluación y Control de Riesgos" (índice 0)
-        4  // Puntaje por respuesta correcta
-    ],
-    [
-        '¿Cuál es el primer paso en el proceso de IPERC?', 
-        ['Implementar medidas de control', 
-         'Identificar los peligros', // Respuesta correcta
-         'Evaluar los riesgos'], 
-        1, // Respuesta correcta: "Identificar los peligros" (índice 1)
-        4  // Puntaje por respuesta correcta
-    ],
-    [
-        '¿Qué herramienta se utiliza comúnmente para identificar peligros en una tarea específica?', 
-        ['Lista de verificación', // Respuesta correcta
-         'Simulacro de emergencia', 
-         'Plan de contingencia'], 
-        0, // Respuesta correcta: "Lista de verificación" (índice 0)
-        4  // Puntaje por respuesta correcta
-    ],
-    [
-        '¿Cómo se clasifica un riesgo después de ser evaluado en IPERC?', 
-        ['Leve, moderado o crítico', 
-         'Bajo, medio o alto', // Respuesta correcta
-         'Insignificante, significativo o catastrófico'], 
-        1, // Respuesta correcta: "Bajo, medio o alto" (índice 1)
-        4  // Puntaje por respuesta correcta
-    ],
-    [
-        '¿Qué medida se debe tomar primero para controlar un riesgo alto identificado en IPERC?', 
-        ['Aplicar controles administrativos', 
-         'Eliminación del peligro', // Respuesta correcta
-         'Suministrar equipo de protección personal (EPP)'], 
-        1, // Respuesta correcta: "Eliminación del peligro" (índice 1)
-        4  // Puntaje por respuesta correcta
-    ]
-];
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 4";
+$result_preguntas = $conn->query($sql_preguntas);
+
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
+
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
@@ -279,7 +285,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_iperc'][4] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='iperc.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -371,9 +381,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+        <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='iperc.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

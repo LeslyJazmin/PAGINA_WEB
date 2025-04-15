@@ -57,28 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué documento es obligatorio antes de iniciar una excavación?', 
-     ['Permiso de trabajo', 'Certificado médico', 'Orden de compra de herramientas'], 
-     0, 4],
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
-    ['¿Cuál es la profundidad mínima a partir de la cual se deben emplear sistemas de entibado o apuntalamiento?', 
-     ['0.5 metros', '1.2 metros', '2 metros'], 
-     1, 4],
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
-    ['¿Cuál es el principal riesgo asociado a las excavaciones profundas?', 
-     ['Caídas de altura', 'Derrumbe de las paredes', 'Exposición a ruido excesivo'], 
-     1, 4],
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 20";
+$result_preguntas = $conn->query($sql_preguntas);
 
-    ['¿Qué medida se debe tomar si hay presencia de gases tóxicos en una excavación?', 
-     ['Seguir trabajando con precaución', 'Ventilar el área y usar detectores de gases', 'Tapar la excavación y esperar'], 
-     1, 4],
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
 
-    ['¿Qué tipo de señalización debe usarse en las zonas de excavación?', 
-     ['Señales luminosas únicamente', 'Señales visibles que alerten del peligro de caída y acceso restringido', 'Señales auditivas únicamente'], 
-     1, 4]
-];
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
 
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 $mensaje = '';
 
@@ -259,7 +285,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_seguridadE'][20] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='seguridadE.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -351,9 +381,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+    <!-- Modal para "No hay preguntas registradas" -->
+    <div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='seguridadE.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

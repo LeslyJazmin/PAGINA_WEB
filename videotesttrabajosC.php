@@ -57,27 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Qué documento es obligatorio antes de realizar un trabajo en caliente?', 
-     ['Permiso de trabajo en caliente', 'Certificado médico', 'Orden de compra de herramientas'], 
-     0, 4], // Respuesta correcta: Permiso de trabajo en caliente
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
 
-    ['¿Cuál es la medida principal para prevenir incendios en trabajos en caliente?', 
-     ['Mantener un extintor cerca y retirar materiales inflamables', 'Trabajar rápido para reducir el riesgo', 'Usar ventiladores para disipar el calor'], 
-     0, 4], // Respuesta correcta: Mantener un extintor cerca y retirar materiales inflamables
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
 
-    ['¿Qué equipo de protección personal (EPP) es obligatorio en trabajos en caliente?', 
-     ['Casco con pantalla facial, guantes resistentes al calor y ropa ignífuga', 'Lentes de sol y guantes de látex', 'Protector auditivo únicamente'], 
-     0, 4], // Respuesta correcta: Casco con pantalla facial, guantes resistentes al calor y ropa ignífuga
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 25";
+$result_preguntas = $conn->query($sql_preguntas);
 
-    ['¿Cuál es la acción inmediata en caso de un incendio menor durante un trabajo en caliente?', 
-     ['Seguir trabajando hasta terminar', 'Usar el extintor adecuado y notificar a seguridad', 'Ignorarlo si es pequeño'], 
-     1, 4], // Respuesta correcta: Usar el extintor adecuado y notificar a seguridad
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
 
-    ['¿Cuánto tiempo debe permanecer en vigilancia el área después de finalizado un trabajo en caliente?', 
-     ['Inmediatamente después de apagar el equipo', 'Al menos 30 minutos', 'No es necesario supervisar después'], 
-     1, 4] // Respuesta correcta: Al menos 30 minutos
-];
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 
 $mensaje = '';
@@ -259,7 +286,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_trabajosC'][25] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='trabajosC.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -351,9 +382,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+        <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='trabajosC.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 

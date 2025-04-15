@@ -57,23 +57,54 @@ function tiempoExpirado() {
 }
 
 // Preguntas y opciones del examen (Cada pregunta vale 4 puntos)
-$preguntas = [
-    ['¿Cuál es el primer paso que se debe tomar al llegar a una escena de emergencia?', 
-     ['Evaluar la seguridad del entorno', 'Llamar al 911', 'Aplicar RCP de inmediato'], 
-     0, 4],
-    ['¿Cuál es la posición correcta para una persona inconsciente que respira?', 
-     ['Posición de recuperación', 'Boca arriba con las piernas elevadas', 'Sentado con la cabeza hacia adelante'], 
-     0, 4],
-    ['¿Qué se debe hacer en caso de una quemadura de primer grado?', 
-     ['Aplicar agua fría durante al menos 10 minutos', 'Romper las ampollas', 'Aplicar mantequilla o ungüentos'], 
-     0, 4],
-    ['¿Cuál es el ritmo correcto de compresiones torácicas durante una RCP en un adulto?', 
-     ['60-80 compresiones por minuto', '100-120 compresiones por minuto', '150-180 compresiones por minuto'], 
-     1, 4],
-    ['¿Qué se debe hacer si una persona está atragantándose y no puede respirar?', 
-     ['Aplicar maniobra de Heimlich', 'Dar agua para que pase el objeto', 'Pedirle que tosa fuerte'], 
-     0, 4]
-];
+$preguntas = [];
+$conn = new mysqli('localhost', 'root', '', 'usuario');
+
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
+}
+
+// Obtener las preguntas del curso con id = 1
+$sql_preguntas = "SELECT id, pregunta FROM preguntas WHERE id_curso = 2";
+$result_preguntas = $conn->query($sql_preguntas);
+
+if ($result_preguntas && $result_preguntas->num_rows > 0) {
+    while ($row_pregunta = $result_preguntas->fetch_assoc()) {
+        $id_pregunta = $row_pregunta['id'];
+        $pregunta = $row_pregunta['pregunta'];
+
+        // Obtener las opciones de respuesta con indicador de si es correcta
+        $sql_opciones = "SELECT opcion, es_correcta FROM opciones WHERE pregunta_id = ? ORDER BY id ASC";
+        $stmt_opciones = $conn->prepare($sql_opciones);
+        $stmt_opciones->bind_param("i", $id_pregunta);
+        $stmt_opciones->execute();
+        $result_opciones = $stmt_opciones->get_result();
+
+        $opciones = [];
+        $respuesta_correcta = -1;
+        $indice = 0;
+
+        while ($row_opcion = $result_opciones->fetch_assoc()) {
+            $opciones[] = $row_opcion['opcion'];
+            if ($row_opcion['es_correcta']) {
+                $respuesta_correcta = $indice;
+            }
+            $indice++;
+        }
+
+        // Agregar al arreglo de preguntas
+        $preguntas[] = [$pregunta, $opciones, $respuesta_correcta, 4];
+        $stmt_opciones->close();
+    }
+}
+
+$conn->close();
+
+$mostrar_modal = false;
+
+if (count($preguntas) === 0) {
+    $mostrar_modal = true;
+}
 
 
 $mensaje = '';
@@ -255,7 +286,11 @@ if (isset($_POST['reiniciar'])) {
 <?php elseif ($_SESSION['intentos_curso_pa'][2] < 3): ?>
     <?php if (!$_SESSION['videotest_iniciado']): ?>
         <!-- Botón para iniciar el Videotest -->
-        <button onclick="mostrarModal()" class="modal-button">Iniciar Videotest</button>
+        <?php if (!$mostrar_modal): ?>
+            <form method="post">
+                <button type="submit" name="iniciar_videotest" class="modal-button">Iniciar Videotest</button>
+            </form>
+        <?php endif; ?>
         <input type="button" value="Cerrar y salir" class="modal-button" onclick="window.location.href='pa.php'">
     <?php else: ?>
         <!-- Temporizador y formulario del examen -->
@@ -347,9 +382,17 @@ window.addEventListener('focus', function() {
         startTimer();
     }
 });
-
-
     </script>
+
+        <!-- Modal para "No hay preguntas registradas" -->
+<div id="modalSinPreguntas" class="modal-overlay" style="display: <?= $mostrar_modal ? 'flex' : 'none' ?>;">
+    <div class="modal-content">
+        <h3>No hay preguntas registradas</h3>
+        <p>Actualmente no hay preguntas disponibles para este curso.</p>
+        <button onclick="window.location.href='ps.php'">Cerrar</button>
+    </div>
+</div>
+
 </body>
 </html>    
 
