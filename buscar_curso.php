@@ -139,7 +139,7 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-size: 28px;
     position: absolute;
-    top: 180px;      /* Ajustado para la posición correcta del nombre */
+    top: 220px;      /* Ajustado para la posición correcta del nombre */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
@@ -152,7 +152,7 @@ body {
     font-size: 25px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-style: italic;
-    top: 260px;     /* Ajustado de 300px a 260px para subir el texto */
+    top: 300px;     /* Ajustado de 300px a 260px para subir el texto */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
