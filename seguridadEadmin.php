@@ -37,174 +37,9 @@ $stmt->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curso de Seguridad para Trabajos Eléctricos</title>
     <link rel="stylesheet" href="admi.css">
+    <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Reset básico */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 200px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            height: 100vh;
-            background-color: #0a507e;
-            color: white;
-            padding-top: 20px;
-        }
-
-        .sidebar h2 {
-            padding: 0 15px;
-            margin-bottom: 30px;
-            font-size: 18px;
-            line-height: 1.2;
-        }
-
-        .sidebar ul {
-            list-style: none;
-        }
-
-        .sidebar ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            display: block;
-            transition: background-color 0.3s;
-        }
-
-        .sidebar ul li a:hover,
-        .sidebar ul li a.selected {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar ul li a i {
-            margin-right: 10px;
-            width: 20px;
-        }
-
-        /* Contenido principal */
-        .contenido-principal {
-          width: 1029px;
-          height: 710.594px;
-          transform: translateX(177px ,2px);
-        }
-
-        /* Título principal */
-        .contenido-principal h1 {
-            color: #000;
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: normal;
-        }
-
-        /* Tablas */
-        .tabla-estudiantes,
-        .formulario-fechas table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            background-color: white;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-        .tabla-estudiantes th,
-        .formulario-fechas th {
-            background-color: #0a507e;
-            color: white;
-            padding: 10px;
-            text-align: left;
-            font-weight: normal;
-        }
-
-        .tabla-estudiantes td,
-        .formulario-fechas td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            background-color: white;
-        }
-
-        /* Formularios */
-        .formulario-fechas {
-            margin-top: 20px;
-        }
-
-        .formulario-fechas input[type="date"],
-        .formulario-fechas input[type="time"] {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 0;
-        }
-
-        /* Botones */
-        .botones-accion {
-            margin-top: 20px;
-        }
-
-        .update-btn {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            padding: 5px 15px;
-            margin-right: 10px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .update-btn:hover {
-            background-color: #e5e5e5;
-        }
-
-        /* Encabezados de sección */
-        .seccion-titulo {
-            background-color: #0a507e;
-            color: white;
-            padding: 10px;
-            margin-bottom: 0;
-            font-weight: normal;
-        }
-
-        /* Contenedor de tabla */
-        .tabla-container {
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 1400px) {
-            .contenido-principal {
-                margin-left: 350px;
-                width: calc(100% - 400px);
-            }
-        }
-
-        @media (max-width: 1200px) {
-            .contenido-principal {
-                margin-left: 300px;
-                width: calc(100% - 350px);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                display: none;
-            }
-            .contenido-principal {
-                margin-left: 0;
-                width: 100%;
-            }
-        }
-    </style>
 </head>
-
 <body>
     <div class="container">
         <div class="sidebar">
@@ -214,21 +49,21 @@ $stmt->close();
                 <li>
                     <a href="cursosa.php" class="selected"><i class="fas fa-book"></i> Cursos</a>
                     <ul class="subcursos">
-                        <li><a href="iperadmi.php">Iperc</a></li>
-                        <li><a href="sadmi.php">Soldadura con arco elèctrico electrodo revestido</a></li>
-                        <li><a href="padmi.php">Primeros Auxilios</a></li>
-                        <li><a href="meadmi.php">Uso y manejo de extintores</a></li>
-                        <li><a href="seguridadTAadmin.php">Seguridad para Trabajos con Altura</a></li>
-                        <li><a href="trabajosCadmin.php">Seguridad para Trabajos en Caliente</a></li>
-                        <li><a href="seguridadEadmin.php">Seguridad para Trabajos Eléctricos</a></li>
-                        <li><a href="seguridaTEadmin.php">Seguridad para Trabajos en Zanjas o Excavaciones</a></li>
-                        <li><a href="indicadoresSSTadmin.php">Indicadores de Gestión de SST</a></li>
-                        <li><a href="autocadadmin.php">AUTOCAD 2D Y 3D</a></li>
-                        <li><a href="seguridadTCadmin.php">Seguridad en trabajos confinados</a></li>
-                        <li><a href="ofimaticaadmin.php">Ofimática</a></li>
-                        <li><a href="Homologacion3Gadmin.php">Homologación 3G en proceso smaw</a></li>
-                        <li><a href="Homologacion4Gadmin.php">Homologación 4G en proceso smaw</a></li>
-                        <li><a href="Homologacion6Gadmin.php">Homologación 6G en proceso smaw</a></li>
+                        <li><a href="iperadmi.php" style="color: #000;">Iperc</a></li>
+                        <li><a href="sadmi.php" style="color: #000;">Soldadura con arco elèctrico electrodo revestido</a></li>
+                        <li><a href="padmi.php" style="color: #000;">Primeros Auxilios</a></li>
+                        <li><a href="meadmi.php" style="color: #000;">Uso y manejo de extintores</a></li>
+                        <li><a href="seguridadTAadmin.php" style="color: #000;">Seguridad para Trabajos con Altura</a></li>
+                        <li><a href="trabajosCadmin.php" style="color: #000;">Seguridad para Trabajos en Caliente</a></li>
+                        <li><a href="seguridadEadmin.php" style="color: #000;">Seguridad para Trabajos Eléctricos</a></li>
+                        <li><a href="seguridaTEadmin.php" style="color: #000;">Seguridad para Trabajos en Zanjas o Excavaciones</a></li>
+                        <li><a href="indicadoresSSTadmin.php" style="color: #000;">Indicadores de Gestión de SST</a></li>
+                        <li><a href="autocadadmin.php" style="color: #000;">AUTOCAD 2D Y 3D</a></li>
+                        <li><a href="seguridadTCadmin.php" style="color: #000;">Seguridad en trabajos confinados</a></li>
+                        <li><a href="ofimaticaadmin.php" style="color: #000;">Ofimática</a></li>
+                        <li><a href="Homologacion3Gadmin.php" style="color: #000;">Homologación 3G en proceso smaw</a></li>
+                        <li><a href="Homologacion4Gadmin.php" style="color: #000;">Homologación 4G en proceso smaw</a></li>
+                        <li><a href="Homologacion6Gadmin.php" style="color: #000;">Homologación 6G en proceso smaw</a></li>
                     </ul>
                 </li>
                 <li><a href="auladmi.php"><i class="fas fa-user"></i> Perfil</a></li>
@@ -236,6 +71,34 @@ $stmt->close();
                 <li><a href="cerrar_s.php" onclick="return confirmLogout();" class="cerrar-sesion-boton"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a></li>
             </ul>
         </div>
+        <style>
+            .sidebar ul ul {
+                display: none;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                width: 180px;
+            }
+            .sidebar ul li:hover ul {
+                display: block;
+                position: absolute;
+                background-color: #0a507e;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+            .sidebar ul ul li {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+            .sidebar ul ul li a {
+                color: #000;
+                text-decoration: none;
+            }
+            .sidebar ul ul li a:hover {
+                color: #000;
+            }
+        </style>
+
 
         <script>
             function confirmLogout() {
@@ -244,13 +107,12 @@ $stmt->close();
         </script>
 
         <div class="contenido-principal">
-            <h1>Estudiantes en <?= htmlspecialchars($nombre_curso) ?></h1>
-            
-            <div class="tabla-container">
-                <table class="tabla-estudiantes">
+            <h1 style="text-align: center;">Estudiantes en <?= htmlspecialchars($nombre_curso) ?></h1>
+            <div style="max-width: 1200px; margin: 0 auto; padding: 20px;">
+                <table>
                     <thead>
                         <tr>
-                            <th>DNI</th>
+                            <th>DNI</th> 
                             <th>Nota Videotest</th>
                             <th>Examen Final</th>
                         </tr>
@@ -266,57 +128,149 @@ $stmt->close();
                             <?php endwhile; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="3">No se encontraron registros.</td>
+                                <td colspan="3" style="text-align: center;">No se encontraron registros.</td>
                             </tr>
                         <?php endif; ?>
-                    </tbody>
+                     </tbody>
                 </table>
-            </div>
+                <form action="guardar_datos.php" method="POST" style="max-width: 1000px; margin: 20px auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Videotest</th>
+                                <th>Examen Final</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                                <td>
+                                    <!-- Selector de fecha para Videotest -->
+                                    <label for="fecha_inicio_videotest">Fecha de Inicio:</label>
+                                    <input type="date" name="fecha_inicio_videotest" id="fecha_inicio_videotest" 
+                                           value="<?php echo $current_data ? $current_data['fecha_inicio_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de inicio para Videotest -->
+                                    <label for="hora_inicio_videotest">Hora de Inicio:</label>
+                                    <input type="time" name="hora_inicio_videotest" id="hora_inicio_videotest" 
+                                           value="<?php echo $current_data ? $current_data['hora_inicio_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <label for="fecha_fin_videotest">Fecha de Fin:</label>
+                                    <input type="date" name="fecha_fin_videotest" id="fecha_fin_videotest" 
+                                           value="<?php echo $current_data ? $current_data['fecha_fin_videotest'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de fin para Videotest -->
+                                    <label for="hora_fin_videotest">Hora de Fin:</label>
+                                    <input type="time" name="hora_fin_videotest" id="hora_fin_videotest" 
+                                           value="<?php echo $current_data ? $current_data['hora_fin_videotest'] : ''; ?>" required>
+                                    <br>
+                                </td>
+                                <td>
+                                    <!-- Selector de fecha para Examen Final -->
+                                    <label for="fecha_inicio_examen">Fecha de Inicio:</label>
+                                    <input type="date" name="fecha_inicio_examen" id="fecha_inicio_examen" 
+                                           value="<?php echo $current_data ? $current_data['fecha_inicio_examen'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de inicio para examen -->
+                                    <label for="hora_inicio_examen">Hora de Inicio:</label>
+                                    <input type="time" name="hora_inicio_examen" id="hora_inicio_examen" 
+                                           value="<?php echo $current_data ? $current_data['hora_inicio_examen'] : ''; ?>" required>
+                                    <br>
+                                    <label for="fecha_fin_examen">Fecha de Fin:</label>
+                                    <input type="date" name="fecha_fin_examen" id="fecha_fin_examen" 
+                                           value="<?php echo $current_data ? $current_data['fecha_fin_examen'] : ''; ?>" required>
+                                    <br>
+                                    <!-- Selector de hora de fin para examen -->
+                                    <label for="hora_fin_examen">Hora de Fin:</label>
+                                    <input type="time" name="hora_fin_examen" id="hora_fin_examen" 
+                                           value="<?php echo $current_data ? $current_data['hora_fin_examen'] : ''; ?>" required>
+                                    <br>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <!-- Campo oculto para el id_curso con valor 1 -->
+                    <input type="hidden" name="id_curso" value="20">
 
-            <div class="formulario-fechas">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Videotest</th>
-                            <th>Examen Final</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <label>Fecha de Inicio:</label>
-                                <input type="date" name="fecha_inicio_videotest" required>
-                                
-                                <label>Hora de Inicio:</label>
-                                <input type="time" name="hora_inicio_videotest" required>
-                                
-                                <label>Fecha de Fin:</label>
-                                <input type="date" name="fecha_fin_videotest" required>
-                                
-                                <label>Hora de Fin:</label>
-                                <input type="time" name="hora_fin_videotest" required>
-                            </td>
-                            <td>
-                                <label>Fecha de Inicio:</label>
-                                <input type="date" name="fecha_inicio_examen" required>
-                                
-                                <label>Hora de Inicio:</label>
-                                <input type="time" name="hora_inicio_examen" required>
-                                
-                                <label>Fecha de Fin:</label>
-                                <input type="date" name="fecha_fin_examen" required>
-                                
-                                <label>Hora de Fin:</label>
-                                <input type="time" name="hora_fin_examen" required>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                   <!-- Botones de guardado y actualización -->
+                   <div class="button-container">
+                        <button type="submit" name="guardar" class="update-btn">Guardar</button>
+                        <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
+                    </div>
+                </form>
+                <style>
+                    .main-content {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                    }
+                    
+                    .contenido-principal {
+                        width: 100%;
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        box-sizing: border-box;
+                    }
+                    
+                    table {
+                        width: 100%;
+                        max-width: 1000px;
+                        margin: 20px auto;
+                        border-collapse: collapse;
+                    }
+                    
+                    th, td {
+                        padding: 15px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                        vertical-align: middle;  /* Centra los elementos verticalmente */
+                    }
+                    
+                    input[type="date"],
+                    input[type="time"] {
+                        width: 100%;
+                        padding: 5px;
+                        margin: 5px 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    th {
+                        width: 200px;  /* Ajusta el ancho de las celdas de los encabezados */
+                    }
+                    
+                    label {
+                        font-weight: bold;
+                        margin-top: 10px;
+                        display: block;  /* Asegura que los labels estén por encima de los campos */
+                    }
+                    
+                    .button-container {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                        gap: 10px;
+                        flex-direction: row; /* Asegura que los botones estén en una línea */
+                    }
+                    
+                    .update-btn {
+                        padding: 10px 20px;
+                        background-color: #0a507e;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                        display: inline-block; /* Asegura que los botones se muestren en línea */
+                        margin: 0 5px; /* Añade un pequeño margen entre botones */
+                    }
+                    
+                    .update-btn:hover {
+                        background-color: #083d5f;
+                    }
+                </style>
                 
-                <div class="botones-accion">
-                    <button type="submit" name="guardar" class="update-btn">Guardar</button>
-                    <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
-                </div>
             </div>
         </div>
     </div>

@@ -36,7 +36,7 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Curso de Seguridad para Trabajos en Zanjas o Excavaciones</title>
     <link rel="stylesheet" href="admi.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
@@ -198,52 +198,79 @@ $stmt->close();
                         <button type="submit" name="actualizar" class="update-btn" style="display: inline-block; margin: 0 10px;">Actualizar</button>
                     </div>
                 </form>
+                <style>
+                    .main-content {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        width: 100%;
+                    }
+                    
+                    .contenido-principal {
+                        width: 100%;
+                        max-width: 1200px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        box-sizing: border-box;
+                    }
+                    
+                    table {
+                        width: 100%;
+                        max-width: 1000px;
+                        margin: 20px auto;
+                        border-collapse: collapse;
+                    }
+                    
+                    th, td {
+                        padding: 15px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                        vertical-align: middle;  /* Centra los elementos verticalmente */
+                    }
+                    
+                    input[type="date"],
+                    input[type="time"] {
+                        width: 100%;
+                        padding: 5px;
+                        margin: 5px 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    th {
+                        width: 200px;  /* Ajusta el ancho de las celdas de los encabezados */
+                    }
+                    
+                    label {
+                        font-weight: bold;
+                        margin-top: 10px;
+                        display: block;  /* Asegura que los labels estén por encima de los campos */
+                    }
+                    
+                    .button-container {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 20px;
+                        gap: 10px;
+                        flex-direction: row; /* Asegura que los botones estén en una línea */
+                    }
+                    
+                    .update-btn {
+                        padding: 10px 20px;
+                        background-color: #0a507e;
+                        color: white;
+                        border: none;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        transition: background-color 0.3s;
+                        display: inline-block; /* Asegura que los botones se muestren en línea */
+                        margin: 0 5px; /* Añade un pequeño margen entre botones */
+                    }
+                    
+                    .update-btn:hover {
+                        background-color: #083d5f;
+                    }
+                </style>
             </div>
-            <style>
-                .contenido-principal {
-                    margin-left: 250px;
-                    padding: 20px;
-                    width: calc(100% - 250px);
-                }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin: 0 auto;
-                }
-                th, td {
-                    padding: 15px;
-                    text-align: left;
-                    border: 1px solid #ddd;
-                    vertical-align: middle;
-                }
-                input[type="date"],
-                input[type="time"] {
-                    width: 100%;
-                    padding: 5px;
-                    margin: 5px 0;
-                    box-sizing: border-box;
-                }
-                th {
-                    width: 200px;
-                }
-                label {
-                    font-weight: bold;
-                    margin-top: 10px;
-                    display: block;
-                }
-                .update-btn {
-                    padding: 10px 20px;
-                    background-color: #0a507e;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    min-width: 120px;
-                }
-                .update-btn:hover {
-                    background-color: #083d5f;
-                }
-            </style>
         </div>
     </div>
 </body>

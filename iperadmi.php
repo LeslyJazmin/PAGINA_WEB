@@ -36,7 +36,7 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Curso de IPERC</title>
     <link rel="stylesheet" href="admi.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 

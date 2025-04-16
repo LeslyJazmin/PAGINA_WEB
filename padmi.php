@@ -37,14 +37,14 @@ $stmt->close();
     <meta charset="UTF-8">
     <title>Curso de Primeros Auxilios</title>
     <link rel="stylesheet" href="admi.css">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>MEKADDESH SOLUTION E.R.I.L CREADO </h2>
+            <h2>MEKADDESH SOLUTION E.R.I.L </h2>
             <ul>
                 <li><a href="inicio_admin.php"><i class="fas fa-home"></i> Inicio</a></li>
                 <li>
