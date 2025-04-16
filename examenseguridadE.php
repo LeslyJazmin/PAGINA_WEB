@@ -87,8 +87,6 @@ function obtenerPreguntas($id_curso) {
 
 // Obtener las preguntas del examen
 $preguntas = obtenerPreguntas(20);
-
-
 $mensaje = '';
 
 // Procesar respuestas del examen
@@ -433,7 +431,6 @@ input.volver:hover {
                     <?php foreach ($pregunta[1] as $opcion_index => $opcion): ?>
                         <label>
                             <input type="radio" name="respuestas[<?php echo $index; ?>]" value="<?php echo $opcion_index; ?>" required>
-                            <?php echo $opcion; ?>
                             <?php 
                             $letra_opcion = chr(97 + $opcion_index); // Convierte 0->a, 1->b, 2->c, 3->d
                             echo $letra_opcion . ') ' . $opcion; 
