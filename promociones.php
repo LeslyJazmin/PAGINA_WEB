@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEKADDESH SOLUTION E.R.I.L</title>
+    <title>MEKADDESH SOLUTION E.I.R.L</title>
     <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="promocion.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -19,7 +19,7 @@
 
 <a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
         <span> ¡Contactanos!</span>
-        <img src="contactanos.png" alt="WhatsApp">
+        <img src="images1/contactanos.png" alt="WhatsApp">
     </a>
     <div class="boton-flotante">
     <a href="indexregistro.php" class="boton-inscripcion">¡Inscríbete ahora!</a>
@@ -183,7 +183,7 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>© Todos los derechos reservados. MEKADDESH SOLUTION E.R.I.L.</p>
+        <p>© Todos los derechos reservados. MEKADDESH SOLUTION E.I.R.L.</p>
     </div>
 </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

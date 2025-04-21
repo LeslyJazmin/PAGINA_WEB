@@ -35,6 +35,7 @@ $stmt->close();
 <head>
     <meta charset="UTF-8">
     <title>Homologación 6G en proceso smaw</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="admi.css">
     <link rel="stylesheet" href="styles1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -43,7 +44,7 @@ $stmt->close();
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+            <h2>MEKADDESH SOLUTION E.I.R.L</h2>
             <ul>
                 <li><a href="inicio_admin.php"><i class="fas fa-home"></i> Inicio</a></li>
                 <li>

@@ -64,7 +64,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar']) && $pregunt
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Preguntas</title>
+    <title>Agregar Preguntas de Videotest</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="preguntasvideo.css">
 </head>
 <body>

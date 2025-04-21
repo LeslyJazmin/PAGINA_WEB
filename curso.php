@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container">
         <aside class="sidebar">
             <nav>
-                <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+                <h2>MEKADDESH SOLUTION E.I.R.L</h2>
                 <ul>
                     <li><a href="#"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="curso.php" class="selected"><i class="fas fa-book"></i> Cursos</a></li>

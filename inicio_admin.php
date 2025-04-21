@@ -93,7 +93,7 @@ $cursos = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <aside class="sidebar">
             <nav>
-                <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+                <h2>MEKADDESH SOLUTION E.I.R.L</h2>
                 <ul>
                     <li><a href="inicio_admin.php" class="selected"><i class="fas fa-home"></i>Inicio</a></li>
                     <li><a href="cursosa.php"><i class="fas fa-book"></i> Cursos</a></li>

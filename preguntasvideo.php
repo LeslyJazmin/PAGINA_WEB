@@ -111,7 +111,8 @@ if ($id_curso) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Curso</title>
+    <title>Modificar preguntas de Videotest</title>
+    <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="preguntasvideo.css">
 </head>
 <body>

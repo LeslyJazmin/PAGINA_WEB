@@ -138,7 +138,7 @@ $conn_admin->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MEKADDESH SOLUTION E.R.I.L</title>
+    <title>MEKADDESH SOLUTION E.I.R.L</title>
     <link rel="stylesheet" href="aula.css">
     <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -252,7 +252,7 @@ $conn_admin->close();
         </div>
     </div>
     <div id="loginContainer" class="login-container" style="display: none;">
-    <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+    <h2>MEKADDESH SOLUTION E.I.R.L</h2>
     <?php if (!empty($error_message)): ?>
         <p class="error-message"><?php echo htmlspecialchars($error_message); ?></p>
     <?php endif; ?>

@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <h2>MEKADDESH SOLUTION E.R.I.L</h2>
+            <h2>MEKADDESH SOLUTION E.I.R.L</h2>
             <ul>
                 <li><a href="inicio_admin.php"><i class="fas fa-home"></i> Inicio</a></li>
                 <li><a href="cursosa.php"><i class="fas fa-book"></i> Cursos</a></li>
