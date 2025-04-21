@@ -6,6 +6,31 @@ if (!isset($_SESSION['DNI'])) {
     header("Location: aula_virtual.php");
     exit();
 }
+
+// Procesar la eliminación de la imagen si se solicita
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
+    $mysqli = new mysqli("localhost", "root", "", "usuario");
+    if ($mysqli->connect_error) {
+        die("Error de conexión: " . $mysqli->connect_error);
+    }
+    
+    $stmt = $mysqli->prepare("UPDATE estudiantes SET imagen_perfil = NULL WHERE DNI = ?");
+    $stmt->bind_param("s", $_SESSION['DNI']);
+    
+    if ($stmt->execute()) {
+        // Limpiar la variable de la imagen actual
+        $imagenBase64 = '';
+        echo "<script>
+            alert('La imagen ha sido eliminada con éxito.');
+            document.getElementById('profileImage').src = 'images/usuario.png';
+        </script>";
+    } else {
+        echo "<script>alert('Error al eliminar la imagen: " . $stmt->error . "');</script>";
+    }
+    
+    $stmt->close();
+    $mysqli->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -125,6 +150,36 @@ if (!isset($_SESSION['DNI'])) {
 .tabla-cursos td {
     text-align: left;
 }
+
+.delete-image-btn {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-container:hover .delete-image-btn {
+    opacity: 1;
+}
+
+.delete-image-btn:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+}
+
+.profile-container {
+    position: relative;
+}
     </style>
 </head>
 <body>
@@ -178,35 +233,37 @@ if (!isset($_SESSION['DNI'])) {
 
             $conn->set_charset("utf8mb4");
 
-            // Subida de imagen de perfil
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES['profileImage'])) {
-                $target_dir = "images/";
-                $target_file = $target_dir . basename($_FILES["profileImage"]["name"]);
-                $uploadOk = 1;
-                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-                $check = getimagesize($_FILES["profileImage"]["tmp_name"]);
-                if ($check === false) {
-                    echo "<p class='mensaje-error'>El archivo no es una imagen válida.</p>";
-                    $uploadOk = 0;
+            // Procesar la subida de la imagen si se ha enviado un archivo
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
+                $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
+                
+                // Actualizar la imagen en la base de datos
+                $stmt = $conn->prepare("UPDATE estudiantes SET imagen_perfil = ? WHERE DNI = ?");
+                $stmt->bind_param("ss", $imagen, $_SESSION['DNI']);
+                
+                if ($stmt->execute()) {
+                    echo "<script>alert('La imagen ha sido actualizada con éxito.');</script>";
+                } else {
+                    echo "<script>alert('Error al actualizar la imagen: " . $stmt->error . "');</script>";
                 }
+                
+                $stmt->close();
+            }
 
-                if ($_FILES["profileImage"]["size"] > 2000000) {
-                    echo "<p class='mensaje-error'>El archivo es demasiado grande.</p>";
-                    $uploadOk = 0;
+            // Obtener la imagen de perfil de la base de datos
+            $imagenBase64 = '';
+            if (isset($_SESSION['DNI'])) {
+                $stmt = $conn->prepare("SELECT imagen_perfil FROM estudiantes WHERE DNI = ?");
+                $stmt->bind_param("s", $_SESSION['DNI']);
+                $stmt->execute();
+                $resultado = $stmt->get_result();
+                
+                if ($row = $resultado->fetch_assoc()) {
+                    if ($row['imagen_perfil']) {
+                        $imagenBase64 = base64_encode($row['imagen_perfil']);
+                    }
                 }
-
-                if (!in_array($imageFileType, ["jpg", "jpeg", "png", "gif"])) {
-                    echo "<p class='mensaje-error'>Solo se permiten archivos JPG, JPEG, PNG y GIF.</p>";
-                    $uploadOk = 0;
-                }
-
-                if ($uploadOk && move_uploaded_file($_FILES["profileImage"]["tmp_name"], $target_file)) {
-                    $_SESSION['profileImage'] = $target_file;
-                    echo "<p class='mensaje-exito'>Imagen de perfil actualizada correctamente.</p>";
-                } elseif ($uploadOk) {
-                    echo "<p class='mensaje-error'>Hubo un error al subir la imagen.</p>";
-                }
+                $stmt->close();
             }
 
             // Variables de sesión para mostrar en el perfil
@@ -214,7 +271,6 @@ if (!isset($_SESSION['DNI'])) {
             $correo = $_SESSION['correo'] ?? 'No disponible';
             $telefono = $_SESSION['telefono'] ?? 'No disponible';
             $sexo = $_SESSION['sexo'] ?? 'No disponible';
-            $profileImage = $_SESSION['profileImage'] ?? 'images/usuario.png';
 
             // Consulta para obtener los cursos inscritos y las notas
             $dni = $_SESSION['DNI'];
@@ -243,12 +299,21 @@ if (!isset($_SESSION['DNI'])) {
             echo "<div class='bienvenida'>";
             echo "<div class='profile-container'>";
             echo "<label for='imageUpload'>";
-            echo "<img src='$profileImage' alt='Imagen de perfil' id='profileImage'>";
+            if ($imagenBase64) {
+                echo "<img src='data:image/jpeg;base64," . $imagenBase64 . "' alt='Imagen de perfil' id='profileImage'>";
+                // Agregar botón de eliminar
+                echo "<form method='POST' style='display: inline;'>";
+                echo "<input type='hidden' name='delete_image' value='1'>";
+                echo "<button type='submit' class='delete-image-btn' onclick='return confirm(\"¿Estás seguro de que deseas eliminar tu foto de perfil?\")'><i class='fas fa-trash'></i></button>";
+                echo "</form>";
+            } else {
+                echo "<img src='images/usuario.png' alt='Imagen de perfil' id='profileImage'>";
+            }
             echo "<div class='edit-icon'><i class='fas fa-pencil-alt'></i></div>";
             echo "</label>";
             echo "</div>";
 
-            echo "<form id='uploadForm' action='perfil.php' method='POST' enctype='multipart/form-data' style='display: none;'>";
+            echo "<form id='uploadForm' action='" . $_SERVER['PHP_SELF'] . "' method='POST' enctype='multipart/form-data' style='display: none;'>";
             echo "<input type='file' name='profileImage' id='imageUpload' accept='image/*' onchange='document.getElementById(\"uploadForm\").submit();'>";
             echo "</form>";
 
