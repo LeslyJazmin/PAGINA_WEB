@@ -82,56 +82,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['DNI'])) {
 
 $conn_usuario->close();
 
-// Conexión a la base de datos de admin 
-$dbname_admin = "admin"; 
-
-$conn_admin = new mysqli($servername, $username, $password, $dbname_admin);
-if ($conn_admin->connect_error) {
-    die("Conexión fallida a la base de datos de admin: " . $conn_admin->connect_error);
-}
-
-if (!$conn_admin->set_charset("utf8mb4")) {
-    die("Error al establecer la codificación de caracteres en admin: " . $conn_admin->error);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre_usuario'])) {
-    $nombre = $_POST['nombre_usuario'] ?? ''; // Asegúrate de que esto coincida con el nombre en el formulario
+    $nombre = $_POST['nombre_usuario'] ?? '';
     $contrasena = $_POST['contrasena'] ?? '';
 
     if (empty($nombre) || empty($contrasena)) {
         $error_message = "Por favor, ingrese tanto el nombre de usuario como la contraseña.";
     } else {
-        $sql = "SELECT * FROM admin WHERE nombre_usuario = ? AND contrasena = ?";
-        try {
-            $stmt = $conn_admin->prepare($sql);
-            if ($stmt === false) {
-                throw new Exception("Error en la preparación de la consulta: " . $conn_admin->error);
-            }
-
-            $stmt->bind_param("ss", $nombre, $contrasena);
-            if (!$stmt->execute()) {
-                throw new Exception("Error al ejecutar la consulta: " . $stmt->error);
-            }
-
-            $result = $stmt->get_result();
-
-            if ($result->num_rows > 0) {
-                $_SESSION['nombre'] = $nombre; 
-                header("Location: auladmi.php"); 
-                exit();
-            } else {
-                $error_message = "Usuario o contraseña incorrectos.";
-            }
-
-            $stmt->close();
-        } catch (Exception $e) {
-            $error_message = "Error en el sistema: " . $e->getMessage();
-            error_log("Database error: " . $e->getMessage());
+        $mysqli_admin = new mysqli($servername, $username, $password, "admin");
+        if ($mysqli_admin->connect_error) {
+            die("Conexión fallida: " . $mysqli_admin->connect_error);
         }
+
+        // Usar la tabla 'admin' en lugar de 'administrador'
+        $sql = "SELECT * FROM admin WHERE nombre_usuario = ? AND contrasena = ?";
+        $stmt = $mysqli_admin->prepare($sql);
+        $stmt->bind_param("ss", $nombre, $contrasena);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            $_SESSION['nombre_usuario'] = $nombre;
+            $_SESSION['contrasena'] = $contrasena;
+            header("Location: auladmi.php");
+            exit();
+        } else {
+            $error_message = "Usuario o contraseña incorrectos.";
+        }
+        $stmt->close();
+        $mysqli_admin->close();
     }
 }
-
-$conn_admin->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">

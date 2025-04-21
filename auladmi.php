@@ -1,3 +1,38 @@
+<?php
+session_start();
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['nombre_usuario'])) {
+    header("Location: aula_virtual.php");
+    exit();
+}
+
+// Procesar la eliminación de la imagen si se solicita
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
+    $mysqli_admin = new mysqli("localhost", "root", "", "admin");
+    if ($mysqli_admin->connect_error) {
+        die("Error de conexión: " . $mysqli_admin->connect_error);
+    }
+    
+    $stmt = $mysqli_admin->prepare("UPDATE admin SET imagen_perfil = NULL WHERE nombre_usuario = ?");
+    $stmt->bind_param("s", $_SESSION['nombre_usuario']);
+    
+    if ($stmt->execute()) {
+        // Limpiar la variable de la imagen actual
+        $imagenBase64 = '';
+        echo "<script>
+            alert('La imagen ha sido eliminada con éxito.');
+            document.getElementById('profileImage').src = 'images/usuario.png';
+        </script>";
+    } else {
+        echo "<script>alert('Error al eliminar la imagen: " . $stmt->error . "');</script>";
+    }
+    
+    $stmt->close();
+    $mysqli_admin->close();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,91 +70,79 @@
             <div class="user-info">
                 
             <?php
-session_start();
-
 // Procesar la subida de la imagen si se ha enviado un archivo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
-    $target_dir = "uploads/";
-    $target_file = $target_dir . basename($_FILES["profileImage"]["name"]);
-    $uploadOk = 1;
-    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-    // Verificar si el archivo es una imagen real
-    $check = getimagesize($_FILES["profileImage"]["tmp_name"]);
-    if ($check !== false) {
-        $uploadOk = 1;
+    $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
+    
+    // Conectar a la base de datos de administrador
+    $mysqli_admin = new mysqli("localhost", "root", "", "admin");
+    if ($mysqli_admin->connect_error) {
+        die("Error de conexión: " . $mysqli_admin->connect_error);
+    }
+    
+    // Mantener "admin" como nombre de la tabla como solicitaste
+    $stmt = $mysqli_admin->prepare("UPDATE admin SET imagen_perfil = ? WHERE nombre_usuario = ?");
+    $stmt->bind_param("ss", $imagen, $_SESSION['nombre_usuario']);
+    
+    if ($stmt->execute()) {
+        echo "<script>alert('La imagen ha sido actualizada con éxito.');</script>";
     } else {
-        echo "El archivo no es una imagen.";
-        $uploadOk = 0;
+        echo "<script>alert('Error al actualizar la imagen: " . $stmt->error . "');</script>";
     }
-
-    // Verificar el tamaño del archivo
-    if ($_FILES["profileImage"]["size"] > 500000) {
-        echo "Lo siento, tu archivo es demasiado grande.";
-        $uploadOk = 0;
-    }
-
-    // Permitir ciertos formatos de archivo
-    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-        echo "Lo siento, solo se permiten archivos JPG, JPEG, PNG & GIF.";
-        $uploadOk = 0;
-    }
-
-    // Subir el archivo si todo está bien
-    if ($uploadOk == 1) {
-        if (move_uploaded_file($_FILES["profileImage"]["tmp_name"], $target_file)) {
-            $_SESSION['profileImage'] = $target_file;
-            echo "<script>alert('La imagen ha sido subida con éxito.');</script>";
-        } else {
-            echo "<script>alert('Lo siento, hubo un error subiendo tu archivo.');</script>";
-        }
-    }
+    
+    $stmt->close();
+    $mysqli_admin->close();
 }
 
-// Mostrar la imagen de perfil
-$imagePath = isset($_SESSION['profileImage']) ? $_SESSION['profileImage'] : 'images/usuario.png';
+// Obtener la imagen de perfil de la base de datos
+$imagenBase64 = '';
+if (isset($_SESSION['nombre_usuario'])) {
+    $mysqli_admin = new mysqli("localhost", "root", "", "admin");
+    if ($mysqli_admin->connect_error) {
+        die("Error de conexión: " . $mysqli_admin->connect_error);
+    }
+    
+    // Mantener "admin" como nombre de la tabla
+    $stmt = $mysqli_admin->prepare("SELECT imagen_perfil FROM admin WHERE nombre_usuario = ?");
+    $stmt->bind_param("s", $_SESSION['nombre_usuario']);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    
+    if ($row = $resultado->fetch_assoc()) {
+        if ($row['imagen_perfil']) {
+            $imagenBase64 = base64_encode($row['imagen_perfil']);
+        }
+    }
+    
+    $stmt->close();
+    $mysqli_admin->close();
+}
 
-echo "<style>
-    .edit-icon {
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 5px;
-        border-radius: 50%;
-        font-size: 12px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-    .image-upload-label:hover .edit-icon {
-        opacity: 1;
-    }
-    .hidden-file-input {
-        display: none;
-    }
-</style>";
-// Contenedor principal para la imagen y el mensaje
+// Resto del código de visualización
 echo "<div class='profile-message-container'>";
-
-// Contenedor para la imagen
 echo "<div class='profile-container'>";
 echo "<label for='imageUpload' class='image-upload-label'>";
-echo "<img src='$imagePath' alt='Imagen de perfil' id='profileImage' class='profile-image'>";
+if ($imagenBase64) {
+    echo "<img src='data:image/jpeg;base64," . $imagenBase64 . "' alt='Imagen de perfil' id='profileImage' class='profile-image'>";
+    // Agregar botón de eliminar
+    echo "<form method='POST' style='display: inline;'>";
+    echo "<input type='hidden' name='delete_image' value='1'>";
+    echo "<button type='submit' class='delete-image-btn' onclick='return confirm(\"¿Estás seguro de que deseas eliminar tu foto de perfil?\")'><i class='fas fa-trash'></i></button>";
+    echo "</form>";
+} else {
+    echo "<img src='images/usuario.png' alt='Imagen de perfil' id='profileImage' class='profile-image'>";
+}
 echo "<div class='edit-icon'><i class='fas fa-pencil-alt'></i></div>";
 echo "</label>";
-echo "</div>"; // Cierre del contenedor de perfil
+echo "</div>";
 
-// Mensaje de bienvenida
-echo "<div class='welcome-message'>Bienvenido, Administrador</div>"; 
-
-echo "</div>"; // Cierre del contenedor principal
+echo "<div class='welcome-message'>Bienvenido, " . htmlspecialchars($_SESSION['nombre_usuario']) . "</div>"; 
+echo "</div>";
 
 // Formulario para subir la imagen
 echo "<form id='uploadForm' action='" . $_SERVER['PHP_SELF'] . "' method='POST' enctype='multipart/form-data'>";
 echo "<input type='file' name='profileImage' id='imageUpload' accept='image/*' onchange='document.getElementById(\"uploadForm\").submit();' class='hidden-file-input'>";
 echo "</form>";
-
 
 ?>
 
@@ -128,6 +151,34 @@ document.getElementById('imageUpload').addEventListener('change', function() {
     document.getElementById('uploadForm').submit();
 });
 </script>
+
+<style>
+.delete-image-btn {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background-color: rgba(255, 0, 0, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-container:hover .delete-image-btn {
+    opacity: 1;
+}
+
+.delete-image-btn:hover {
+    background-color: rgba(255, 0, 0, 0.9);
+}
+</style>
 
 <?php
 
