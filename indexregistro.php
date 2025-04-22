@@ -11,6 +11,9 @@
 </head>
 
 <body>
+    <div class="boton-flotante-arriba">
+        <a href="index.html" class="boton-ir-inicio">¡Ir al inicio!</a>
+    </div> 
     <div class="container">
         <div class="hero">
             <img src="images/años.jpeg" alt="MEKADDESH SOLUTION" class="hero-image">

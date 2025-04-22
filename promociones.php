@@ -16,8 +16,10 @@
     </script>
 </head>
 <body>
-
-<a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
+    <div class="boton-flotante-arriba">
+        <a href="index.html" class="boton-ir-inicio">¡Ir al inicio!</a>
+    </div>  
+    <a class="whatsapp-float" href="https://wa.me/message/D7LD33NF66RGD1" target="_blank">
         <span> ¡Contactanos!</span>
         <img src="images1/contactanos.png" alt="WhatsApp">
     </a>
