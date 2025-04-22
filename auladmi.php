@@ -72,26 +72,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
             <?php
 // Procesar la subida de la imagen si se ha enviado un archivo
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
-    $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
+    $maxFileSize = 2 * 1024 * 1024; // 2MB en bytes
+    $fileSize = $_FILES["profileImage"]["size"];
     
-    // Conectar a la base de datos de administrador
-    $mysqli_admin = new mysqli("localhost", "root", "", "admin");
-    if ($mysqli_admin->connect_error) {
-        die("Error de conexión: " . $mysqli_admin->connect_error);
-    }
-    
-    // Mantener "admin" como nombre de la tabla como solicitaste
-    $stmt = $mysqli_admin->prepare("UPDATE admin SET imagen_perfil = ? WHERE nombre_usuario = ?");
-    $stmt->bind_param("ss", $imagen, $_SESSION['nombre_usuario']);
-    
-    if ($stmt->execute()) {
-        echo "<script>alert('La imagen ha sido actualizada con éxito.');</script>";
+    if ($fileSize > $maxFileSize) {
+        echo "<div class='upload-message error'>El tamaño de la imagen no debe exceder 2MB</div>";
     } else {
-        echo "<script>alert('Error al actualizar la imagen: " . $stmt->error . "');</script>";
+        $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
+        
+        $mysqli_admin = new mysqli("localhost", "root", "", "admin");
+        if ($mysqli_admin->connect_error) {
+            die("Error de conexión: " . $mysqli_admin->connect_error);
+        }
+        
+        $stmt = $mysqli_admin->prepare("UPDATE admin SET imagen_perfil = ? WHERE nombre_usuario = ?");
+        $stmt->bind_param("ss", $imagen, $_SESSION['nombre_usuario']);
+        
+        if ($stmt->execute()) {
+            echo "<div class='upload-message success'>La imagen ha sido actualizada con éxito.</div>";
+        } else {
+            echo "<div class='upload-message error'>Error al actualizar la imagen: " . $stmt->error . "</div>";
+        }
+        
+        $stmt->close();
+        $mysqli_admin->close();
     }
-    
-    $stmt->close();
-    $mysqli_admin->close();
 }
 
 // Obtener la imagen de perfil de la base de datos
@@ -117,6 +122,14 @@ if (isset($_SESSION['nombre_usuario'])) {
     $stmt->close();
     $mysqli_admin->close();
 }
+
+// Mensaje de recomendación con formato mejorado
+echo "<div class='recommendations-mini'>
+        <p>
+            <i class='fas fa-image'></i>
+            Imagen de perfil: <span class='highlight'>máx. 2MB</span> <span class='highlight'>JPG/PNG</span>
+        </p>
+      </div>";
 
 // Resto del código de visualización
 echo "<div class='profile-message-container'>";
@@ -177,6 +190,24 @@ document.getElementById('imageUpload').addEventListener('change', function() {
 
 .delete-image-btn:hover {
     background-color: rgba(255, 0, 0, 0.9);
+}
+
+.recommendations-mini {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.recommendations-mini p {
+    margin: 0;
+    font-weight: bold;
+}
+
+.recommendations-mini .highlight {
+    color: #007BFF;
+    font-weight: bold;
 }
 </style>
 

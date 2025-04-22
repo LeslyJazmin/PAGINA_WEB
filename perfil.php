@@ -104,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
     border-bottom: none;
 }
 
+
 /* Responsividad para las tablas */
 @media (max-width: 768px) {
     .tabla-usuario, .tabla-cursos {
@@ -217,6 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
                 return confirm("¿Estás seguro de que deseas cerrar sesión?");
             }
         </script>
+        
 
         <main class="main-content">
             <?php
@@ -233,22 +235,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
 
             $conn->set_charset("utf8mb4");
 
-            // Procesar la subida de la imagen si se ha enviado un archivo
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
-                $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
-                
-                // Actualizar la imagen en la base de datos
-                $stmt = $conn->prepare("UPDATE estudiantes SET imagen_perfil = ? WHERE DNI = ?");
-                $stmt->bind_param("ss", $imagen, $_SESSION['DNI']);
-                
-                if ($stmt->execute()) {
-                    echo "<script>alert('La imagen ha sido actualizada con éxito.');</script>";
-                } else {
-                    echo "<script>alert('Error al actualizar la imagen: " . $stmt->error . "');</script>";
-                }
-                
-                $stmt->close();
-            }
+            // Mensaje de recomendación con formato mejorado y estructura HTML actualizada
+            echo "<div class='recommendations-mini'>
+                    <p>
+                        <i class='fas fa-info-circle'></i>
+                        <span class='recommendation-text'>
+                            Imagen de perfil:&nbsp;
+                            <span class='highlight'>máx. 2MB</span>
+                            <span class='highlight'>JPG/PNG</span>
+                        </span>
+                    </p>
+                </div>";
 
             // Obtener la imagen de perfil de la base de datos
             $imagenBase64 = '';
@@ -264,6 +261,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
                     }
                 }
                 $stmt->close();
+            }
+
+            // Procesar la subida de la imagen si se ha enviado un archivo
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES["profileImage"])) {
+                $maxFileSize = 2 * 1024 * 1024; // 2MB en bytes
+                $fileSize = $_FILES["profileImage"]["size"];
+                
+                if ($fileSize > $maxFileSize) {
+                    echo "<div class='upload-message error'>
+                            <i class='fas fa-exclamation-circle'></i>
+                            El tamaño de la imagen no debe exceder 2MB
+                          </div>";
+                } else {
+                    $imagen = file_get_contents($_FILES["profileImage"]["tmp_name"]);
+                    
+                    $stmt = $conn->prepare("UPDATE estudiantes SET imagen_perfil = ? WHERE DNI = ?");
+                    $stmt->bind_param("ss", $imagen, $_SESSION['DNI']);
+                    
+                    if ($stmt->execute()) {
+                        echo "<div class='upload-message success'>
+                                <i class='fas fa-check-circle'></i>
+                                La imagen ha sido actualizada con éxito
+                              </div>";
+                    } else {
+                        echo "<div class='upload-message error'>
+                                <i class='fas fa-times-circle'></i>
+                                Error al actualizar la imagen: " . $stmt->error . "
+                              </div>";
+                    }
+                    
+                    $stmt->close();
+                }
             }
 
             // Variables de sesión para mostrar en el perfil
