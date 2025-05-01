@@ -68,7 +68,6 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
             echo "<div class='resultado-individual'>";
             echo "<p class='nombre-persona'>$nombre_estudiante</p>";
             echo "<p class='nombre-curso'>$nombre_curso</p>";
-            echo "<p class='fecha'>$fecha</p>";
             
             // Agregar el botón para descargar el certificado
             echo "<div class='btn-container'>";
@@ -103,10 +102,10 @@ if (isset($_POST['id_curso']) && !empty($_POST['id_curso']) && isset($_POST['DNI
 
 body {
     background: 
-        url('certificadoimagen.png'), /* Imagen superior */
-        url('fondocertificado.jpg');   /* Imagen de fondo */
+        url('./images1/ImagenMstr.jpg'), /* Imagen superior */
+        url('./images1/fondocertificado.jpg');   /* Imagen de fondo */
     background-size: 
-        800px 600px,  /* Tamaño de la primera imagen */
+        contain,      /* La primera imagen se adapta al tamaño de la pantalla */
         cover;        /* Tamaño de la imagen de fondo */
     background-position: 
         center,       /* Posición de la primera imagen */
@@ -121,7 +120,6 @@ body {
         .contenido {
             padding: 20px; /* Ajusta el padding según sea necesario */
             border-radius: 10px; /* Opcional: agrega esquinas redondeadas */
-            max-width: 500px; /* Limita el ancho del contenido */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra para dar profundidad */
             background: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente para mejor legibilidad */
         }
@@ -129,7 +127,7 @@ body {
   padding: 0.1px;
     max-width: 450px; /* Limita el ancho del contenedor */
     height: 300px; /* Ajusta la altura del contenedor */
-    font-size: 25px; /* Ajusta el tamaño de la letra según sea necesario */
+    font-size: 5px; /* Ajusta el tamaño de la letra según sea necesario */
     line-height: 1.0;
     margin-bottom: 10px;
     border-radius: 5px; /* Opcional: agrega esquinas redondeadas */
@@ -137,39 +135,31 @@ body {
 }
 .nombre-persona {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: 28px;
+    font-size: clamp(24px, 10vw, 48px);
     position: absolute;
-    top: 260px;      /* Ajustado para la posición correcta del nombre */
+    top: 22%; /* Ajustado para la posición correcta del nombre */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     width: 80%;
-    margin-bottom: 40px;
+    word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
+
 }
 
 .nombre-curso {
     position: absolute;
-    font-size: 25px;
+    font-size: calc(20px + 1vw); /* Ajusta el tamaño de la fuente dinámicamente según el ancho de la pantalla */
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-style: italic;
-    top: 335px;     /* Ajustado de 300px a 260px para subir el texto */
+    top: 41%;     /* Ajustado de 300px a 260px para subir el texto */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
     width: 80%;
-    word-wrap: break-word;
     white-space: pre-line;
     line-height: 1.3;
     padding: 0 20px;
-}
-
-.fecha {
-    position: absolute;
-    font-size: 19px;
-    font-style: italic;
-    bottom: 120px;   /* Ajustado desde la parte inferior */
-    right: 100px;    /* Ajustado desde la derecha */
-    text-align: right;
+    word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
 }
 
 /* Estilo general del contenedor del botón */
@@ -194,14 +184,13 @@ body {
 }
 
 .btn-flotante:hover {
-    background-color: #4f5153 ; /* Nuevo color de fondo al pasar el cursor sobre el botón */
-    transform: scale(1.05); /* Aumenta el tamaño del botón ligeramente al pasar el cursor */
+    background-color:rgb(17, 113, 210) ; /* Nuevo color de fondo al pasar el cursor sobre el botón */
+    transform: scale(1.10); /* Aumenta el tamaño del botón ligeramente al pasar el cursor */
 }
 
 .btn-flotante:focus {
     outline: none; /* Quita el contorno del botón al recibir el foco */
+    box-shadow: 0 0 5px rgb(17, 113, 210); /* Agrega un efecto de sombra al recibir el foco */
 }
-
-
 </style>
 
