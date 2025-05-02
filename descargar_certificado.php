@@ -149,10 +149,11 @@ try {
             error_log("No se pudo agregar el QR con color");
         }
 
-        // 7) Fecha: ajustado a (130, 255)
+        // 7) Fecha actual en formato español
+        $fecha_actual = mesEnEspanol(date('Y-m-d'));
         $pdf->SetFont('Times','I',13);
         $pdf->SetXY(130, 255);
-        $pdf->Cell(60, 6, mb_convert_encoding($row['fecha'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
+        $pdf->Cell(60, 6, mb_convert_encoding($fecha_actual, 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
 
     } else {
         // Si no encuentra datos, muestra un mensaje central
