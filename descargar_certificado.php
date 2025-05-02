@@ -28,6 +28,30 @@ function limpiarTexto($texto) {
     return $texto;
 }
 
+// Función para traducir mes a español
+function mesEnEspanol($fecha) {
+    $meses = array(
+        'January' => 'enero',
+        'February' => 'febrero',
+        'March' => 'marzo',
+        'April' => 'abril',
+        'May' => 'mayo',
+        'June' => 'junio',
+        'July' => 'julio',
+        'August' => 'agosto',
+        'September' => 'septiembre',
+        'October' => 'octubre',
+        'November' => 'noviembre',
+        'December' => 'diciembre'
+    );
+    
+    $fecha_formato = date('d \d\e F \d\e\l Y', strtotime($fecha));
+    foreach ($meses as $en => $es) {
+        $fecha_formato = str_replace($en, $es, $fecha_formato);
+    }
+    return $fecha_formato;
+}
+
 // Definir la clase PDF personalizada
 class PDF extends FPDF {
     // Método para generar e insertar un QR en color
@@ -74,7 +98,8 @@ try {
     // Consulta parametrizada
     $sql = "SELECT e.nombre,
                    c.nombre_curso,
-                   c.fecha
+                   c.fecha,
+                   c.duracion_horas
               FROM estudiantes e
          LEFT JOIN inscripciones i ON e.DNI = i.DNI
          LEFT JOIN cursos c       ON c.id_curso = i.id_curso
@@ -96,26 +121,35 @@ try {
 
     if ($row) {
         // 2) Nombre del estudiante: ajustado a (30, 40)
-        $pdf->SetFont('Times','B',28);
+        $pdf->SetFont('Arial','B',28);
         $pdf->SetTextColor(0,0,0);
-        $pdf->SetXY(30, 40);
+        $pdf->SetXY(30, 44);
         $pdf->Cell(150, 10, mb_convert_encoding($row['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
         // 3) Nombre del curso: ajustado a (30, 68)
-        $pdf->SetFont('Times','B',20);
+        $pdf->SetFont('Times','B',24);
         $pdf->SetXY(30, 68);
         $pdf->Cell(150, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // 4) Preparar URL para el QR con nombre del curso limpio
+        // 4) Información de duración y fecha
+        $pdf->SetFont('Times','',12);
+        $pdf->SetXY(30, 89);
+        $texto_duracion = sprintf("Creado el %s y tiene una duración de %.1f horas pedagógicas.", 
+            mesEnEspanol($row['fecha']), 
+            $row['duracion_horas']
+        );
+        $pdf->Cell(150, 10, mb_convert_encoding($texto_duracion, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+
+        // 5) Preparar URL para el QR con nombre del curso limpio
         $nombre_curso_limpio = limpiarTexto($row['nombre_curso']);
         $qr_data = "http://localhost/PAGINA_WEB/verificacion_certificado.php?curso=" . $nombre_curso_limpio;
 
-        // 5) Insertar QR en color (ahora a la derecha, arriba de la fecha)
+        // 6) Insertar QR en color (ahora a la derecha, arriba de la fecha)
         if (!$pdf->AddQRColor($qr_data)) {
             error_log("No se pudo agregar el QR con color");
         }
 
-        // 6) Fecha: ajustado a (130, 255)
+        // 7) Fecha: ajustado a (130, 255)
         $pdf->SetFont('Times','I',13);
         $pdf->SetXY(130, 255);
         $pdf->Cell(60, 6, mb_convert_encoding($row['fecha'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
