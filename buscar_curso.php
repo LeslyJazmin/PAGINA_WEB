@@ -134,18 +134,17 @@ body {
     text-align: right;
 }
 .nombre-persona {
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-size: clamp(24px, 10vw, 48px);
+    font-family: Cambria, Cochin, Georgia, Arial, 'Times New Roman', serif;
+    font-size: clamp(1.5rem, 4vw, 3rem);
     position: absolute;
     top: 22%; /* Ajustado para la posición correcta del nombre */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    width: 80%;
+    width: 75%;
     word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
-
+    line-height: 0.5;
 }
-
 .nombre-curso {
     position: absolute;
     font-size: calc(20px + 1vw); /* Ajusta el tamaño de la fuente dinámicamente según el ancho de la pantalla */
@@ -157,7 +156,7 @@ body {
     text-align: center;
     width: 80%;
     white-space: pre-line;
-    line-height: 1.3;
+    line-height: 1.0;
     padding: 0 20px;
     word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
 }
