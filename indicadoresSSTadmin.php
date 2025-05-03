@@ -68,34 +68,6 @@ $stmt->close();
             </ul>
         </div>
 
-        <style>
-            .sidebar ul ul {
-                display: none;
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                width: 180px;
-            }
-            .sidebar ul li:hover ul {
-                display: block;
-                position: absolute;
-                background-color: #0a507e;
-                padding: 10px;
-                border: 1px solid #ddd;
-            }
-            .sidebar ul ul li {
-                padding: 10px;
-                border-bottom: 1px solid #ddd;
-            }
-            .sidebar ul ul li a {
-                color: #000;
-                text-decoration: none;
-            }
-            .sidebar ul ul li a:hover {
-                color: #000;
-            }
-        </style>
-
         <script>
             function confirmLogout() {
                 return confirm("¿Estás seguro de que deseas cerrar sesión?");
@@ -195,79 +167,6 @@ $stmt->close();
                         <button type="submit" name="actualizar" class="update-btn">Actualizar</button>
                     </div>
                 </form>
-
-                <style>
-                    .main-content {
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        width: 100%;
-                    }
-                    
-                    .contenido-principal {
-                        width: 100%;
-                        max-width: 1200px;
-                        margin: 0 auto;
-                        padding: 20px;
-                        box-sizing: border-box;
-                    }
-                    
-                    table {
-                        width: 100%;
-                        max-width: 1000px;
-                        margin: 20px auto;
-                        border-collapse: collapse;
-                    }
-                    
-                    th, td {
-                        padding: 15px;
-                        text-align: left;
-                        border: 1px solid #ddd;
-                        vertical-align: middle;  /* Centra los elementos verticalmente */
-                    }
-                    
-                    input[type="date"],
-                    input[type="time"] {
-                        width: 100%;
-                        padding: 5px;
-                        margin: 5px 0;
-                        box-sizing: border-box;
-                    }
-                    
-                    th {
-                        width: 200px;  /* Ajusta el ancho de las celdas de los encabezados */
-                    }
-                    
-                    label {
-                        font-weight: bold;
-                        margin-top: 10px;
-                        display: block;  /* Asegura que los labels estén por encima de los campos */
-                    }
-                    
-                    .button-container {
-                        display: flex;
-                        justify-content: center;
-                        margin-top: 20px;
-                        gap: 10px;
-                        flex-direction: row; /* Asegura que los botones estén en una línea */
-                    }
-                    
-                    .update-btn {
-                        padding: 10px 20px;
-                        background-color: #0a507e;
-                        color: white;
-                        border: none;
-                        border-radius: 5px;
-                        cursor: pointer;
-                        transition: background-color 0.3s;
-                        display: inline-block; /* Asegura que los botones se muestren en línea */
-                        margin: 0 5px; /* Añade un pequeño margen entre botones */
-                    }
-                    
-                    .update-btn:hover {
-                        background-color: #083d5f;
-                    }
-                </style>
             </div>
         </div>
     </div>
