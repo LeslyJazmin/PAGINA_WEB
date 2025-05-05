@@ -55,10 +55,3 @@
     </script>
 </body>
 </html>
-
-<?php
-// Redirigir error 404 a la página personalizada
-http_response_code(404);
-include('PAGINA_WEB/404.php');
-exit();
-?>
