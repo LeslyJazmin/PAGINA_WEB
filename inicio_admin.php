@@ -46,7 +46,7 @@ $mysqli_usuario = new mysqli("localhost", "root", "", "usuario");
             <nav>
                 <h2>MEKADDESH SOLUTION E.I.R.L</h2>
                 <ul>
-                    <li><a href="inicio_admin.php" class="selected"><i class="fas fa-home"></i>Inicio</a></li>
+                    <li><a href="inicio_admin.php" class="selected"><i class="fas fa-home"></i> Inicio</a></li>
                     <li><a href="cursosa.php"><i class="fas fa-book"></i> Cursos</a></li>
                     <li><a href="auladmi.php"><i class="fas fa-user"></i> Perfil</a></li>
                     <li><a href="calendarioadmi.php"><i class="fas fa-calendar-alt"></i> Calendario</a></li>

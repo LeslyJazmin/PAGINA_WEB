@@ -11,52 +11,57 @@ body {
     min-height: 111vh;
 }
 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
-    width: 250px;
-    background-color: #0a507e;
-    color: white;
+    width: 275px;
+    background-color: #0e3d59;
+    color: #fff;
     padding: 20px;
+    position: fixed;
+    height: 100%;
 }
 
 .sidebar h2 {
     font-size: 24px;
     margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .sidebar ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
     text-decoration: none;
-    color: white;
-    font-size: 18px;
+    color: #fff;
     display: block;
     padding: 10px;
-    transition: background 0.3s ease;
+    border-radius: 5px;
+    transition: 0.3s;
+    font-size: 17px;
 }
 
-.sidebar ul li a:hover {
-    background-color: #00000070;
-}
-
+.sidebar ul li a:hover,
 .sidebar ul li a.selected {
-    background-color: #000000;
+    background-color: #145374;
 }
+
 .content {
     padding: 30px;
     display: flex;
+    margin-left: 310px; 
     flex-direction: column;
     align-items: center;
-    background-color: #ffffff;
+    background-color: #ecf0f1;
     justify-content: center;
     min-height: 40vh;
+    width: 1600px;
 }
 
 .calendar {
@@ -121,7 +126,7 @@ body {
 .controls button {
     padding: 10px 20px;
     background-color: #005792; /* Azul oscuro */
-    color: #fff;
+    color: #000000;
     border: none;
     cursor: pointer;
     border-radius: 8px;

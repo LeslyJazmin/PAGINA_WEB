@@ -3,7 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ecf0f1;
 }
 
 .container {
@@ -12,52 +12,58 @@ body {
     width: 100%; /* Permitir que el contenedor se ajuste al 100% del ancho */
     box-sizing: border-box; /* Asegurarse de que los márgenes y el padding no afecten el tamaño total */
 }
-
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
-    width: 250px; /* Aumenta el ancho de la barra lateral */
-    background-color: #0a507e;
-    color: white;
+    width: 260px;
+    background-color: #0e3d59;
+    color: #fff;
     padding: 20px;
-    flex-shrink: 0; /* Evitar que la barra lateral se reduzca */
+    position: fixed;
+    height: 100%;
 }
 
 .sidebar h2 {
-    font-size: 24px;
+    font-size: 22px;
     margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .sidebar ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    font-size: 17px;
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
     text-decoration: none;
-    color: white;
-    font-size: 18px;
+    color: #fff;
     display: block;
     padding: 10px;
-    transition: background 0.3s ease;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
-.sidebar ul li a:hover {
-    background-color: #00000070;
-}
-
+.sidebar ul li a:hover,
 .sidebar ul li a.selected {
-    background-color: #000000;
+    background-color: #145374;
 }
 
 /* Main Content Styles */
 .main-content {
-    flex-grow: 1;
-    padding: 20px;
+    padding: 30px;
+    display: flex;
+    margin-left: 310px; 
+    flex-direction: column;
+    align-items: center;
     background-color: #ecf0f1;
+    justify-content: center;
+    min-height: 40vh;
+    width: 1600px;
 }
 
 .main-content p {

@@ -42,11 +42,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
     <link rel="stylesheet" href="perfil.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
-.main-content {
-    padding: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-}
 
 
 .tabla-usuario, .tabla-cursos {

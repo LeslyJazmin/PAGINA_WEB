@@ -58,7 +58,7 @@ if (empty($busqueda) || empty($resultado_busqueda)) {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ecf0f1;
 }
 
 .container {
@@ -66,50 +66,54 @@ if (empty($busqueda) || empty($resultado_busqueda)) {
     min-height: 111vh;
 }
 
-/* Sidebar Styles */
+/* Sidebar */
 .sidebar {
-    width: 230px;
-    background-color: #0a507e;
-    color: white;
-    padding: 15px;
+    width: 240px;
+    background-color: #0e3d59;
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    height: 100%;
 }
 
 .sidebar h2 {
-    font-size: 24px;
+    font-size: 1.3em;
     margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .sidebar ul {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
 }
 
 .sidebar ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .sidebar ul li a {
     text-decoration: none;
-    color: white;
-    font-size: 17px;
+    color: #fff;
     display: block;
-    padding: 6px;
-    transition: background 0.3s ease;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
 }
 
-.sidebar ul li a:hover {
-    background-color: #00000070;
-}
-
+.sidebar ul li a:hover,
 .sidebar ul li a.selected {
-    background-color: #000000;
+    background-color: #145374;
 }
-        .sidebar ul li a i {
-            margin-right: 10px;
-        }
+
+       /* Main Content */
         .main-content {
-            flex-grow: 1;
-            padding: 20px;
+            margin-left: 230px;
+            flex: 1;
+            padding: 40px;
+            margin-left: 290px; 
+            background-color:rgb(240, 238, 238);
+
         }
         .bienvenido-titulo {
             text-align: center;
