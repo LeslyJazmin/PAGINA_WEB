@@ -308,6 +308,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
     }
             </script>
 
+            <style>
+            .delete-image-btn {
+                position: absolute;
+                bottom: 5px;
+                left: 5px;
+                background-color: rgba(255, 0, 0, 0.7);
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .profile-container:hover .delete-image-btn {
+                opacity: 1;
+            }
+
+            .delete-image-btn:hover {
+                background-color: rgba(255, 0, 0, 0.9);
+            }
+
+            .recommendations-mini {
+                margin-bottom: 20px;
+                padding: 10px;
+                background-color: #f9f9f9;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .recommendations-mini p {
+                margin: 0;
+                font-weight: bold;
+            }
+
+            .recommendations-mini .highlight {
+                color: #007BFF;
+                font-weight: bold;
+            }
+            </style>
+
             <div class="admin-details">
                 <h2>Información del Administrador</h2>
                 
