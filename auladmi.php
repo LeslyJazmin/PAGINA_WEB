@@ -123,54 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil de Administrador</title>
     <link rel="icon" href="images/favicon2.png" type="image/x-icon">
-    <link rel="stylesheet" href="admi.css">
+    <link rel="stylesheet" href="admiN.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .admin-table th, .admin-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        .admin-table th {
-            background-color: #0a507e;
-            font-weight: bold;
-        }
-
-        .edit-password-icon {
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .edit-password-form {
-            display: none; /* Oculto por defecto */
-            margin-top: 10px;
-        }
-        .edit-user-icon {
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .edit-user-form {
-            display: none; /* Oculto por defecto */
-            margin-top: 10px;
-        }
-        .edit-email-icon {
-            cursor: pointer;
-            margin-left: 5px;
-        }
-
-        .edit-email-form {
-            display: none; /* Oculto por defecto */
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -307,52 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
         form.style.display = form.style.display === 'block' ? 'none' : 'block';
     }
             </script>
-
-            <style>
-            .delete-image-btn {
-                position: absolute;
-                bottom: 5px;
-                left: 5px;
-                background-color: rgba(255, 0, 0, 0.7);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                cursor: pointer;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-
-            .profile-container:hover .delete-image-btn {
-                opacity: 1;
-            }
-
-            .delete-image-btn:hover {
-                background-color: rgba(255, 0, 0, 0.9);
-            }
-
-            .recommendations-mini {
-                margin-bottom: 20px;
-                padding: 10px;
-                background-color: #f9f9f9;
-                border: 1px solid #ddd;
-                border-radius: 5px;
-            }
-
-            .recommendations-mini p {
-                margin: 0;
-                font-weight: bold;
-            }
-
-            .recommendations-mini .highlight {
-                color: #007BFF;
-                font-weight: bold;
-            }
-            </style>
 
             <div class="admin-details">
                 <h2>Información del Administrador</h2>
