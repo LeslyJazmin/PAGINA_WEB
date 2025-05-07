@@ -7,7 +7,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 try {
-    // Configuración de la base de datos
+    // Configuración de la base de datos.
     $host = 'localhost';
     $dbname = 'usuario';
     $username = 'root';
@@ -50,3 +50,5 @@ try {
     ]);
 }
 ?>
+
+

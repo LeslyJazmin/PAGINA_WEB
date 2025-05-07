@@ -10,6 +10,7 @@ body {
     display: flex;
     min-height: 100vh;
     position: relative; /* Añadir posición relativa */
+    margin-top: 0 !important; /* Forzar la eliminación del margen superior */
 }
 
 /* Sidebar Styles */

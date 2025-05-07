@@ -85,12 +85,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         // Función para cerrar el modal
         function cerrarModal() {
-            window.location.href = "auladmi.php";
+            window.location.href = "inicio_admin.php";
         }
         
         // Función para cerrar el formulario
         function cerrarFormulario() {
-            window.location.href = "auladmi.php";
+            window.location.href = "inicio_admin.php";
         }
     </script>
 </div>

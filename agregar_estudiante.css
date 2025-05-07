@@ -123,21 +123,23 @@ input[type="submit"]:hover {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .modal-buttons button {
     background-color: #007acc;
     color: white;
     border: none;
-    padding: 10px 30px;
+    padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
     width: auto;
     min-width: 120px;
+    margin: 0 10px;
 }
 
 .modal-buttons button:hover {
     background-color: #005f99;
+    padding: 10px 20px;
 }

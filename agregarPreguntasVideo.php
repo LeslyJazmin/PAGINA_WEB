@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar']) && $pregunt
             </select>
             <div class="botones">
             <button type="submit">Cargar</button>
-            <a href="auladmi.php" class="cerrar">Cerrar</a>
+            <a href="inicio_admin.php" class="cerrar">Cerrar</a>
             </div>
         </form>
 
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['agregar']) && $pregunt
                     <?php endfor; ?>
                     <div class="botones">
                     <button type="submit" name="agregar">Agregar Preguntas</button>
-                    <a href="auladmi.php" class="cerrar">Cerrar</a>
+                    <a href="inicio_admin.php" class="cerrar">Cerrar</a>
                     </div>
                 </form>
             <?php endif; ?>

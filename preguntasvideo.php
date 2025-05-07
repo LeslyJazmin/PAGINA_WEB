@@ -131,7 +131,7 @@ if ($id_curso) {
             
             <div class="botones">
                 <button type="submit" class="cargar">Cargar Preguntas</button>
-                <a href="auladmi.php" class="cerrar">Cerrar</a>
+                <a href="inicio_admin.php" class="cerrar">Cerrar</a>
             </div>
         </form>
 
@@ -157,7 +157,7 @@ if ($id_curso) {
                 
                 <div class="botones">
                     <button type="submit" name="guardar" class="guardar">Guardar cambios</button>
-                    <a href="auladmi.php" class="cerrar">Cerrar</a>
+                    <a href="inicio_admin.php" class="cerrar">Cerrar</a>
                 </div>
             </form>
         <?php elseif ($id_curso) : ?>

@@ -382,7 +382,7 @@ $conn->close();
             
             <div class="botones">
                 <button type="submit">Añadir Preguntas</button>
-                <button type="button" onclick="window.location.href='auladmi.php';">Cerrar</button>
+                <button type="button" onclick="window.location.href='inicio_admin.php';">Cerrar</button>
             </div>
         </form>
     </div>

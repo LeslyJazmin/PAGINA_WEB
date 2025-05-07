@@ -31,16 +31,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt_check->store_result();
     
     if ($stmt_check->num_rows > 0) {
-        // Si el estudiante ya está registrado, solo registrar la inscripción
-        $stmt_inscripcion = $conexion->prepare("INSERT INTO inscripciones (DNI, id_curso) VALUES (?, ?)");
-        $stmt_inscripcion->bind_param("si", $DNI, $id_curso);
-
-        if ($stmt_inscripcion->execute()) {
-            $mensaje = "Estudiante ya registrado. Inscripción en el nuevo curso realizada correctamente.";
+        // Verificar si ya está inscrito en el curso
+        $stmt_verifica_inscripcion = $conexion->prepare("SELECT * FROM inscripciones WHERE DNI = ? AND id_curso = ?");
+        $stmt_verifica_inscripcion->bind_param("si", $DNI, $id_curso);
+        $stmt_verifica_inscripcion->execute();
+        $stmt_verifica_inscripcion->store_result();
+    
+        if ($stmt_verifica_inscripcion->num_rows > 0) {
+            $mensaje = "El estudiante ya está inscrito en este curso.";
         } else {
-            $mensaje = "Error al registrar la inscripción: " . $stmt_inscripcion->error;
+            // Registrar la inscripción
+            $stmt_inscripcion = $conexion->prepare("INSERT INTO inscripciones (DNI, id_curso) VALUES (?, ?)");
+            $stmt_inscripcion->bind_param("si", $DNI, $id_curso);
+    
+            if ($stmt_inscripcion->execute()) {
+                $mensaje = "Inscripción en el nuevo curso realizada correctamente.";
+            } else {
+                $mensaje = "Error al registrar la inscripción: " . $stmt_inscripcion->error;
+            }
         }
-    } else {
+    
+        $stmt_verifica_inscripcion->close();
+    }
+     else {
         // Si el estudiante no está registrado, proceder a registrar todo
         $conexion->begin_transaction();
         try {
@@ -159,11 +172,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script>
         // Función para cerrar el modal
         function cerrarModal() {
-            window.location.href = "auladmi.php";
+            window.location.href = "inicio_admin.php";
         }
         // Función para cerrar el formulario
         function cerrarFormulario() {
-            window.location.href = "auladmi.php";  // Redirige a la página de administración
+            window.location.href = "inicio_admin.php";  // Redirige a la página de administración
         }
 
         // Función para recargar la página y agregar un nuevo estudiante
