@@ -54,6 +54,43 @@ function mesEnEspanol($fecha) {
 
 // Definir la clase PDF personalizada
 class PDF extends FPDF {
+    // Método para dibujar un rectángulo con bordes redondeados
+    public function RoundedRect($x, $y, $w, $h, $r, $style = '') {
+        $k = $this->k;
+        $hp = $this->h;
+        if ($style == 'F') {
+            $op = 'f';
+        } elseif ($style == 'FD' || $style == 'DF') {
+            $op = 'B';
+        } else {
+            $op = 'S';
+        }
+        $MyArc = 4 / 3 * (sqrt(2) - 1);
+        $this->_out(sprintf('%.2F %.2F m', ($x + $r) * $k, ($hp - $y) * $k));
+        $xc = $x + $w - $r;
+        $yc = $y + $r;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - $y) * $k));
+        $this->_Arc($xc + $r * $MyArc, $yc - $r, $xc + $r, $yc - $r * $MyArc, $xc + $r, $yc);
+        $xc = $x + $w - $r;
+        $yc = $y + $h - $r;
+        $this->_out(sprintf('%.2F %.2F l', ($x + $w) * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc + $r, $yc + $r * $MyArc, $xc + $r * $MyArc, $yc + $r, $xc, $yc + $r);
+        $xc = $x + $r;
+        $yc = $y + $h - $r;
+        $this->_out(sprintf('%.2F %.2F l', $xc * $k, ($hp - ($y + $h)) * $k));
+        $this->_Arc($xc - $r * $MyArc, $yc + $r, $xc - $r, $yc + $r * $MyArc, $xc - $r, $yc);
+        $xc = $x + $r;
+        $yc = $y + $r;
+        $this->_out(sprintf('%.2F %.2F l', ($x) * $k, ($hp - $yc) * $k));
+        $this->_Arc($xc - $r, $yc - $r * $MyArc, $xc - $r * $MyArc, $yc - $r, $xc, $yc - $r);
+        $this->_out($op);
+    }
+
+    private function _Arc($x1, $y1, $x2, $y2, $x3, $y3) {
+        $h = $this->h;
+        $this->_out(sprintf('%.2F %.2F %.2F %.2F %.2F %.2F c', $x1 * $this->k, ($h - $y1) * $this->k, $x2 * $this->k, ($h - $y2) * $this->k, $x3 * $this->k, ($h - $y3) * $this->k));
+    }
+
     // Método para generar e insertar un QR en color
     public function AddQRColor($data) {
         try {
@@ -95,15 +132,20 @@ try {
     }
     $conn->set_charset("utf8mb4");
 
-    // Consulta parametrizada
+    // Consulta parametrizada con más información
     $sql = "SELECT e.nombre,
+                   e.DNI,
+                   e.correo,
+                   e.telefono,
                    c.nombre_curso,
                    c.fecha,
-                   c.duracion_horas
+                   c.duracion_horas,
+                   i.examen_final as nota_final
               FROM estudiantes e
          LEFT JOIN inscripciones i ON e.DNI = i.DNI
          LEFT JOIN cursos c       ON c.id_curso = i.id_curso
              WHERE e.DNI = ? AND i.id_curso = ?";
+
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("si", $DNI, $id_curso);
     $stmt->execute();
@@ -120,38 +162,80 @@ try {
     $pdf->Image(__DIR__ . '/images1/CertificadoPDF.png', 0, 0, 210, 297);
 
     if ($row) {
-        // 2) Nombre del estudiante: ajustado a (30, 40)
+        // 2) Nombre del estudiante
         $pdf->SetFont('Arial','B',28);
         $pdf->SetTextColor(0,0,0);
         $pdf->SetXY(30, 44);
         $pdf->Cell(150, 10, mb_convert_encoding($row['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // 3) Nombre del curso: ajustado a (30, 68)
+        // 3) Nombre del curso
         $pdf->SetFont('Times','B',24);
         $pdf->SetXY(30, 68);
         $pdf->Cell(150, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // 4) Información de duración y fecha
-        $pdf->SetFont('Times','',12);
+        // 4) DNI y datos del estudiante (subido 5 unidades más)
+        $pdf->SetXY(30, 170);
+        $pdf->SetDrawColor(128, 0, 128);
+        $pdf->SetFillColor(252, 228, 252);
+        $pdf->RoundedRect(55, 167, 100, 12, 3.5, 'FD');
+        
+        $pdf->SetFont('Times','B',12);
+        $pdf->SetTextColor(75, 0, 130);
+        $pdf->Cell(150, 6, mb_convert_encoding("DNI: " . $row['DNI'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+        
+        // Restaurar colores por defecto para el siguiente elemento
+        $pdf->SetDrawColor(0);
+        $pdf->SetFillColor(255);
+        $pdf->SetTextColor(0);
+
+        // 5) Información de duración, fecha y nota
         $pdf->SetXY(30, 89);
-        $texto_duracion = sprintf("Creado el %s y tiene una duración de %.1f horas pedagógicas.", 
+        $texto_duracion = sprintf("Curso realizado el %s con una duración de %.1f horas pedagógicas.", 
             mesEnEspanol($row['fecha']), 
             $row['duracion_horas']
         );
-        $pdf->Cell(150, 10, mb_convert_encoding($texto_duracion, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+        $pdf->Cell(150, 6, mb_convert_encoding($texto_duracion, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+        
+        // 6) Nota final (subido 5 unidades más)
+        $pdf->SetXY(30, 190);
+        $pdf->SetDrawColor(0, 102, 204);
+        $pdf->SetFillColor(240, 248, 255);
+        $pdf->RoundedRect(55, 187, 100, 12, 3.5, 'FD');
+        
+        $pdf->SetFont('Times','B',12);
+        $pdf->SetTextColor(0, 51, 153);
+        $texto_nota = sprintf("Calificación obtenida: %d de nota", $row['nota_final']);
+        $pdf->Cell(150, 6, mb_convert_encoding($texto_nota, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // 5) Preparar URL para el QR con nombre del curso limpio
+        // 7) Código de registro (subido 5 unidades más)
+        $pdf->SetXY(30, 210);
+        $pdf->SetDrawColor(46, 139, 87);
+        $pdf->SetFillColor(240, 255, 240);
+        $pdf->RoundedRect(55, 207, 100, 12, 3.5, 'FD');
+        
+        $codigo_registro = "REG-" . $row['DNI'] . "-" . date('Ymd');
+        $pdf->SetTextColor(25, 111, 61);
+        $pdf->SetFont('Times','B',11);
+        $pdf->Cell(150, 6, mb_convert_encoding("Código de registro: " . $codigo_registro, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+
+        // Restaurar colores por defecto
+        $pdf->SetDrawColor(0);
+        $pdf->SetFillColor(255);
+        $pdf->SetTextColor(0);
+
+        // 8) Preparar URL para el QR
         $nombre_curso_limpio = limpiarTexto($row['nombre_curso']);
         $qr_data = "http://localhost/PAGINA_WEB/verificacion_certificado.php?curso=" . $nombre_curso_limpio;
-
-        // 6) Insertar QR en color (ahora a la derecha, arriba de la fecha)
+        
+        // 9) Insertar QR
         if (!$pdf->AddQRColor($qr_data)) {
             error_log("No se pudo agregar el QR con color");
         }
 
-        // 7) Fecha actual en formato español
+        // 10) Fecha actual en formato español
+        date_default_timezone_set('America/Lima');
         $fecha_actual = mesEnEspanol(date('Y-m-d'));
-        $pdf->SetFont('Times','I',13);
+        $pdf->SetFont('Times','I',11);
         $pdf->SetXY(130, 255);
         $pdf->Cell(60, 6, mb_convert_encoding($fecha_actual, 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
 
