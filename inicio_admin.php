@@ -54,9 +54,10 @@ $mysqli_usuario = new mysqli("localhost", "root", "", "usuario");
                 </ul>
             </nav>
         </aside>
-</div>
+
 <div class="main-content">
 <div class="user-info">
+        <h3 class="titulo-admin">Panel de Gestión de Estudiantes y Cursos</h3>
         <table>
             <tr>
                 <th>DNI</th>
@@ -139,6 +140,29 @@ $mysqli_usuario = new mysqli("localhost", "root", "", "usuario");
     font-size: 25px;
     cursor: pointer;
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+@keyframes parpadeo {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.titulo-admin {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.2em;
+    font-weight: 600;
+    text-align: center;
+    background: linear-gradient(90deg, #007acc, #00c6ff);
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 15px;
+    margin-bottom: 35px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1.5px;
+    animation: parpadeo 2s infinite;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
 </style>
 <script>
 function mostrarCursos(dni) {
