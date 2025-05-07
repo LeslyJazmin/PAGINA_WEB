@@ -7,10 +7,12 @@ $id_curso = '25';
 
 // Consulta para obtener los estudiantes matriculados junto con el nombre del curso
 $sql = "
-    SELECT inscripciones.DNI, inscripciones.nota_videotest, inscripciones.examen_final, cursos.nombre_curso 
+    SELECT inscripciones.DNI, estudiantes.nombre, inscripciones.nota_videotest, inscripciones.examen_final, cursos.nombre_curso 
     FROM inscripciones 
     INNER JOIN cursos ON inscripciones.id_curso = cursos.id_curso 
+    INNER JOIN estudiantes ON inscripciones.DNI = estudiantes.DNI
     WHERE inscripciones.id_curso = ?";
+
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id_curso);
 $stmt->execute();
@@ -86,6 +88,7 @@ $stmt->close();
                     <thead>
                         <tr>
                             <th>DNI</th> 
+                            <th>Nombre</th>
                             <th>Nota Videotest</th>
                             <th>Examen Final</th>
                         </tr>
@@ -95,6 +98,7 @@ $stmt->close();
                             <?php while ($row = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($row['DNI']) ?></td>
+                                    <td><?= htmlspecialchars($row['nombre']) ?></td>
                                     <td><?= htmlspecialchars($row['nota_videotest']) ?></td>
                                     <td><?= htmlspecialchars($row['examen_final']) ?></td>
                                 </tr>
