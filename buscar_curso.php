@@ -134,31 +134,38 @@ body {
     text-align: right;
 }
 .nombre-persona {
-    font-family: Cambria, Cochin, Georgia, Arial, 'Times New Roman', serif;
+    font-family: Calibri ;
     font-size: clamp(1.5rem, 4vw, 3rem);
     position: absolute;
     top: 22%; /* Ajustado para la posición correcta del nombre */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    width: 75%;
     word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
     line-height: 0.5;
 }
 .nombre-curso {
-    position: absolute;
-    font-size: calc(20px + 1vw); /* Ajusta el tamaño de la fuente dinámicamente según el ancho de la pantalla */
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    font-style: italic;
-    top: 41%;     /* Ajustado de 300px a 260px para subir el texto */
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    width: 80%;
-    white-space: pre-line;
-    line-height: 1.0;
-    padding: 0 20px;
-    word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
+    font-size: 48px;
+      font-weight: bold;
+      color: white;
+      font-family: Arial, sans-serif;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-shadow: 
+        -1px -1px 0 #00aa00,
+         1px -1px 0 #00aa00,
+        -1px  1px 0 #00aa00,
+         1px  1px 0 #00aa00; /* Borde verde claro */
+      top: 42%;     /* Ajustado de 300px a 260px para subir el texto */
+      left: 50%; /* Centra el texto horizontalmente */
+      transform: translateX(-50%);
+      text-align: center; 
+      width: 70%; /* Ajusta el ancho del contenedor */
+      white-space: pre-line;
+      line-height: 1.0; 
+      word-wrap: break-word; /* Permite que el texto se ajuste si es demasiado largo */
+      font-size: calc(10px + 1.5vw); /* Ajusta el tamaño de la fuente dinámicamente según el ancho de la pantalla */
+      position: absolute; /* Posiciona el elemento de forma absoluta */
 }
 
 /* Estilo general del contenedor del botón */
