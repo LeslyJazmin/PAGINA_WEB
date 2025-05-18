@@ -159,19 +159,23 @@ try {
     $pdf->AddPage();
 
     // 1) Insertar fondo a toda la página
-    $pdf->Image(__DIR__ . '/images1/CertificadoPDF.png', 0, 0, 210, 297);
-
-    if ($row) {
-        // 2) Nombre del estudiante
-        $pdf->SetFont('Arial','B',28);
+    $pdf->Image(__DIR__ . '/images1/CertificadoPDF.png', 0, 0, 210, 297);    if ($row) {  
+        
+        // 2) Nombre del estudiante - Estilo adaptado de nombre-persona
+        $pdf->SetFont('Arial','I',28); // Volvemos al tamaño original
         $pdf->SetTextColor(0,0,0);
         $pdf->SetXY(30, 44);
-        $pdf->Cell(150, 10, mb_convert_encoding($row['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+        // Ajustamos el espaciado de línea para simular line-height: 0.5
+        $pdf->Cell(150, 8, mb_convert_encoding($row['nombre'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
-        // 3) Nombre del curso
-        $pdf->SetFont('Times','B',24);
+        // 3) Nombre del curso - Estilo adaptado de nombre-curso
+        $pdf->SetFont('Arial','B',24); // Volvemos al tamaño original
+        // Crear efecto de borde verde simulando text-shadow
         $pdf->SetXY(30, 68);
-        $pdf->Cell(150, 10, mb_convert_encoding($row['nombre_curso'], 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+        // Finalmente el texto en blanco encima
+        $pdf->SetXY(30, 68);
+        $pdf->SetTextColor(255,255,255);
+        $pdf->Cell(150, 10, mb_convert_encoding(strtoupper($row['nombre_curso']), 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 
         // 4) DNI y datos del estudiante (subido 5 unidades más)
         $pdf->SetXY(30, 170);
@@ -189,9 +193,10 @@ try {
         $pdf->SetTextColor(0);
 
         // 5) Información de duración, fecha y nota
+        $pdf->SetFont('Arial','I',12);
         $pdf->SetXY(30, 89);
-        $texto_duracion = sprintf("Curso realizado el %s con una duración de %.1f horas pedagógicas.", 
-            mesEnEspanol($row['fecha']), 
+        $texto_duracion = sprintf("Curso Creado el %s con una duración de %.1f horas pedagógicas.",
+            mesEnEspanol($row['fecha']),
             $row['duracion_horas']
         );
         $pdf->Cell(150, 6, mb_convert_encoding($texto_duracion, 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
@@ -247,7 +252,7 @@ try {
     }
 
     // Forzar descarga del PDF
-    $filename = 'CERTIFICADO MEKADDESH SOLUTION E.I.R.L_' . ($row['nombre'] ?? 'SIN_NOMBRE') . '.pdf';
+    $filename = 'CERTIFICADO MEKADDESH SOLUTION E.I.R.L ' . ($row['nombre'] ?? 'SIN_NOMBRE') . '.pdf';
     $pdf->Output('D', $filename);
     exit;
 
