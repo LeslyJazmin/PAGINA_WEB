@@ -55,9 +55,85 @@ $mysqli_usuario = new mysqli("localhost", "root", "", "usuario");
             </nav>
         </aside>
 
-<div class="main-content">
-<div class="user-info">
+    <div class="main-content">
+    <div class="user-info">
         <h3 class="titulo-admin">Panel de Gestión de Estudiantes y Cursos</h3>
+
+    <!-- Buscador por nombre -->
+    <div class="buscador-contenedor">
+        <input type="text" id="buscador" placeholder="Buscar alumno por nombre..." oninput="filtrarTabla()" class="buscador">
+        <i class="fas fa-search icono-lupa"></i>
+        <i class="fas fa-times icono-x" onclick="limpiarBuscador()"></i>
+    </div>
+
+    <script>
+        function filtrarTabla() {
+            const input = document.getElementById("buscador");
+            const filtro = input.value.toLowerCase();
+            const tabla = document.querySelector(".user-info table");
+            const filas = tabla.getElementsByTagName("tr");
+            const iconoX = document.querySelector(".icono-x");
+
+            // Mostrar la X solo si hay texto
+            iconoX.style.display = filtro ? "block" : "none";
+
+            for (let i = 1; i < filas.length; i++) {
+                const celdaNombre = filas[i].getElementsByTagName("td")[1];
+                if (celdaNombre) {
+                    const texto = celdaNombre.textContent || celdaNombre.innerText;
+                    filas[i].style.display = texto.toLowerCase().includes(filtro) ? "" : "none";
+                }
+            }
+        }
+
+        function limpiarBuscador() {
+            const input = document.getElementById("buscador");
+            input.value = "";
+            filtrarTabla(); // Restablece la tabla
+        }
+    </script>
+
+
+        <style>
+        .buscador-contenedor {
+            position: relative;
+            width: 300px;
+            margin: 0 auto 20px auto;
+        }
+
+        .buscador {
+            width: 100%;
+            padding: 10px 35px 10px 35px; /* espacio para la lupa y la X */
+            border: 2px solid #00c6ff;
+            border-radius: 25px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 4px 10px rgba(0, 198, 255, 0.3);
+        }
+
+        .icono-lupa {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #007acc;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .icono-x {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff4d4d;
+            font-size: 18px;
+            cursor: pointer;
+            display: none;
+        }
+        </style>
+
+
         <table>
             <tr>
                 <th>DNI</th>

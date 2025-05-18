@@ -214,7 +214,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['nombre_usuario'])) {
         .button:hover {
             background-color: #7aafe1  ;
         }
+        .boton-flotante-arriba {
+            position: fixed;
+            top: 30px; /* Ajusta la distancia desde arriba según sea necesario */
+            right: 20px; /* Distancia desde la derecha */
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            background-color: #007bff; /* Color de fondo del botón */
+            padding: 10px 20px;
+            border-radius: 50px; /* Forma redondeada del botón */
+            box-shadow: 0 4px 8px rgba(97, 157, 181, 0.884); /* Sombra suave */
+        }
+
+        .boton-ir-inicio {
+            text-decoration: none;
+            color: #f9f8f8; /* Color del texto */
+            font-weight: bold;
+            font-size: 16px;
+        }
     </style>
+     <div class="boton-flotante-arriba">
+        <a href="index.html" class="boton-ir-inicio">¡Ir al inicio!</a>
+    </div> 
 <body>
     <?php
     $error_message = '';
