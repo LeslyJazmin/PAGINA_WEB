@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-// Verificar si el usuario está logueado
 if (!isset($_SESSION['nombre_usuario'])) {
     header("Location: aula_virtual.php");
     exit();
 }
 
-// Procesar la eliminación de la imagen si se solicita
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
     $mysqli_admin = new mysqli("localhost", "root", "", "admin");
     if ($mysqli_admin->connect_error) {
@@ -18,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
     $stmt->bind_param("s", $_SESSION['nombre_usuario']);
 
     if ($stmt->execute()) {
-        // Limpiar la variable de la imagen actual
+
         $imagenBase64 = '';
         echo "<script>
                 alert('La imagen ha sido eliminada con éxito.');
@@ -32,10 +30,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_image'])) {
     $mysqli_admin->close();
 }
 
-// Procesar la actualización de la contraseña si se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
     $new_password = $_POST['new_password'];
-    // Aquí deberías agregar validaciones de la nueva contraseña (longitud, seguridad, etc.)
 
     $mysqli_admin_update = new mysqli("localhost", "root", "", "admin");
     if ($mysqli_admin_update->connect_error) {
@@ -47,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
 
     if ($stmt_update->execute()) {
         echo "<script>alert('Contraseña actualizada con éxito.');</script>";
-        // Podrías redirigir o mostrar un mensaje de éxito más visual
     } else {
         echo "<script>alert('Error al actualizar la contraseña: " . $stmt_update->error . "');</script>";
     }
@@ -55,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
     $stmt_update->close();
     $mysqli_admin_update->close();
 }
-// Procesar actualización de nombre de usuario
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_username'])) {
     $new_username = trim($_POST['new_username']);
 
@@ -147,16 +142,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                 function confirmLogout() {
                     return confirm("¿Estás seguro de que deseas cerrar sesión?");
                 }
-
                 function showEditPasswordForm() {
-                    document.getElementById('editPasswordForm').style.display = 'block';
+                    showModal('editPasswordFormModal');
                 }
                 function showEditNombreForm() {
-                    document.getElementById('editNombreForm').style.display = 'block';
+                    showModal('editNombreFormModal');
                 }
                 function showEditEmailForm() {
-                    document.getElementById('editEmailForm').style.display = 'block';
+                    showModal('editEmailFormModal');
                 }
+                function showModal(formId) {
+                    const modal = document.getElementById('myModal');
+                    const forms = document.querySelectorAll('.edit-form-modal');
+                    
+                    forms.forEach(form => {
+                        form.style.display = 'none';
+                    });
+
+                    document.getElementById(formId).style.display = 'block';
+                    modal.style.display = 'flex';
+                }
+                function closeModal() {
+                    document.getElementById('myModal').style.display = 'none';
+                }
+                window.onclick = function(event) {
+                    const modal = document.getElementById('myModal');
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+                function togglePasswordVisibility() {
+                const displayPassword = document.getElementById('displayPassword');
+                const maskedPassword = document.getElementById('maskedPassword');
+                const toggleIcon = document.getElementById('togglePassword');
+
+                if (displayPassword.style.display === 'none') {
+                    // Mostrar contraseña
+                    displayPassword.style.display = 'inline';
+                    maskedPassword.style.display = 'none';
+                    toggleIcon.classList.remove('fa-eye');
+                    toggleIcon.classList.add('fa-eye-slash');
+                } else {
+                    // Ocultar contraseña
+                    displayPassword.style.display = 'none';
+                    maskedPassword.style.display = 'inline';
+                    toggleIcon.classList.remove('fa-eye-slash');
+                    toggleIcon.classList.add('fa-eye');
+                }
+            }
             </script>
         </div>
         <div class="main-content">
@@ -218,11 +251,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
 
             // Mensaje de recomendación con formato mejorado
             echo "<div class='recommendations-mini'>
-                    <p>
-                        <i class='fas fa-image'></i>
-                        Imagen de perfil: <span class='highlight'>máx. 2MB</span> <span class='highlight'>JPG/PNG</span>
-                    </p>
-                </div>";
+                        <p>
+                            <i class='fas fa-image'></i>
+                            Imagen de perfil: <span class='highlight'>máx. 2MB</span> <span class='highlight'>JPG/PNG</span>
+                        </p>
+                    </div>";
 
             // Resto del código de visualización
             echo "<div class='profile-message-container'>";
@@ -251,7 +284,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
             echo "</form>";
 
             ?>
-
             <script>
             document.getElementById('imageUpload').addEventListener('change', function() {
                 document.getElementById('uploadForm').submit();
@@ -290,49 +322,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                         echo "<tbody>";
                         echo "<tr>";
                         echo "<td>Nombre Completo</td>";
-                        echo "<td>" . htmlspecialchars($admin_info['nombre_usuario']) .  " <i class='fas fa-pencil-alt edit-user-icon' onclick='showEditNombreForm()'></i></td>";
+                        echo "<td>" . htmlspecialchars($admin_info['nombre_usuario']) . " <i class='fas fa-pencil-alt edit-user-icon' onclick='showEditNombreForm()'></i></td>";
                         echo "</tr>";
                         echo "<tr>";
                         echo "<td>Email</td>";
-                        echo "<td>" . htmlspecialchars($admin_info['Email']) .  " <i class='fas fa-pencil-alt edit-email-icon' onclick='showEditEmailForm()'></i></td>";
+                        echo "<td>" . htmlspecialchars($admin_info['Email']) . " <i class='fas fa-pencil-alt edit-email-icon' onclick='showEditEmailForm()'></i></td>";
                         echo "</tr>";
                         echo "<tr>";
+                        echo "<tr>";
                         echo "<td>Contraseña</td>";
-                        echo "<td>" . htmlspecialchars($admin_info['contrasena']) . " <i class='fas fa-pencil-alt edit-password-icon' onclick='showEditPasswordForm()'></i></td>";
+                        echo "<td>";
+                        echo "    <span id='displayPassword' style='display:none;'>" . htmlspecialchars($admin_info['contrasena']) . "</span>"; // Contraseña oculta inicialmente
+                        echo "    <span id='maskedPassword'>********</span>"; // Asteriscos para la contraseña oculta
+                        echo "    <i class='fas fa-eye' id='togglePassword' onclick='togglePasswordVisibility()' style='cursor:pointer; margin-left: 5px;'></i>";
+                        echo "    <i class='fas fa-pencil-alt edit-password-icon' onclick='showEditPasswordForm()'></i>";
+                        echo "</td>";
                         echo "</tr>";
                         echo "</tbody>";
                         echo "</table>";
                         
 
                         // Formulario para editar la contraseña (inicialmente oculto)
-                        echo "<div id='editPasswordForm' class='edit-password-form'>";
-                        echo "<h3>Editar Contraseña</h3>";
-                        echo "<form method='POST'>";
-                        echo "<label for='new_password'>Nueva Contraseña:</label>";
-                        echo "<input type='password' id='new_password' name='new_password' required><br><br>";
-                        echo "<button type='submit'>Guardar Nueva Contraseña</button>";
-                        echo "</form>";
+                        echo "<div id='myModal' class='modal'>";
+                        echo "   <div class='modal-content'>";
+                        echo "     <span class='close' onclick='closeModal()'>&times;</span>"; // Added onclick to close
+
+                        // Formulario para editar la contraseña
+                        echo "     <div id='editPasswordFormModal' class='edit-form-modal'>";
+                        echo "       <h3>Editar Contraseña</h3>";
+                        echo "       <form method='POST'>";
+                        echo "         <label for='new_password'>Nueva Contraseña:</label>";
+                        echo "         <input type='password' id='new_password' name='new_password' required><br><br>";
+                        echo "         <button type='submit'>Guardar Nueva Contraseña</button>";
+                        echo "       </form>";
+                        echo "     </div>";
+
+                        // Formulario para editar el nombre de usuario
+                        echo "     <div id='editNombreFormModal' class='edit-form-modal'>";
+                        echo "       <h3>Editar Nombre de Usuario</h3>";
+                        echo "       <form method='POST'>";
+                        echo "         <label for='new_username'>Nuevo Nombre de Usuario:</label>";
+                        echo "         <input type='text' id='new_username' name='new_username' required><br><br>";
+                        echo "         <button type='submit'>Guardar Nuevo Nombre de Usuario</button>";
+                        echo "       </form>";
+                        echo "     </div>";
+
+                        // Formulario para editar el email
+                        echo "     <div id='editEmailFormModal' class='edit-form-modal'>";
+                        echo "       <h3>Editar Email</h3>";
+                        echo "       <form method='POST'>";
+                        echo "         <label for='new_email'>Nuevo Email:</label>";
+                        echo "         <input type='email' id='new_email' name='new_email' required><br><br>";
+                        echo "         <button type='submit'>Guardar Nuevo Email</button>";
+                        echo "       </form>";
+                        echo "     </div>";
+
+                        echo "   </div>";
                         echo "</div>";
 
-                        // Formulario para editar la contraseña (inicialmente oculto)
-                        echo "<div id='editNombreForm' class='edit-user-form'>";
-                        echo "<h3>Editar Nombre de Usuario</h3>";
-                        echo "<form method='POST'>";
-                        echo "<label for='new_username'>Nueva Nombre de Usuario:</label>";
-                        echo "<input type='user' id='new_username' name='new_username' required><br><br>";
-                        echo "<button type='submit'>Guardar Nueva nombre de Usuario</button>";
-                        echo "</form>";
-                        echo "</div>";
-                        
-                        // Formulario para editar la contraseña (inicialmente oculto)
-                        echo "<div id='editEmailForm' class='edit-email-form'>";
-                        echo "<h3>Editar Email</h3>";
-                        echo "<form method='POST'>";
-                        echo "<label for='new_email'>Nuevo Email: </label>";
-                        echo "<input type='email' id='new_email' name='new_email' required><br><br>";
-                        echo "<button type='submit'>Guardar Nuevo Email</button>";
-                        echo "</form>";
-                        echo "</div>";
                         
                     } else {
                         echo "<p>No se encontró información del administrador.</p>";

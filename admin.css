@@ -549,3 +549,121 @@ table {
     color: #007BFF;
     font-weight: bold;
 }
+  /* Estilos para el Modal */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Contenido del Modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto; /* Margen automático para centrar (aunque flexbox ya lo hace) */
+    padding: 30px;
+    border: 1px solid #888;
+    width: 90%; /* Ancho responsivo */
+    max-width: 500px; /* Ancho máximo para que no sea demasiado grande en pantallas grandes */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative; /* Necesario para posicionar el botón de cierre */
+    animation: fadeIn 0.3s ease-out; /* Animación de aparición */
+}
+
+/* Botón de cerrar (x) */
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #333;
+    text-decoration: none;
+}
+
+/* Estilos para los formularios dentro del modal */
+.edit-form-modal {
+    display: none; /* Inicialmente ocultos, se mostrará uno a la vez con JS */
+}
+
+.edit-form-modal h3 {
+    text-align: center;
+    color: #0a507e;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.edit-form-modal form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.edit-form-modal label {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.edit-form-modal input[type="password"],
+.edit-form-modal input[type="text"],
+.edit-form-modal input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Incluir padding y border en el ancho total */
+    font-size: 1em;
+}
+
+.edit-form-modal button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.edit-form-modal button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Animación para la aparición del modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Asegurarse de que los iconos de edición de los datos del usuario se mantengan */
+.edit-password-icon,
+.edit-user-icon,
+.edit-email-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    color: #007bff; /* Color para los iconos, puedes ajustarlo */
+    font-size: 1.1em;
+}
+
+.edit-password-icon:hover,
+.edit-user-icon:hover,
+.edit-email-icon:hover {
+    color: #0056b3;
+}

@@ -1,0 +1,158 @@
+ /* Estilos Generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            /* Fondo con un degradado de celestes muy claros */
+            background: linear-gradient(to right, #e8f0f4, #d1e2eb);
+            color: #333;
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: flex-start; /* Alinea al inicio verticalmente (arriba) */
+            min-height: 100vh; /* Ocupa al menos el alto de la ventana */
+            box-sizing: border-box; /* Incluye padding en el tamaño total */
+        }
+
+        .container {
+            background-color: #ffffff; /* Fondo blanco para el contenedor */
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra pronunciada y ligeramente más oscura */
+            padding: 30px;
+            width: 90%;
+            max-width: 1000px; /* Ancho máximo para la tabla */
+            text-align: center; /* Centra el texto dentro del contenedor */
+        }
+
+        h1 {
+            color: #145374; /* Azul principal para el título */
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 600;
+        }
+
+        /* Estilos de la Tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px auto; /* Centra la tabla */
+            font-size: 1em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada para la tabla */
+            border-radius: 8px; /* Bordes redondeados */
+            overflow: hidden; /* Asegura que los bordes redondeados se apliquen bien */
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background-color: #145374; /* Azul principal para los encabezados de tabla */
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        tr:nth-of-type(even) {
+            background-color: #f5f8fa; /* Un celeste muy, muy claro para filas pares */
+        }
+
+        tr:hover {
+            background-color: #e8f0f4; /* Celeste muy claro al pasar el ratón */
+            transition: background-color 0.3s ease;
+        }
+
+        .no-link {
+            color: #999;
+            font-style: italic;
+        }
+
+        a {
+            color: #145374; /* Azul principal para enlaces */
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #0f3d58; /* Azul más oscuro al pasar el ratón */
+            text-decoration: underline;
+        }
+
+        /* Estilos de Botones */
+        .button-group {
+            margin-top: 30px;
+            display: flex; /* Permite centrar y distribuir botones */
+            justify-content: center; /* Centra los botones */
+            gap: 20px; /* Espacio entre botones */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-decoration: none; /* Para enlaces que se vean como botones */
+        }
+
+        .btn-primary {
+            background-color: #145374; /* Azul principal para el botón primario */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0f3d58; /* Azul más oscuro al pasar el ratón */
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #2b6c93; /* Azul ligeramente más claro para el botón secundario */
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #145374; /* Azul principal al pasar el ratón */
+            transform: translateY(-2px);
+        }
+
+        /* Estilos para dispositivos pequeños (manteniéndolos) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                width: 95%;
+            }
+            table, thead, tbody, th, td, tr {
+                display: block; /* Hace que la tabla se comporte como bloques apilados */
+            }
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            tr { border: 1px solid #ccc; margin-bottom: 15px; border-radius: 8px;}
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            td:before {
+                content: attr(data-label); /* Usa el atributo data-label para mostrar el encabezado */
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: bold;
+            }
+            td:last-child {
+                border-bottom: 0;
+            }
+            .button-group {
+                flex-direction: column; /* Apila los botones en móviles */
+                gap: 10px;
+            }
+        }

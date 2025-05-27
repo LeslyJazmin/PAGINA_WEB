@@ -93,7 +93,7 @@
 
         <!-- IMAGEN AL LADO DERECHO -->
         <div class="imagen-formulario">
-        <img src="images1/referidos.png" alt="referidos">
+        <img src="images1/refier.png" alt="referidos">
         </div>
     </div>
     </section>

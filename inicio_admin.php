@@ -2,10 +2,10 @@
 session_start(); // Iniciar sesión
 
 // Configuración de la base de datos
-$host = 'localhost'; // Cambia esto por tu host
-$dbname = 'usuario'; // Cambia esto por el nombre de tu base de datos
-$username = 'root'; // Cambia esto por tu nombre de usuario
-$password = ''; // Cambia esto por tu contraseña
+$host = 'localhost'; 
+$dbname = 'usuario'; 
+$username = 'root'; 
+$password = ''; 
 
 try {
     // Conexión a la base de datos
@@ -316,12 +316,15 @@ function cerrarModal() {
     <table>
         <tr>
             <th>Subir link del material y video</th>
+            <th>Verificar link del material y video</th>
         </tr>
         <tr>
             <td>Solo se permitira subir link y se actualizara automaticamente al curso correspondiente</td>
+            <td>Se mostraran el link de cada curso correspondiente</td>
         </tr>
         <tr>
             <td><button onclick="window.location.href='subida_material.php'">Subir</button></td>
+            <td><button onclick="window.location.href='verificar_material.php'">Verificar</button></td>
         </tr>
     </table>
     <!--table>
