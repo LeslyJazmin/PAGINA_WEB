@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> CURSO DE SEGURIDAD PARA TRABAJOS EN ALTURA </title>
+    <title> CURSO DE SEGURIDAD EN TRABAJOS CONFINADOS </title>
     <link rel="icon" href="images/favicon2.png" type="image/x-icon">
     <link rel="stylesheet" href="estiocurso1.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -47,7 +47,7 @@
 </div>
     <header class="main-header">
         <div class="container">
-            <h1>CURSO DE SEGURIDAD PARA TRABAJOS EN ALTURA</h1>
+            <h1>CURSO DE SEGURIDAD EN TRABAJOS CONFINADOS</h1>
         </div>
     </header>
     <header class="header-pagina">
@@ -67,15 +67,15 @@
     <style>
             
             #page1 {
-                background-image: url('images/Seguridad para trabajos en altura 1.png'); /* Ruta de la imagen para la página 1 */
+                background-image: url('images/Seguridad en espacios confinados 1.png'); /* Ruta de la imagen para la página 1 */
             }
     
             #page2 {
-                background-image: url('images/Seguridad para trabajos en altura 2.png'); /* Ruta de la imagen para la página 2 */
+                background-image: url('images/Seguridad en espacios confinados 2.png'); /* Ruta de la imagen para la página 2 */
             }
     
             #page3 {
-                background-image: url('images/Seguridad para trabajos en altura 3.png'); /* Ruta de la imagen para la página 3 */
+                background-image: url('images/Seguridad en espacios confinados 3.png'); /* Ruta de la imagen para la página 3 */
             }
             .text-container {
                 width: 745px; /* Ancho fijo para todos los contenedores de texto */
@@ -121,12 +121,12 @@
         </main>
     <header class="header-secondary">
         <div class="container">
-            <h2><strong> 🌐 ¡Únete Ahora! </strong>"La prevención en altura salva vidas." <br>¡Inscríbete ahora y trabaja con confianza desde las alturas!</h2>
+            <h2><strong> 🌐 ¡Únete Ahora! </strong> "Los espacios reducidos exigen grande preparación." <br>¡Inscríbete ahora y actúa con seguridad en cada rincón!</h2>
         </div>
     </header>
     <footer>
         <div class="container">
-            <strong>&copy; 2024 CURSO DE SEGURIDAD PARA TRABAJOS EN ALTURA. Todos los derechos reservados.</strong>
+            <strong>&copy; 2024 CURSO DE SEGURIDAD EN TRABAJOS CONFINADOS. Todos los derechos reservados.</strong>
         </div>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

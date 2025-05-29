@@ -746,134 +746,145 @@ body {
     margin: 0; /* Elimina el margen si hay uno */
     position: relative; /* Establece la posición relativa para manejar el contenido posicionado absolutamente */
 }
+/* Carrusel de Cursos */
+.espacio-carrucel {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #f8f8f8; /* Fondo claro para la sección del carrusel */
+}
 
 .texto-encima-contenedor {
     position: relative;
-    margin-bottom: 50px; /* Añade espacio debajo del texto "NUESTROS CURSOS" */
-    z-index: 3; /* Asegura que este contenedor esté por encima del texto "MODALIDAD SEMIPRESENCIAL" */
+    margin-bottom: 30px;
 }
 
 .texto-encima {
-    font-weight: 900;
-    color: #FFFFFF;
-    font-size: 2.99em;
-    text-align: center;
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
     position: relative;
-    z-index: 4; /* Asegura que este texto esté por encima de "MODALIDAD SEMIPRESENCIAL" */
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.texto-encima::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background-color: #007bff; /* Color de la línea de abajo */
+    border-radius: 2px;
 }
 
 .carrusel-container {
     position: relative;
-    overflow: visible; /* Asegura que los ítems sobresalientes sean visibles */
-    width: 80%; /* Ajusta este valor según el tamaño deseado del carrusel */
-    max-width: 1200px; /* Ajusta según sea necesario */
-    display: flex; /* Muestra los ítems en línea */
-    justify-content: space-between; /* Asegura que haya espacio entre los ítems */
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden; /* Oculta los ítems que están fuera de vista */
+    padding: 20px 0; /* Espacio superior e inferior dentro del contenedor */
 }
 
 .carrusel {
-    display: flex;
-    transition: none; /* Sin transición de desplazamiento */
-    position: relative;
+    display: flex; /* Permite que los ítems se coloquen en fila */
+    transition: transform 0.5s ease-in-out; /* Transición suave para el desplazamiento */
+    /* Ajustado para que los ítems se muestren en una sola línea y no se envuelvan */
+    flex-wrap: nowrap;
+    justify-content: flex-start; /* Alinea los ítems al inicio */
 }
+
 
 .carrusel-item {
-    width: calc(100% / 4 - 20px); /* Ajusta para que cada ítem ocupe un cuarto del contenedor menos el espacio entre ellos */
-    max-width: 300px; /* Tamaño máximo del ítem, ajusta según sea necesario */
-    box-sizing: border-box;
-    padding: 0px; /* Espacio alrededor del ítem */
-    opacity: 1; /* Elimina la semitransparencia, todos los cursos son totalmente visibles */
-    transition: transform 0.5s ease; /* Transición solo para el transform */
-    position: relative;
+    flex: 0 0 calc(25% - 20px);
+    margin: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra inicial un poco más pronunciada para contraste */
+    background-color: #000000;
+    text-align: center;
+    cursor: pointer;
+    /* Añadimos 'border-color' a la transición para que el cambio de borde sea suave */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 2px solid transparent; /* Borde transparente inicial para el efecto de brillo */
+    padding: 0;
     display: flex;
-    flex-direction: column; /* Permite que el texto se ubique debajo de la imagen */
-    align-items: center; /* Centra el contenido dentro del ítem */
-    border: 2px solid transparent; /* Borde transparente por defecto */
-    border-radius: 10px; /* Esquinas redondeadas para los botones */
-    background-color: rgb(4, 7, 47); /* Fondo blanco semitransparente */
-    cursor: pointer; /* Cambia el cursor a pointer */
-    overflow: hidden; /* Oculta el contenido desbordado */
-    margin-right: 20px; /* Espacio entre los ítems del carrusel */
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.carrusel-item.active{
-    transform: scale(1.1); /* Aumenta el tamaño del ítem activo o en hover */
-    z-index: 2; /* Asegura que el ítem activo esté en frente */
-    box-shadow: 0 0 20px rgb(0, 0, 0); /* Efecto de iluminación */
-    border-color: #010101; /* Borde azul para destacar */
-}
-
-.carrusel-item:last-child {
-    margin-right: 0; /* Elimina el margen derecho en el último ítem */
-}
-
+/* Efecto de "brillo" al pasar el mouse */
 .carrusel-item:hover {
-    border-color: #007BFF; /* Borde azul al pasar el mouse sobre el botón */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para el efecto de elevación */
+    transform: translateY(-5px); /* Se eleva ligeramente */
+    /* Puedes elegir un color que simule un brillo o un color de énfasis */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), /* Brillo azul claro, más cercano */
+                0 0 30px rgba(0, 255, 255, 0.4); /* Brillo azul claro, más difuso y grande */
+    border-color: #00ffff; /* Color del borde que simula el brillo (azul cian) */
 }
 
 .carrusel-item img {
-    width: 100%; /* Ajusta la imagen para que ocupe el ancho completo del ítem */
-    height: auto; /* Mantiene la proporción de la imagen */
-    object-fit: cover; /* Asegura que la imagen cubra el área del contenedor */
-    display: block;
+    width: 300px;
+    height: 290px; /* Altura fija para las imágenes */
+    object-fit: cover; /* Asegura que la imagen cubra el área sin distorsionarse */
+    border-bottom: 1px solid #000000;
 }
 
-.texto-container {
-    margin-top: 0px; /* Espacio entre la imagen y el texto */
-    background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
-    padding: 10px;
-    border-radius: 5px;
-    color: white; /* Color del texto */
-    text-align: center; /* Centra el texto */
-    width: 100%; /* Asegura que el contenedor de texto ocupe el ancho del ítem */
-    box-sizing: border-box; /* Incluye el padding en el ancho total */
+.carrusel-item .texto-container {
+    padding: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 1.1em;
 }
 
 .carrusel-controles {
     position: absolute;
     top: 50%;
-    left: 0;
-    right: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     transform: translateY(-50%);
-    z-index: 10; /* Asegúrate de que los controles estén sobre los otros elementos */
-}
-
-.carrusel-controles .prev {
-    position: absolute;
-    left: -60px; /* Desplaza la flecha izquierda hacia afuera del contenedor */
-    transform: translateY(-50%); /* Centra verticalmente */
-}
-
-.carrusel-controles .next {
-    position: absolute;
-    right: -60px; /* Desplaza la flecha derecha hacia afuera del contenedor */
-    transform: translateY(-50%); /* Centra verticalmente */
+    pointer-events: none; /* Permite hacer clic a través de los controles */
 }
 
 .carrusel-controles button {
     background-color: rgba(0, 0, 0, 0.5);
-    border: none;
     color: white;
-    padding: 15px; /* Aumenta el padding para hacer el botón más grande */
+    border: none;
+    padding: 15px 10px;
     cursor: pointer;
-    border-radius: 80%; /* Hace que los botones sean completamente redondos */
-    z-index: 11; /* Asegura que los botones estén en el frente */
+    font-size: 2em;
+    border-radius: 50%;
+    pointer-events: auto; /* Restaura la interactividad del botón */
+    z-index: 10; /* Asegura que los botones estén por encima del carrusel */
 }
 
 .carrusel-controles button:hover {
     background-color: rgba(0, 0, 0, 0.8);
 }
-/* Adaptación del diseño a pantallas pequeñas (más compacto) */
-@media (max-width: 767px) {
-    #cursos {
-        padding: 50px 0; /* Reduce aún más el padding */
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 1024px) {
+    .carrusel-item {
+        flex: 0 0 calc(33.33% - 20px); /* 3 ítems por fila en tabletas */
+    }
+}
+
+@media (max-width: 768px) {
+    .carrusel-item {
+        flex: 0 0 calc(50% - 20px); /* 2 ítems por fila en móviles grandes */
+    }
+}
+
+@media (max-width: 480px) {
+    .carrusel-item {
+        flex: 0 0 calc(100% - 20px); /* 1 ítem por fila en móviles pequeños */
     }
     .texto-encima {
-        font-size: 2.2em; /* Reduce el tamaño del texto "NUESTROS CURSOS" */
-        margin-bottom: 30px; /* Reduce el espacio inferior */
+        font-size: 1.8em;
     }
 }
 

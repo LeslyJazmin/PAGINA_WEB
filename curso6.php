@@ -121,7 +121,7 @@
         </main>
     <header class="header-secondary">
         <div class="container">
-            <h2><strong> 🌐 ¡Únete Ahora! </strong>"Tu seguridad es nuestra prioridad." <br>¡Inscríbete ahora y comienza a marcar la diferencia!</h2>
+            <h2><strong> 🌐 ¡Únete Ahora! </strong> "La energía se respeta, la seguridad se aplica." <br>¡Inscríbete ahora y protege tu vida al trabajar con electricidad!</h2>
         </div>
     </header>
     <footer>

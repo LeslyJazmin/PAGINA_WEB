@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="estilo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
@@ -57,10 +56,26 @@
                         <input list="course-suggestions" type="text" placeholder="¿Qué curso quieres aprender hoy?" id="search-input">
                          <span class="clear-button" onclick="clearSearchInput()">&times;</span>
                          <datalist id="course-suggestions">
-                        <option value="Curso IPERC">
-                          <option value="Curso de primeros auxilios">
-                       <option value="Curso de Soldadura con arco eléctrico con electrodo revestido">
-                       <option value="Curso de Uso y manejo de extintores">
+                        <option value="Curso IPERC"></option>
+                          <option value="Curso de primeros auxilios"></option>
+                       <option value="Curso de Soldadura con arco eléctrico con electrodo revestido"></option>
+                       <option value="Curso de Uso y manejo de extintores"></option>
+
+                        <option value="Curso de Seguridad para trabajos en Altura"></option>
+                       <option value="Curso de Seguridad para trabajos Eléctricos"></option>
+                        <option value="Curso de Seguridad para Trabajos en Zanjas o Excavaciones"></option>
+                       <option value="Curso de Indicadores de Gestión de SST"></option>
+
+                        <option value="Curso de AUTOCAD 2D Y 3D"></option>
+                       <option value="Curso de Seguridad para Trabajos en Caliente"></option>
+                        <option value="Curso de Ofimática"></option>
+                       <option value="Curso de Homologación 3G en proceso smaw"></option>
+
+                        <option value="Curso de Homologación 4G en proceso smaw"></option>
+                        <option value="Curso de Homologación 6G en proceso smaw"></option>
+                        <option value="Curso de Seguridad en trabajos confinados"></option>
+                        
+                        
                             </datalist>
                             <button onclick="searchCourse()"><i class="fa fa-search"></i> Buscar</button>
                           </div>
@@ -75,7 +90,22 @@
                                     { title: 'Curso IPERC', url: 'curso1.php' },
                                     { title: 'Curso de primeros auxilios', url: 'curso2.php' },
                                     { title: 'Curso de Soldadura con arco eléctrico con electrodo revestido', url: 'curso3.php' },
-                                    { title: 'Curso de Uso y manejo de extintores', url: 'curso4.php' }
+                                    { title: 'Curso de Uso y manejo de extintores', url: 'curso4.php' },
+                                    
+                                    { title: 'Curso de Seguridad para trabajos en Altura', url: 'curso5.php' },
+                                    { title: 'Curso de Seguridad para trabajos Eléctricos', url: 'curso6.php' },
+                                    { title: 'Curso de Seguridad para Trabajos en Zanjas o Excavaciones', url: 'curso7.php' },
+                                    { title: 'Curso de Indicadores de Gestión de SST', url: 'curso8.php' },
+                                    
+                                    { title: 'Curso de AUTOCAD 2D Y 3D', url: 'curso9.php' },
+                                    { title: 'Curso de Seguridad para Trabajos en Caliente', url: 'curso10.php' },
+                                    { title: 'Curso de Ofimática', url: 'curso11.php' },
+                                    { title: 'Curso de Homologación 3G en proceso smaw', url: 'curso12.php' },
+
+                                    { title: 'Curso de Homologación 4G en proceso smaw', url: 'curso13.php' },
+                                    { title: 'Curso de Homologación 6G en proceso smaw', url: 'curso14.php' },
+                                    { title: 'Curso de Seguridad en trabajos confinados', url: 'curso15.php' }
+
                                 ];
 
                                 searchInput.addEventListener('input', function() {
@@ -355,39 +385,85 @@
                     });
                     });
                 </script> 
-            <!-- Sección de cursos -->
-            <section id="cursos" class="espacio-carrucel">
-                     <!-- Contenedor para "NUESTROS CURSOS" -->
-                    <div class="texto-encima-contenedor">
-                        <div class="texto-encima">
-                            CURSOS : MODALIDAD SEMIPRESENCIAL
-                        </div>
-                    </div>
-                        <div class="carrusel-container">
-                        <div class="carrusel">
-                            <button class="carrusel-item active" onclick="window.location.href='curso1.php';">
-                                <img src="images1/cur1.jpeg" alt="Curso 1">
-                                <div class="texto-container">VER DETALLES</div>
-                            </button>
-                            <button class="carrusel-item" onclick="window.location.href='curso2.php';">
-                                <img src="images1/cur2.jpeg" alt="Curso 2">
-                                <div class="texto-container">VER DETALLES</div>
-                            </button>
-                            <button class="carrusel-item" onclick="window.location.href='curso3.php';">
-                                <img src="images1/cur3.jpeg" alt="Curso 3">
-                                <div class="texto-container">VER DETALLES</div>
-                            </button>
-                            <button class="carrusel-item" onclick="window.location.href='curso4.php';">
-                                <img src="images1/cur4.jpeg" alt="Curso 4">
-                                <div class="texto-container">VER DETALLES</div>
-                            </button>
-                        </div>
-                        <div class="carrusel-controles">
-                            <button class="prev">❮</button>
-                            <button class="next">❯</button>
-                        </div>
-                    </div>
-            </section>
+             <section id="cursos" class="espacio-carrucel">
+            <div class="texto-encima-contenedor">
+                <div class="texto-encima">
+                    CURSOS : MODALIDAD SEMIPRESENCIAL
+                </div>
+            </div>
+            <div class="carrusel-container">
+                <div class="carrusel">
+                    <button class="carrusel-item active" onclick="window.location.href='curso1.php';">
+                        <img src="images1/cur1.jpeg" alt="Curso 1">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso2.php';">
+                        <img src="images1/cur2.jpeg" alt="Curso 2">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso3.php';">
+                        <img src="images1/cur3.jpeg" alt="Curso 3">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso4.php';">
+                        <img src="images1/cur4.jpeg" alt="Curso 4">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+
+                    <button class="carrusel-item" onclick="window.location.href='curso5.php';">
+                        <img src="images1/cur5.jpg" alt="Curso 5">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso6.php';">
+                        <img src="images1/cur6.jpg" alt="Curso 6">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso7.php';">
+                        <img src="images1/cur7.jpg" alt="Curso 7">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso8.php';">
+                        <img src="images1/cur8.jpg" alt="Curso 8">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+
+                    <button class="carrusel-item" onclick="window.location.href='curso9.php';">
+                        <img src="images1/cur9.jpg" alt="Curso 9">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso10.php';">
+                        <img src="images1/cur10.jpg" alt="Curso 10">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso11.php';">
+                        <img src="images1/cur11.jpg" alt="Curso 11">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso12.php';">
+                        <img src="images1/cur12.jpg" alt="Curso 12">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+
+                    <button class="carrusel-item" onclick="window.location.href='curso13.php';">
+                        <img src="images1/cur13.jpg" alt="Curso 13">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso14.php';">
+                        <img src="images1/cur14.jpg" alt="Curso 14">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                    <button class="carrusel-item" onclick="window.location.href='curso15.php';">
+                        <img src="images1/cur15.jpg" alt="Curso 15">
+                        <div class="texto-container">VER DETALLES</div>
+                    </button>
+                </div>
+
+                <div class="carrusel-controles">
+                    <button class="prev">❮</button>
+                    <button class="next">❯</button>
+                </div>
+            </div>
+        </section>
             <section id="caracteristicas">
                 <div class="container">
                     <h2>Beneficios de Estudiar con Nosotros</h2>

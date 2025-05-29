@@ -75,7 +75,7 @@
             }
     
             #page3 {
-                background-image: url('images/Indicadores de gestión de SST 3.png'); /* Ruta de la imagen para la página 3 */
+                background-image: url('images/Indicadores de gestión de SST 3.jpg'); /* Ruta de la imagen para la página 3 */
             }
             .text-container {
                 width: 745px; /* Ancho fijo para todos los contenedores de texto */
@@ -121,7 +121,7 @@
         </main>
     <header class="header-secondary">
         <div class="container">
-            <h2><strong> 🌐 ¡Únete Ahora! </strong>"Tu seguridad es nuestra prioridad." <br>¡Inscríbete ahora y comienza a marcar la diferencia!</h2>
+            <h2><strong> 🌐 ¡Únete Ahora! </strong> "Lo que no se mide, no se mejora."<br>¡Inscríbete ahora y transforma datos en decisiones seguras!</h2>
         </div>
     </header>
     <footer>
