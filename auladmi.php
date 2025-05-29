@@ -110,6 +110,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
     }
 }
 
+// Procesar actualización de teléfono
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_phone'])) {
+    $new_phone = trim($_POST['new_phone']);
+
+    $mysqli = new mysqli("localhost", "root", "", "admin");
+    if ($mysqli->connect_error) {
+        die("Error de conexión: " . $mysqli->connect_error);
+    }
+
+    $update_stmt = $mysqli->prepare("UPDATE admin SET telefono = ? WHERE nombre_usuario = ?");
+    $update_stmt->bind_param("ss", $new_phone, $_SESSION['nombre_usuario']);
+
+    if ($update_stmt->execute()) {
+        echo "<script>alert('Teléfono actualizado con éxito.');</script>";
+    } else {
+        echo "<script>alert('Error al actualizar el teléfono: " . $update_stmt->error . "');</script>";
+    }
+
+    $update_stmt->close();
+    $mysqli->close();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -147,9 +169,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                 }
                 function showEditNombreForm() {
                     showModal('editNombreFormModal');
-                }
-                function showEditEmailForm() {
+                }                function showEditEmailForm() {
                     showModal('editEmailFormModal');
+                }
+                function showEditPhoneForm() {
+                    showModal('editPhoneFormModal');
                 }
                 function showModal(formId) {
                     const modal = document.getElementById('myModal');
@@ -306,7 +330,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                         die("Error de conexión: " . $mysqli_admin_info->connect_error);
                     }
 
-                    $stmt_info = $mysqli_admin_info->prepare("SELECT nombre_usuario, Email , contrasena FROM admin WHERE nombre_usuario = ?");
+                    $stmt_info = $mysqli_admin_info->prepare("SELECT nombre_usuario, Email, telefono, contrasena FROM admin WHERE nombre_usuario = ?");
                     $stmt_info->bind_param("s", $nombre_usuario);
                     $stmt_info->execute();
                     $result_info = $stmt_info->get_result();
@@ -327,8 +351,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                         echo "<tr>";
                         echo "<td>Email</td>";
                         echo "<td>" . htmlspecialchars($admin_info['Email']) . " <i class='fas fa-pencil-alt edit-email-icon' onclick='showEditEmailForm()'></i></td>";
+                        echo "</tr>";                        echo "<tr>";
+                        echo "<td>Teléfono</td>";
+                        echo "<td>" . htmlspecialchars($admin_info['telefono'] ?? 'No especificado') . " <i class='fas fa-pencil-alt edit-phone-icon' onclick='showEditPhoneForm()' style='cursor: pointer;'></i></td>";
                         echo "</tr>";
-                        echo "<tr>";
                         echo "<tr>";
                         echo "<td>Contraseña</td>";
                         echo "<td>";
@@ -374,6 +400,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_email'])) {
                         echo "         <label for='new_email'>Nuevo Email:</label>";
                         echo "         <input type='email' id='new_email' name='new_email' required><br><br>";
                         echo "         <button type='submit'>Guardar Nuevo Email</button>";
+                        echo "       </form>";
+                        echo "     </div>";
+
+                        // Formulario para editar el teléfono
+                        echo "     <div id='editPhoneFormModal' class='edit-form-modal'>";
+                        echo "       <h3>Editar Teléfono</h3>";
+                        echo "       <form method='POST'>";
+                        echo "         <label for='new_phone'>Nuevo Teléfono:</label>";
+                        echo "         <input type='tel' id='new_phone' name='new_phone' pattern='[0-9]{9}' title='Ingrese un número de teléfono válido de 9 dígitos' required><br><br>";
+                        echo "         <button type='submit'>Guardar Nuevo Teléfono</button>";
                         echo "       </form>";
                         echo "     </div>";
 

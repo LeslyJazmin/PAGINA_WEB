@@ -443,3 +443,21 @@ th {
     box-shadow: 0 4px 12px rgba(10, 80, 126, 0.12);
 }
 
+/* Edit Icons Styles */
+.edit-user-icon,
+.edit-email-icon,
+.edit-phone-icon,
+.edit-password-icon {
+    color: #2980b9;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: color 0.3s ease;
+}
+
+.edit-user-icon:hover,
+.edit-email-icon:hover,
+.edit-phone-icon:hover,
+.edit-password-icon:hover {
+    color: #1abc9c;
+}
+
